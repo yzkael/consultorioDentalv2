@@ -2,7 +2,14 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        loginBgPink: "rgb(244, 219, 221)",
+      },
+      fontFamily: {
+        belleza: ["Belleza", "sans-serif"],
+      },
+    },
   },
   plugins: [],
 };

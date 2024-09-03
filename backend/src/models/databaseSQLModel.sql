@@ -1,89 +1,92 @@
--- POSTGRESS DB
+--POSTGRESS DB
 
 CREATE DATABASE simple_consultorio_v2;
 
-USE simple_consultorio_v2;
-
-CREATE TABLE extensiones(
-    extension VARCHAR(10) PRIMARY KEY
-);
-
---Hardcoded Values
-
-INSERT INTO extension(extension) VALUES("SC");
-INSERT INTO extension(extension) VALUES("LP");
-INSERT INTO extension(extension) VALUES("CB");
-INSERT INTO extension(extension) VALUES("PA");
-INSERT INTO extension(extension) VALUES("OR");
-INSERT INTO extension(extension) VALUES("BN");
-INSERT INTO extension(extension) VALUES("TJ");
-INSERT INTO extension(extension) VALUES("CH");
-INSERT INTO extension(extension) VALUES("PT");
+use simple_consultorio_v2;
 
 
-CREATE TABLE personas(
+CREATE TABLE Personas(
     id_persona BIGSERIAL PRIMARY KEY,
-    apellido_paterno VARCHAR(50) NOT NULL,
-    apellido_materno VARCHAR(50) NOT NULL,
-    correo VARCHAR(50) NOT NULL UNIQUE,
-    fecha_creacion DATE DEFAULT CURRENT_DATE,
-    carnet INTEGER NOT NULL,
-    extension VARCHAR(10) REFERENCES extensiones(extension) NULL
-);
-
-CREATE TABLE cargos(
-    id_cargo BIGSERIAL PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
-    especialidad_medico VARCHAR(50) NULL --Resalta que es opcional
+    ap_paterno VARCHAR(50) NOT NULL,
+    ap_materno VARCHAR(50) NOT NULL,
+    carnet VARCHAR(50) NOT NULL,
+    genero VARCHAR(5) NOT NULL,
+    telefono VARCHAR(10) NOT NULL,
+    fecha_nacimiento DATE NOT NULL,
+    fecha_crear DATE DEFAULT CURRENT_DATE
 );
 
-
---Hardcoded Values
-
-INSERT INTO cargos(nombre) VALUES ('recepcionista');
-INSERT INTO cargos(nombre) VALUES ('cajero');
-INSERT INTO cargos(nombre,especialidad_medico) VALUES('medico','general');
-INSERT INTO cargos(nombre,especialidad_medico) VALUES('medico','dermatologo');
-INSERT INTO cargos(nombre,especialidad_medico) VALUES('medico','pediatra');
-INSERT INTO cargos(nombre,especialidad_medico) VALUES('medico','oftalmologo');
-
-
-CREATE TABLE empleados(
-    id_empleado INTEGER REFERENCES personas(id_persona) PRIMARY KEY,
+CREATE TABLE Personal(
+    id_personal INTEGER REFERENCES Personas(id_persona),
     username VARCHAR(50) NOT NULL UNIQUE,
     password TEXT NOT NULL,
-    esta_active BOOLEAN DEFAULT true,
-    fecha_creacion DATE DEFAULT CURRENT_DATE,
-    cargo INTEGER REFERENCES cargos(id_cargo),
-    fecha_fin DATE NULL
+    fecha_fin DATE
 );
 
-CREATE TABLE pacientes(
-    id_paciente INTEGER REFERENCES personas(id_persona),
-    creado_por INTEGER REFERENCES empleados(id_empleado),
-    fecha_creacion DATE DEFAULT CURRENT_DATE
+CREATE TABLE Administrativo(
+    id_administrativo INTEGER REFERENCES Personal(id_personal),
+    cargo INTEGER REFERENCES Cargos(id_cargo)
 );
 
---Hardcoded Tables
-
-CREATE TABLE horarios(
-    id_hora BIGSERIAL PRIMARY KEY,
-    hora TIME NOT NULL UNIQUE --Vendran Datos como "14:30:00 HardCoded" 
+CREATE TABLE Cargos (
+    id_cargo BIGSERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE tipo_consultas(
-    id_tipo_consulta BIGSERIAL PRIMARY KEY, 
-    nombre VARCHAR(50) --Vendran los datos "consulta y reconsulta"
-)
+CREATE TABLE Dentistas(
+    id_dentista INTEGER REFERENCES Personal(id_personal),
+    especialidad INTEGER REFERENCES Especialidades(id_especialidad)
+);
 
-CREATE TABLE consultas(
+CREATE TABLE Especialidades(
+    id_especialidad BIGSERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Pacientes(
+    id_paciente INTEGER REFERENCES Personas(id_persona)
+);
+
+CREATE TABLE Consultas_Medicos(
+    id_consultas_medico BIGSERIAL PRIMARY KEY,
+    destista INTEGER REFERENCES Dentistas(id_dentista),
+    consulta INTEGER REFERENCES Consultas(id_consulta)
+);
+
+
+CREATE TABLE Consultas(
     id_consulta BIGSERIAL PRIMARY KEY,
-    fecha_asignada DATE NOT NULL,
-    medico_asignado INTEGER REFERENCES empleados(id_empleado),
-    creado_por INTEGER REFERENCES empleados(id_empleado),
-    paciente INTEGER REFERENCES paciente(id_paciente),
-    fecha_creacion DATE DEFAULT CURRENT_DATE,
-    consulta_completada BOOLEAN DEFAULT false,  
-    hora_asignada INTEGER REFERENCES horarios(id_hora),
-    tipo_consultas INTEGER REFERENCES tipo_consultas(id_tipo_consulta)
+    paciente INTEGER REFERENCES Pacientes(id_paciente),
+    creado_por INTEGER REFERENCES Administrativo(id_administrativo),
+    fecha_designada DATE NOT NULL,
+    hora_designada TIME NOT NULL,
+    estado_consulta VARCHAR(10) DEFAULT "pendiente",
+    procedimientos INTEGER REFERENCES Procedimientos(id_procedimiento)    
+);
+
+CREATE TABLE Procedimientos_Consultas(
+    id_procedimientos_consultas BIGSERIAL PRIMARY KEY,
+    procedimiento INTEGER REFERENCES Procedimientos(id_procedimiento),
+    consulta INTEGER REFERENCES Consultas(id_consulta)
+);
+
+CREATE TABLE Procedimientos(
+    id_procedimiento BIGSERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    descripcion TEXT NOT NULL
+);
+
+CREATE TABLE Procedimientos_Medicamentos(
+    id_procedimiento_medicamento BIGSERIAL PRIMARY KEY,
+    medicamento INTEGER REFERENCES Medicamentos(id_medicamento),
+    procedimiento INTEGER REFERENCES Procedimientos(id_procedimiento)
+);
+
+
+CREATE TABLE Medicamentos(
+    id_medicamento BIGSERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    fecha_vencimiento DATE NOT NULL,
+    cantidad INTEGER NOT NULL
 );
