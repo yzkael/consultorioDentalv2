@@ -10,22 +10,22 @@ CREATE TABLE Personas(
     nombre VARCHAR(50) NOT NULL,
     ap_paterno VARCHAR(50) NOT NULL,
     ap_materno VARCHAR(50) NOT NULL,
-    carnet VARCHAR(50) NOT NULL,
-    genero VARCHAR(5) NOT NULL,
+    carnet VARCHAR(50) NOT NULL UNIQUE,
+    correo  VARCHAR(50) NOT NULL UNIQUE,
     telefono VARCHAR(10) NOT NULL,
     fecha_nacimiento DATE NOT NULL,
     fecha_crear DATE DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE Personal(
-    id_personal INTEGER REFERENCES Personas(id_persona),
+    id_personal INTEGER PRIMARY KEY REFERENCES Personas(id_persona),
     username VARCHAR(50) NOT NULL UNIQUE,
     password TEXT NOT NULL,
     fecha_fin DATE
 );
 
 CREATE TABLE Administrativo(
-    id_administrativo INTEGER REFERENCES Personal(id_personal),
+    id_administrativo INTEGER PRIMARY KEY REFERENCES Personal(id_personal),
     cargo INTEGER REFERENCES Cargos(id_cargo)
 );
 
@@ -34,8 +34,14 @@ CREATE TABLE Cargos (
     nombre VARCHAR(50) NOT NULL
 );
 
+
+-- Cargos Administrativos
+INSERT INTO Cargos(nombre) VALUES ('Recepcionista');
+INSERT INTO Cargos(nombre) VALUES ('Administrador');
+
+
 CREATE TABLE Dentistas(
-    id_dentista INTEGER REFERENCES Personal(id_personal),
+    id_dentista INTEGER PRIMARY KEY REFERENCES Personal(id_personal),
     especialidad INTEGER REFERENCES Especialidades(id_especialidad)
 );
 
@@ -43,6 +49,14 @@ CREATE TABLE Especialidades(
     id_especialidad BIGSERIAL PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL
 );
+
+--Especialidades para los dentistas
+INSERT INTO Especialidades(nombre) VALUES('Maxilofacial');
+INSERT INTO Especialidades(nombre) VALUES ('Endodoncista');
+INSERT INTO Especialidades(nombre) VALUES ('General');
+INSERT INTO Especialidades(nombre) VALUES ('Ayudante');
+
+
 
 CREATE TABLE Pacientes(
     id_paciente INTEGER REFERENCES Personas(id_persona)
