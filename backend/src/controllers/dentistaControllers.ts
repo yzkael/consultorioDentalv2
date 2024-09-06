@@ -42,6 +42,7 @@ export const createDentistas = async (req: Request, res: Response) => {
     if (errores.length > 0) {
       return res.status(400).json({ erros: errores });
     }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const nuevaPersona = await client.query(crearPersona, [
@@ -65,7 +66,7 @@ export const createDentistas = async (req: Request, res: Response) => {
       especialidad,
     ]);
 
-    await client.query("COMMIT");
+    await client.query("COMMIT"); //Completa la transaccion
 
     res.status(200).json({ message: "Dentista creado con exito" });
   } catch (error) {

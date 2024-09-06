@@ -1,11 +1,16 @@
+import { especialidadesOptions } from "../../config/config-files";
+
 type CrearEmpleadoProps = {
   setPaginaActual: (prev: any) => void;
 };
 
 const Parte3 = ({ setPaginaActual }: CrearEmpleadoProps) => {
   return (
-    <div className="w-full h-full md:w-[60vw] md:h-[80vh] min-w-[60vw] min-h-[80vh] bg-slate-500 rounded-lg shadow-2xl">
-      <form className="flex flex-col h-full justify-around items-center">
+    <div className="w-full h-full md:w-[60vw] md:h-[80vh] min-w-[60vw] relative min-h-[80vh] bg-teal-500 rounded-lg shadow-2xl">
+      <div className="bg-blue-400 absolute text-white font-semibold w-full h-10 flex justify-center items-center text-2xl rounded-lg">
+        Informacion de Usuario:
+      </div>
+      <form className="flex flex-col h-full justify-around items-center pt-5">
         {/* Username Input */}
         <div className="flex flex-col min-w-[50%] text-2xl font-semibold">
           Username:
@@ -20,6 +25,14 @@ const Parte3 = ({ setPaginaActual }: CrearEmpleadoProps) => {
         <div className="flex flex-col min-w-[50%] text-2xl font-semibold">
           Confirmar Password:
           <input type="password" className="rounded-md" />
+        </div>
+        <div className="flex flex-col min-w-[50%] text-2xl font-semibold">
+          Elegir Especialidad:
+          <select name="especialidad">
+            {especialidadesOptions.map((especialidad) => (
+              <option value={especialidad}>{especialidad}</option>
+            ))}
+          </select>
         </div>
         <div className="flex justify-between w-full">
           {/* Back */}
