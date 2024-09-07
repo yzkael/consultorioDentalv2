@@ -17,10 +17,10 @@ export const createDentistas = async (req: Request, res: Response) => {
     correo,
     carnet,
     telefono,
-    fecha_nacimiento,
+    fechaNacimiento,
     username,
     password,
-    especialidad,
+    especialidad, //Vendra Numero Codigo de Especialidad
   } = req.body;
 
   const client: PoolClient = await pool.connect();
@@ -52,7 +52,7 @@ export const createDentistas = async (req: Request, res: Response) => {
       carnet,
       correo,
       telefono,
-      fecha_nacimiento,
+      fechaNacimiento,
     ]);
 
     const nuevoPersonal = await client.query(crearPersonal, [
