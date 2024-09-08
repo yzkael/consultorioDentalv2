@@ -23,6 +23,7 @@ export const createDentistas = async (req: Request, res: Response) => {
     especialidad, //Vendra Numero Codigo de Especialidad
   } = req.body;
 
+  console.log(req.body);
   const client: PoolClient = await pool.connect();
   try {
     await client.query("BEGIN"); //Inicia la transaccion
@@ -33,6 +34,8 @@ export const createDentistas = async (req: Request, res: Response) => {
       username,
     ]);
     const { correo_exists, carnet_exists, username_exists } = yaExiste.rows[0];
+
+    console.log(yaExiste.rows);
 
     const errores: string[] = [];
     if (correo_exists) errores.push("Ese correo ya esta siendo utilizado");
@@ -63,15 +66,15 @@ export const createDentistas = async (req: Request, res: Response) => {
 
     const nuevoDentista = await client.query(crearDentistas, [
       nuevoPersonal.rows[0].id_personal,
-      especialidad,
+      Number(especialidad),
     ]);
 
     await client.query("COMMIT"); //Completa la transaccion
 
     res.status(200).json({ message: "Dentista creado con exito" });
   } catch (error) {
-    await client.query("ROLLBACK");
     console.log(error);
+    await client.query("ROLLBACK");
     res.status(500).json({ message: "Internal Server Error 500" });
   } finally {
     client.release();
