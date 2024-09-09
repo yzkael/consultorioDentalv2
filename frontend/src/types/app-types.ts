@@ -11,3 +11,11 @@ export type CrearDentistaFormType = {
   confirmPassword: string;
   especialidad: number;
 };
+
+export type ManejarDentistasTabla = {
+  nombre: string;
+  appaterno: string;
+  apmaterno: string;
+  username: string;
+  especialidad: string;
+};

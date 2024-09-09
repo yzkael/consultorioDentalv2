@@ -6,6 +6,7 @@ import {
   crearPersona,
   crearPersonal,
   crearDentistas,
+  getAllDentistas as getAllDentistasQuery,
 } from "../models/Queries";
 import bcrypt from "bcrypt";
 
@@ -23,7 +24,6 @@ export const createDentistas = async (req: Request, res: Response) => {
     especialidad, //Vendra Numero Codigo de Especialidad
   } = req.body;
 
-  console.log(req.body);
   const client: PoolClient = await pool.connect();
   try {
     await client.query("BEGIN"); //Inicia la transaccion
@@ -34,8 +34,6 @@ export const createDentistas = async (req: Request, res: Response) => {
       username,
     ]);
     const { correo_exists, carnet_exists, username_exists } = yaExiste.rows[0];
-
-    console.log(yaExiste.rows);
 
     const errores: string[] = [];
     if (correo_exists) errores.push("Ese correo ya esta siendo utilizado");
@@ -78,5 +76,20 @@ export const createDentistas = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal Server Error 500" });
   } finally {
     client.release();
+  }
+};
+
+export const getAllDentistas = async (req: Request, res: Response) => {
+  try {
+    const allDentistas = await pool.query(getAllDentistasQuery);
+    if (allDentistas.rows.length <= 0) {
+      return res
+        .status(404)
+        .json({ message: "No se encontro dentistas activos" });
+    }
+    res.status(200).json(allDentistas.rows);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Error 500" });
+    console.log(error);
   }
 };

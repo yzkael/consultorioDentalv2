@@ -4,6 +4,7 @@ import MainLayout from "./layouts/MainLayout";
 import Dashboard from "./pages/Dashboard";
 import CrearEmpleado from "./pages/CrearEmpleado";
 import CrearDentista from "./pages/CrearDentista";
+import ManejarDentistas from "./pages/ManejarDentistas";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -22,6 +23,14 @@ const AppRoutes = () => {
         element={
           <MainLayout>
             <CrearDentista />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/dashboard/empleados/"
+        element={
+          <MainLayout>
+            <ManejarDentistas />
           </MainLayout>
         }
       />

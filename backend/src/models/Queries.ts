@@ -11,3 +11,6 @@ export const crearPersonal =
 
 export const crearDentistas =
   "INSERT INTO Dentistas(id_dentista,especialidad) VALUES ($1,$2) RETURNING *";
+
+export const getAllDentistas =
+  "SELECT persona.nombre AS nombre,persona.ap_paterno AS apPaterno,persona.ap_materno AS apMaterno, personal.username AS username, especialidad.nombre AS especialidad FROM Personas persona JOIN Personal personal ON personal.id_personal = persona.id_persona JOIN Dentistas dentista ON dentista.id_dentista = personal.id_personal JOIN Especialidades especialidad ON especialidad.id_especialidad = dentista.especialidad WHERE personal.fecha_fin IS NULL";
