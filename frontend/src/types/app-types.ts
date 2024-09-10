@@ -13,6 +13,7 @@ export type CrearDentistaFormType = {
 };
 
 export type ManejarDentistasTabla = {
+  id_persona: string;
   nombre: string;
   appaterno: string;
   apmaterno: string;

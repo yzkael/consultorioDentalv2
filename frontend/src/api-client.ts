@@ -33,3 +33,19 @@ export const getAllDentistas = async (): Promise<ManejarDentistasTabla[]> => {
   const responseData = await response.json();
   return responseData;
 };
+
+export const deleteDentista = async (idDentista: string) => {
+  console.log(idDentista);
+  const response = await fetch(`${BASE_API_URL}/api/dentistas/${idDentista}`, {
+    method: "DELETE",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Error al eliminar dentista");
+  }
+  const responseData = await response.json();
+  return responseData;
+};

@@ -93,3 +93,38 @@ export const getAllDentistas = async (req: Request, res: Response) => {
     console.log(error);
   }
 };
+
+//La softDelete se maneja por medio de la inhabilitacion de la propiedad fecha_fin en la tabla personal
+export const softDeleteDentista = async (req: Request, res: Response) => {
+  console.log("Reached");
+  const id = Number(req.params.id);
+  const client: PoolClient = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    const yaExiste = await client.query(
+      "SELECT * FROM Personas WHERE id_persona = $1",
+      [id]
+    );
+    if (yaExiste.rows.length == 0) {
+      return res.status(404).json({ message: "Ese empleado no existe" });
+    }
+    const fechaActual = new Date().toLocaleDateString("en-CA");
+    const eliminarDentista = await client.query(
+      `UPDATE Personal SET fecha_fin = $1 WHERE id_personal = $2 RETURNING *`,
+      [fechaActual, id]
+    );
+    if (!eliminarDentista.rows.length) {
+      return res
+        .status(500)
+        .json({ message: "Something went wrong... Please try again later" });
+    }
+    res.status(200).json({ message: "Dentista eliminado con exito!" });
+    await client.query("COMMIT");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Error 500" });
+    await client.query("ROLLBACK");
+  } finally {
+    client.release();
+  }
+};
