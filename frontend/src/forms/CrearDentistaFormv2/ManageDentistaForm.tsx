@@ -9,7 +9,7 @@ type DentistaFormProps = {
   onSave: (dentistaFormData: CrearDentistaFormType) => void;
   isLoading: boolean;
 };
-
+//Its lit
 const ManageDentistaForm = ({ onSave, isLoading }: DentistaFormProps) => {
   const formMethods = useForm<CrearDentistaFormType>();
   const [paginaActual, setPaginaActual] = useState(0);
