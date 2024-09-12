@@ -10,6 +10,8 @@ import {
   updatePersona,
   updatePersonal,
   updateDentista,
+  getDentistaData,
+  checkActive,
 } from "../models/Queries";
 import bcrypt from "bcrypt";
 
@@ -175,5 +177,25 @@ export const updateDentistas = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal Server Error 500" });
   } finally {
     client.release(); //Deshace la conexion
+  }
+};
+
+export const getDentista = async (req: Request, res: Response) => {
+  const idDentista = req.params.id;
+  try {
+    const dentista = await pool.query(getDentistaData, [idDentista]);
+    if (dentista.rows.length == 0) {
+      return res.status(404).json({ message: "Dentista Not Found" });
+    }
+    const checkIfInactive = await pool.query(checkActive, [
+      dentista.rows[0].id_persona,
+    ]);
+    if (checkIfInactive.rows) {
+      return res.status(404).json({ message: "Dentista Not Active" });
+    }
+    res.status(200).json({ dentista: dentista.rows[0] });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error 500" });
   }
 };
