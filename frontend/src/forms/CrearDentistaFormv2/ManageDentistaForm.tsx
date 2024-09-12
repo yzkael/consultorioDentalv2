@@ -47,8 +47,8 @@ const ManageDentistaForm = ({ onSave, isLoading }: DentistaFormProps) => {
               {isLoading
                 ? "Loading..."
                 : paginaActual === 2
-                ? "Submit"
-                : "Next"}
+                  ? "Submit"
+                  : "Next"}
             </button>
           </div>
         </form>

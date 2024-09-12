@@ -1,5 +1,6 @@
 import {
   CrearDentistaFormType,
+  EditarDentistaFormType,
   ManejarDentistasTabla,
 } from "./types/app-types";
 
@@ -34,6 +35,7 @@ export const getAllDentistas = async (): Promise<ManejarDentistasTabla[]> => {
   return responseData;
 };
 
+//data Type reutilizado
 export const deleteDentista = async (idDentista: string) => {
   console.log(idDentista);
   const response = await fetch(`${BASE_API_URL}/api/dentistas/${idDentista}`, {
@@ -48,4 +50,22 @@ export const deleteDentista = async (idDentista: string) => {
   }
   const responseData = await response.json();
   return responseData;
+};
+
+export const updateDentista = async (
+  idDentista: string,
+  data: EditarDentistaFormType
+) => {
+  const response = await fetch(`${BASE_API_URL}/api/dentistas/${idDentista}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  if (response.ok) {
+    throw new Error("Something went wrong while updating");
+  }
+  const returnData = await response.json();
+  return returnData;
 };

@@ -7,6 +7,9 @@ import {
   crearPersonal,
   crearDentistas,
   getAllDentistas as getAllDentistasQuery,
+  updatePersona,
+  updatePersonal,
+  updateDentista,
 } from "../models/Queries";
 import bcrypt from "bcrypt";
 
@@ -96,7 +99,6 @@ export const getAllDentistas = async (req: Request, res: Response) => {
 
 //La softDelete se maneja por medio de la inhabilitacion de la propiedad fecha_fin en la tabla personal
 export const softDeleteDentista = async (req: Request, res: Response) => {
-  console.log("Reached");
   const id = Number(req.params.id);
   const client: PoolClient = await pool.connect();
   try {
@@ -126,5 +128,52 @@ export const softDeleteDentista = async (req: Request, res: Response) => {
     await client.query("ROLLBACK");
   } finally {
     client.release();
+  }
+};
+
+export const updateDentistas = async (req: Request, res: Response) => {
+  //Id del dentista
+  const idDentista = req.params.id;
+
+  const {
+    nombre,
+    apPaterno,
+    apMaterno,
+    correo,
+    carnet,
+    telefono,
+    fechaNacimiento,
+    especialidad, //Vendra Numero Codigo de Especialidad
+  } = req.body;
+  const client: PoolClient = await pool.connect(); //Crear la conexion para poder hacer transacciones
+  try {
+    await client.query("BEGIN"); //Inicia la transaccion
+    const existeDentista = await client.query("SELECT nombre FROM Personas");
+    if (existeDentista.rows.length == 0) {
+      return res.status(404).json({ message: "Ese usuario no existe!" });
+    }
+    const queryUpdatePersona = await client.query(updatePersona, [
+      nombre,
+      apPaterno,
+      apMaterno,
+      carnet,
+      correo,
+      telefono,
+      fechaNacimiento,
+      idDentista,
+    ]);
+
+    const queryUpdateDentista = await client.query(updateDentista, [
+      especialidad,
+      queryUpdatePersona.rows[0].id_persona,
+    ]);
+    await client.query("COMMIT"); //Termina la transaccion
+    res.status(200).json({ message: "Dentista Updated Succesfully!" });
+  } catch (error) {
+    console.log(error);
+    await client.query("ROLLBACK"); //Reinicia la transaccion y deshace los cambios
+    res.status(500).json({ message: "Internal Server Error 500" });
+  } finally {
+    client.release(); //Deshace la conexion
   }
 };

@@ -14,3 +14,12 @@ export const crearDentistas =
 
 export const getAllDentistas =
   "SELECT persona.id_persona,persona.nombre AS nombre,persona.ap_paterno AS apPaterno,persona.ap_materno AS apMaterno, personal.username AS username, especialidad.nombre AS especialidad FROM Personas persona JOIN Personal personal ON personal.id_personal = persona.id_persona JOIN Dentistas dentista ON dentista.id_dentista = personal.id_personal JOIN Especialidades especialidad ON especialidad.id_especialidad = dentista.especialidad WHERE personal.fecha_fin IS NULL ORDER BY fecha_crear DESC";
+
+export const updatePersona =
+  "UPDATE Personas SET nombre = $1 , ap_paterno = $2, ap_materno = $3, carnet = $4, correo = $5, telefono = $6, fecha_nacimiento = $7 WHERE id_persona = $8 RETURNING *";
+
+export const updatePersonal =
+  "UPDATE Personal SET username = $1 , password = $2 WHERE id_personal = $3 RETURNING *";
+
+export const updateDentista =
+  "UPDATE Dentistas SET especialidad = $1 WHERE id_dentista = $2 RETURNING *";
