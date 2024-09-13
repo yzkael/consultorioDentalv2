@@ -5,6 +5,8 @@ import Dashboard from "./pages/Dashboard";
 import CrearEmpleado from "./pages/CrearEmpleado";
 import CrearDentista from "./pages/CrearDentista";
 import ManejarDentistas from "./pages/ManejarDentistas";
+import EditarDentista from "./pages/EditarDentista";
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -34,6 +36,12 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
+      <Route path="/dentistas/editar-dentista/:idDentista"
+        element={
+          <MainLayout>
+            <EditarDentista />
+          </MainLayout>
+        } />
     </Routes>
   );
 };

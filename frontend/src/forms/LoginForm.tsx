@@ -2,7 +2,7 @@ import toothLogin from "../assets/tooth.png";
 
 const LoginForm = () => {
   return (
-    <form className="w-full h-full md:w-[20vw] md:h-[60vh] bg-slate-200 ml-0 md:mt-5 md:-ml-[10vw] rounded-lg py-8 px-8 flex flex-col gap-5 items-center font-belleza shadow-xl">
+    <form className="w-full h-full md:w-[20vw] md:h-[60vh] bg-slate-200 ml-0 md:mt-5 md:-ml-[10vw] rounded-lg py-8 px-8 flex flex-col gap-5 items-center font-belleza shadow-xl md:min-w-[25vw]">
       {/* img */}
       <div className="text-center flex flex-col items-center tracking-tight  font-semibold">
         <img src={toothLogin} className="h-[20vh] w-[20vw] md:h-12 md:w-12 " />

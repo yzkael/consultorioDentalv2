@@ -28,4 +28,4 @@ export const getDentistaData =
   "SELECT persona.nombre AS nombre, persona.ap_paterno AS apPaterno, persona.ap_materno AS apMaterno, persona.correo AS correo, persona.carnet AS carnet, persona.telefono AS telefono, persona.fecha_nacimiento AS fechaNacimiento, dentista.especialidad AS especialidad FROM Personas persona JOIN Dentistas dentista ON persona.id_persona = dentista.id_dentista WHERE persona.id_persona = $1";
 
 export const checkActive =
-  "SELECT fecha_fin FROM Personal WHERE id_personal = $1";
+  "SELECT username,fecha_fin FROM Personal WHERE id_personal = $1";

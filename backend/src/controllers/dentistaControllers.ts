@@ -187,10 +187,8 @@ export const getDentista = async (req: Request, res: Response) => {
     if (dentista.rows.length == 0) {
       return res.status(404).json({ message: "Dentista Not Found" });
     }
-    const checkIfInactive = await pool.query(checkActive, [
-      dentista.rows[0].id_persona,
-    ]);
-    if (checkIfInactive.rows) {
+    const checkIfInactive = await pool.query(checkActive, [idDentista]);
+    if (checkIfInactive.rows.length != 0) {
       return res.status(404).json({ message: "Dentista Not Active" });
     }
     res.status(200).json({ dentista: dentista.rows[0] });

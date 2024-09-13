@@ -52,6 +52,24 @@ export const deleteDentista = async (idDentista: string) => {
   return responseData;
 };
 
+export const getSingleDentista = async (
+  idDentista: string
+): Promise<EditarDentistaFormType> => {
+  const response = await fetch(`${BASE_API_URL}/api/dentistas/${idDentista}`, {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  console.log(await response.json());
+
+  if (!response.ok) {
+    throw new Error("Something went wrong while fetching dentista");
+  }
+  const returnData = await response.json();
+  return returnData;
+};
+
 export const updateDentista = async (
   idDentista: string,
   data: EditarDentistaFormType
@@ -63,9 +81,11 @@ export const updateDentista = async (
       "Content-type": "application/json",
     },
   });
-  if (response.ok) {
+
+  if (!response.ok) {
     throw new Error("Something went wrong while updating");
   }
+
   const returnData = await response.json();
   return returnData;
 };
