@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import { CrearDentistaFormType } from "./Example";
+import { CrearDentistaFormType } from "../../types/app-types";
 
 const InformacionDentista = () => {
   const {

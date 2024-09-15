@@ -16,6 +16,7 @@ import {
 import bcrypt from "bcrypt";
 
 export const createDentistas = async (req: Request, res: Response) => {
+  console.log(req.body);
   const {
     nombre,
     apPaterno,
@@ -46,7 +47,7 @@ export const createDentistas = async (req: Request, res: Response) => {
     if (username_exists) errores.push("Ese username ya esta siendo utilizado");
 
     if (errores.length > 0) {
-      return res.status(400).json({ erros: errores });
+      return res.status(400).json({ errors: errores });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -139,12 +140,12 @@ export const updateDentistas = async (req: Request, res: Response) => {
 
   const {
     nombre,
-    apPaterno,
-    apMaterno,
+    appaterno,
+    apmaterno,
     correo,
     carnet,
     telefono,
-    fechaNacimiento,
+    fechanacimiento,
     especialidad, //Vendra Numero Codigo de Especialidad
   } = req.body;
   const client: PoolClient = await pool.connect(); //Crear la conexion para poder hacer transacciones
@@ -156,12 +157,12 @@ export const updateDentistas = async (req: Request, res: Response) => {
     }
     const queryUpdatePersona = await client.query(updatePersona, [
       nombre,
-      apPaterno,
-      apMaterno,
+      appaterno,
+      apmaterno,
       carnet,
       correo,
       telefono,
-      fechaNacimiento,
+      fechanacimiento,
       idDentista,
     ]);
 
@@ -188,10 +189,11 @@ export const getDentista = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Dentista Not Found" });
     }
     const checkIfInactive = await pool.query(checkActive, [idDentista]);
-    if (checkIfInactive.rows.length != 0) {
+    if (checkIfInactive.rows[0].fecha_fin != null) {
       return res.status(404).json({ message: "Dentista Not Active" });
     }
-    res.status(200).json({ dentista: dentista.rows[0] });
+    //Al ser llevados directamente desde Postgress No distingue minusculas y mayusculas tomar en cuenta para trabajar con frontend
+    res.status(200).json(dentista.rows[0]);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error 500" });

@@ -6,18 +6,21 @@ import ManageEditarDentista from '../forms/EditarDentistaForm/ManageEditarDentis
 
 const EditarDentista = () => {
   const { idDentista } = useParams();
-  const { data: dentista, isLoading: fetching } = useQuery("fetchDentista", () => apiClient.getSingleDentista(idDentista as string));
-  // Use mutation with the correct object structure
+
+  const { data: dentista, isLoading: fetching } = useQuery(
+    ["fetchDentista", idDentista], // Include idDentista in the query key
+    () => apiClient.getSingleDentista(idDentista as string),
+    { retry: 0 }
+  );
+
   const { mutate, isLoading } = useMutation(
     ({ idDentista, data }: { idDentista: string; data: EditarDentistaFormType }) =>
       apiClient.updateDentista(idDentista, data),
     {
       onSuccess: () => {
-        // Handle success (e.g., navigate or show a success message)
         alert("Success");
       },
       onError: () => {
-        // Handle error
         alert("Error:");
       },
     }
@@ -25,9 +28,9 @@ const EditarDentista = () => {
 
   const onSave = (data: EditarDentistaFormType) => {
     if (idDentista) {
-      mutate({ idDentista, data }); // Pass both as an object
+      mutate({ idDentista, data });
     } else {
-      <Navigate to={'/'} /> //TODO: Improve Error Handler
+      <Navigate to={'/'} />; // TODO: Improve Error Handler
     }
   };
 

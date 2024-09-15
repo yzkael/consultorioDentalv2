@@ -7,6 +7,7 @@ import {
 const BASE_API_URL = import.meta.env.VITE_BASE_URL as string;
 
 export const crearDentista = async (data: CrearDentistaFormType) => {
+  console.log(data);
   const response = await fetch(`${BASE_API_URL}/api/dentistas/`, {
     method: "POST",
     body: JSON.stringify(data),
@@ -35,7 +36,6 @@ export const getAllDentistas = async (): Promise<ManejarDentistasTabla[]> => {
   return responseData;
 };
 
-//data Type reutilizado
 export const deleteDentista = async (idDentista: string) => {
   console.log(idDentista);
   const response = await fetch(`${BASE_API_URL}/api/dentistas/${idDentista}`, {
@@ -61,8 +61,6 @@ export const getSingleDentista = async (
       "Content-type": "application/json",
     },
   });
-  console.log(await response.json());
-
   if (!response.ok) {
     throw new Error("Something went wrong while fetching dentista");
   }
