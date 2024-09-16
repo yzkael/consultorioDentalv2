@@ -6,6 +6,7 @@ import CrearEmpleado from "./pages/CrearEmpleado";
 import CrearDentista from "./pages/CrearDentista";
 import ManejarDentistas from "./pages/ManejarDentistas";
 import EditarDentista from "./pages/EditarDentista";
+import TestPage from "./pages/TestPage";
 
 const AppRoutes = () => {
   return (
@@ -29,7 +30,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/dashboard/empleados/"
+        path="/dashboard/dentistas/"
         element={
           <MainLayout>
             <ManejarDentistas />
@@ -42,7 +43,12 @@ const AppRoutes = () => {
             <EditarDentista />
           </MainLayout>
         } />
+      <Route path="/test"
+        element={
+          <TestPage />
+        } />
     </Routes>
+
   );
 };
 

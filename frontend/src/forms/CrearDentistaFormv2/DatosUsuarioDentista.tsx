@@ -34,7 +34,7 @@ const DatosUsuarioDentista = () => {
         <input
           type="password"
           className="border border-blue-500 w-full py-1 px-2 font-normal"
-          {...register("password", { required: "Este campo es necesario" })}
+          {...register("password", { required: "Este campo es necesario", minLength: { value: 6, message: "La contrasenha debe ser de al menos 6 caracteres" } })}
         />
         {errors.password && (
           <div className="flex justify-center">

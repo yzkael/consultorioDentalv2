@@ -1,12 +1,13 @@
 import { useMutation, useQuery } from 'react-query';
 import * as apiClient from '../api-client';
 import { EditarDentistaFormType } from '../types/app-types';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import ManageEditarDentista from '../forms/EditarDentistaForm/ManageEditarDentista';
+
 
 const EditarDentista = () => {
   const { idDentista } = useParams();
-
+  const navigate = useNavigate();
   const { data: dentista, isLoading: fetching } = useQuery(
     ["fetchDentista", idDentista], // Include idDentista in the query key
     () => apiClient.getSingleDentista(idDentista as string),
@@ -19,6 +20,7 @@ const EditarDentista = () => {
     {
       onSuccess: () => {
         alert("Success");
+        navigate('/dashboard/dentistas/');
       },
       onError: () => {
         alert("Error:");

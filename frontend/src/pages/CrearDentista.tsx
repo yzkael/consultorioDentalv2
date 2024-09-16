@@ -9,12 +9,12 @@ const CrearEmpleado = () => {
     "crearDentista",
     apiClient.crearDentista,
     {
-      onError: () => {
-        alert("Something went wrong");
+      onError: (errors: Error) => {
+        alert(errors)
       },
       onSuccess: () => {
-        alert("Something went right!");
-        navigate("/dashboard/empleados/");
+        alert("Yay");
+        navigate("/dashboard/dentistas/");
       },
     }
   );

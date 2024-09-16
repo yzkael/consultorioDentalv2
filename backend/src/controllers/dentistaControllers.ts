@@ -14,9 +14,13 @@ import {
   checkActive,
 } from "../models/Queries";
 import bcrypt from "bcrypt";
+import { validationResult } from "express-validator";
 
 export const createDentistas = async (req: Request, res: Response) => {
-  console.log(req.body);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: errors.array() });
+  }
   const {
     nombre,
     apPaterno,
@@ -137,6 +141,11 @@ export const softDeleteDentista = async (req: Request, res: Response) => {
 export const updateDentistas = async (req: Request, res: Response) => {
   //Id del dentista
   const idDentista = req.params.id;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: errors.array() });
+  }
 
   const {
     nombre,
