@@ -33,7 +33,7 @@ const InformacionDentista2 = () => {
         <input
           type="text"
           className="border border-blue-500 w-full py-1 px-2 font-normal"
-          {...register("telefono", { required: "Este campo es necesario" })}
+          {...register("telefono", { required: "Este campo es necesario", maxLength: { value: 10, message: "Debe ser 10 caracteres como maximo" } })}
         />
         {errors.telefono && (
           <div className="flex justify-center">

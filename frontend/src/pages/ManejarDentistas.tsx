@@ -5,6 +5,7 @@ import { ColorRing } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import { FaUserEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
+import SearchBar from "../components/SearchBar";
 
 const ManejarDentistas = () => {
   //Logica del fetch (getDentistas)
@@ -40,12 +41,16 @@ const ManejarDentistas = () => {
       </div>
     );
   }
+  const handleSearch = () => {
+    console.log("handled")
+  }
 
   return (
-    <div className="flex flex-col h-screen md:gap-10 justify-center items-center">
+    <div className="flex flex-col h-screen  md:gap-10">
       <TitleMenus title="Adminsitrar Dentistas" />
-      <table className="w-full h-full md:w-[60vw] md:h-[80vh] bg-slate-600 border">
-        <thead className="border border-black max-h-2">
+      <SearchBar handleSearch={handleSearch}></SearchBar>
+      <table className="w-full h-full max-h-screen max-w-screen-sm  md:w-[60vw] mx-auto md:h-[80vh] bg-slate-600 border">
+        <thead className="border border-black max-h-2 max-w-screen-sm">
           <tr className="border border-black ">
             <th>Nombre:</th>
             <th>Apellido Paterno:</th>
@@ -56,10 +61,10 @@ const ManejarDentistas = () => {
             <th>Editar</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="overflow-scroll">
           {dentistas.map((dentista) => (
             <tr
-              className="min-h-5 hover:bg-slate-400"
+              className="h-[100px] hover:bg-slate-400"
               key={dentista.id_persona}
             >
               <td>{dentista.nombre}</td>

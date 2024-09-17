@@ -4,6 +4,7 @@ import {
   createDentistas,
   getAllDentistas,
   getDentista,
+  searchDentista,
   softDeleteDentista,
   updateDentistas,
 } from "../controllers/dentistaControllers";
@@ -70,5 +71,7 @@ router.put(
 );
 
 router.get("/:id", getDentista);
+
+router.post("/search", searchDentista);
 
 export default router;

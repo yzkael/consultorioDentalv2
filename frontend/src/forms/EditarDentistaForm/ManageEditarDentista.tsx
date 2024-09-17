@@ -33,7 +33,6 @@ const ManageEditarDentista = ({ onSave, isEditing, dentista, isFetching }: Manag
     const { reset, setValue, handleSubmit } = formMethods;
     const [paginaActual, setPaginaActual] = useState(0);
 
-    console.log(dentista, 1);
     useEffect(() => {
         if (dentista) {
             const formatedDate = new Date(dentista.fechanacimiento).toISOString().split('T')[0];
@@ -77,7 +76,7 @@ const ManageEditarDentista = ({ onSave, isEditing, dentista, isFetching }: Manag
     return (
         <div className="w-full h-full flex items-center justify-center">
             <FormProvider {...formMethods}>
-                <form className="w-[60vw] h-[60vh] bg-slate-400" onSubmit={onSubmit}>
+                <form className="w-full h-full bg-slate-400" onSubmit={onSubmit}>
                     {paginaActual === 0 && <Pagina1FormularioEditar />}
                     {paginaActual === 1 && <Pagina2FormularioEditarDentista />}
                     {paginaActual == 1 && <button onClick={() => setPaginaActual(paginaActual - 1)}>Back</button>}

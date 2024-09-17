@@ -37,7 +37,9 @@ const EditarDentista = () => {
   };
 
   return (
-    <ManageEditarDentista isEditing={isLoading} onSave={onSave} dentista={dentista} isFetching={fetching} />
+    <div className='w-full h-screen'>
+      <ManageEditarDentista isEditing={isLoading} onSave={onSave} dentista={dentista} isFetching={fetching} />
+    </div>
   );
 };
 

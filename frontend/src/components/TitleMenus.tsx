@@ -6,7 +6,7 @@ type TitleProps = {
 
 const TitleMenus = ({ title }: TitleProps) => {
   return (
-    <div className=" bg-slate-500 w-full h-full  flex justify-around items-center max-h-[10vh] md:-mt-10">
+    <div className=" bg-slate-500 w-full h-[15vh]  flex justify-around items-center max-h-[10vh]">
       <MenuButton />
       <div className="text-white font-bold tracking-tight text-3xl">
         {title}

@@ -8,10 +8,14 @@ import {
   crearDentistas,
   getAllDentistas as getAllDentistasQuery,
   updatePersona,
-  updatePersonal,
   updateDentista,
   getDentistaData,
   checkActive,
+  searchDentistasByName,
+  searchDentistasByApPaterno,
+  searchDentistasByApMaterno,
+  searchDentistasByUsername,
+  searchDentistasByEspecialidad,
 } from "../models/Queries";
 import bcrypt from "bcrypt";
 import { validationResult } from "express-validator";
@@ -206,5 +210,42 @@ export const getDentista = async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error 500" });
+  }
+};
+
+export const searchDentista = async (req: Request, res: Response) => {
+  const { searchValue, searchParams } = req.body;
+  const searchQuery = identificarSearch(searchParams);
+  try {
+    let searchedValues;
+    if (searchParams === "-buscar-") {
+      searchedValues = await pool.query(getAllDentistasQuery);
+    } else {
+      searchedValues = await pool.query(searchQuery, [searchValue]);
+    }
+    if (searchedValues.rows.length == 0) {
+      return res.status(404).json({ message: "No dentistas Found" });
+    }
+    res.status(200).json(searchedValues.rows);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error 500" });
+  }
+};
+
+const identificarSearch = (searchParametros: string) => {
+  switch (searchParametros) {
+    case "nombre":
+      return searchDentistasByName;
+    case "apPaterno":
+      return searchDentistasByApPaterno;
+    case "apMaterno":
+      return searchDentistasByApMaterno;
+    case "usuario":
+      return searchDentistasByUsername;
+    case "especialidad":
+      return searchDentistasByEspecialidad;
+    default:
+      return "Not found";
   }
 };

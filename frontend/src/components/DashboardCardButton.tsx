@@ -16,7 +16,7 @@ const DashboardCardButton: React.FC<DashboardCardButtonProps> = ({
 }) => {
   return (
     <Link
-      className="w-max h-max py-4 px-8 min-w-[320px] rounded-lg bg-blue-600 hover:bg-blue-500 flex flex-col justify-center items-center"
+      className="w-max h-max py-4 px-8 min-w-[320px] rounded-lg bg-blue-600 hover:bg-blue-500 flex flex-col justify-center items-center shadow-2xl border-black"
       to={link}
     >
       <Icon className="text-white w-6 h-6" />
