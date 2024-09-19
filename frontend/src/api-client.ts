@@ -1,6 +1,7 @@
 import {
   CrearDentistaFormType,
   EditarDentistaFormType,
+  ManejarDentistaSearch,
   ManejarDentistasTabla,
 } from "./types/app-types";
 
@@ -84,6 +85,23 @@ export const updateDentista = async (
     throw new Error("Something went wrong while updating");
   }
 
+  const returnData = await response.json();
+  return returnData;
+};
+
+export const searchDentista = async (
+  data: ManejarDentistaSearch
+): Promise<ManejarDentistasTabla[]> => {
+  const response = await fetch(`${BASE_API_URL}/api/dentistas/search`, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong");
+  }
   const returnData = await response.json();
   return returnData;
 };

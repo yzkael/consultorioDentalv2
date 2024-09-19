@@ -16,6 +16,7 @@ import {
   searchDentistasByApMaterno,
   searchDentistasByUsername,
   searchDentistasByEspecialidad,
+  searchDentistaInGeneral,
 } from "../models/Queries";
 import bcrypt from "bcrypt";
 import { validationResult } from "express-validator";
@@ -215,10 +216,12 @@ export const getDentista = async (req: Request, res: Response) => {
 
 export const searchDentista = async (req: Request, res: Response) => {
   const { searchValue, searchParams } = req.body;
+
+  console.log(req.body, 1);
   const searchQuery = identificarSearch(searchParams);
   try {
     let searchedValues;
-    if (searchParams === "-buscar-") {
+    if (searchParams === "-buscar-" && searchValue === "") {
       searchedValues = await pool.query(getAllDentistasQuery);
     } else {
       searchedValues = await pool.query(searchQuery, [searchValue]);
@@ -226,6 +229,7 @@ export const searchDentista = async (req: Request, res: Response) => {
     if (searchedValues.rows.length == 0) {
       return res.status(404).json({ message: "No dentistas Found" });
     }
+    console.log(searchedValues, 2);
     res.status(200).json(searchedValues.rows);
   } catch (error) {
     console.log(error);
@@ -235,6 +239,8 @@ export const searchDentista = async (req: Request, res: Response) => {
 
 const identificarSearch = (searchParametros: string) => {
   switch (searchParametros) {
+    case "-buscar-":
+      return searchDentistaInGeneral;
     case "nombre":
       return searchDentistasByName;
     case "apPaterno":

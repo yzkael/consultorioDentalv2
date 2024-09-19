@@ -31,3 +31,8 @@ export type ManejarDentistasTabla = {
   username: string;
   especialidad: string;
 };
+
+export type ManejarDentistaSearch = {
+  searchValue: string;
+  searchParams: string;
+};

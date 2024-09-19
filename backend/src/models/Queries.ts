@@ -30,17 +30,108 @@ export const getDentistaData =
 export const checkActive =
   "SELECT username,fecha_fin FROM Personal WHERE id_personal = $1";
 
-export const searchDentistasByName =
-  "SELECT persona.id_persona,persona.nombre AS nombre,persona.ap_paterno AS apPaterno,persona.ap_materno AS apMaterno, personal.username AS username, especialidad.nombre AS especialidad FROM Personas persona JOIN Personal personal ON personal.id_personal = persona.id_persona JOIN Dentistas dentista ON dentista.id_dentista = personal.id_personal JOIN Especialidades especialidad ON especialidad.id_especialidad = dentista.especialidad WHERE personal.fecha_fin IS NULL AND persona.nombre ILIKE $1 ORDER BY fecha_crear DESC";
+export const searchDentistasByName = `
+  SELECT 
+    persona.id_persona,
+    persona.nombre AS nombre,
+    persona.ap_paterno AS apPaterno,
+    persona.ap_materno AS apMaterno,
+    personal.username AS username,
+    especialidad.nombre AS especialidad
+  FROM Personas persona
+  JOIN Personal personal ON personal.id_personal = persona.id_persona
+  JOIN Dentistas dentista ON dentista.id_dentista = personal.id_personal
+  JOIN Especialidades especialidad ON especialidad.id_especialidad = dentista.especialidad
+  WHERE personal.fecha_fin IS NULL 
+    AND persona.nombre ILIKE '%' || $1 || '%' 
+  ORDER BY fecha_crear DESC;
+`;
+export const searchDentistasByApPaterno = `
+  SELECT 
+    persona.id_persona,
+    persona.nombre AS nombre,
+    persona.ap_paterno AS apPaterno,
+    persona.ap_materno AS apMaterno,
+    personal.username AS username,
+    especialidad.nombre AS especialidad
+  FROM Personas persona
+  JOIN Personal personal ON personal.id_personal = persona.id_persona
+  JOIN Dentistas dentista ON dentista.id_dentista = personal.id_personal
+  JOIN Especialidades especialidad ON especialidad.id_especialidad = dentista.especialidad
+  WHERE personal.fecha_fin IS NULL 
+    AND persona.ap_paterno ILIKE '%' || $1 || '%' 
+  ORDER BY fecha_crear DESC;
+`;
 
-export const searchDentistasByApPaterno =
-  "SELECT persona.id_persona,persona.nombre AS nombre,persona.ap_paterno AS apPaterno,persona.ap_materno AS apMaterno, personal.username AS username, especialidad.nombre AS especialidad FROM Personas persona JOIN Personal personal ON personal.id_personal = persona.id_persona JOIN Dentistas dentista ON dentista.id_dentista = personal.id_personal JOIN Especialidades especialidad ON especialidad.id_especialidad = dentista.especialidad WHERE personal.fecha_fin IS NULL AND persona.ap_paterno ILIKE $1 ORDER BY fecha_crear DESC";
+export const searchDentistasByApMaterno = `
+  SELECT 
+    persona.id_persona,
+    persona.nombre AS nombre,
+    persona.ap_paterno AS apPaterno,
+    persona.ap_materno AS apMaterno,
+    personal.username AS username,
+    especialidad.nombre AS especialidad
+  FROM Personas persona
+  JOIN Personal personal ON personal.id_personal = persona.id_persona
+  JOIN Dentistas dentista ON dentista.id_dentista = personal.id_personal
+  JOIN Especialidades especialidad ON especialidad.id_especialidad = dentista.especialidad
+  WHERE personal.fecha_fin IS NULL 
+    AND persona.ap_materno ILIKE '%' || $1 || '%' 
+  ORDER BY fecha_crear DESC;
+`;
+export const searchDentistasByUsername = `
+  SELECT 
+    persona.id_persona,
+    persona.nombre AS nombre,
+    persona.ap_paterno AS apPaterno,
+    persona.ap_materno AS apMaterno,
+    personal.username AS username,
+    especialidad.nombre AS especialidad
+  FROM Personas persona
+  JOIN Personal personal ON personal.id_personal = persona.id_persona
+  JOIN Dentistas dentista ON dentista.id_dentista = personal.id_personal
+  JOIN Especialidades especialidad ON especialidad.id_especialidad = dentista.especialidad
+  WHERE personal.fecha_fin IS NULL 
+    AND personal.username ILIKE '%' || $1 || '%' 
+  ORDER BY fecha_crear DESC;
+`;
 
-export const searchDentistasByApMaterno =
-  "SELECT persona.id_persona,persona.nombre AS nombre,persona.ap_paterno AS apPaterno,persona.ap_materno AS apMaterno, personal.username AS username, especialidad.nombre AS especialidad FROM Personas persona JOIN Personal personal ON personal.id_personal = persona.id_persona JOIN Dentistas dentista ON dentista.id_dentista = personal.id_personal JOIN Especialidades especialidad ON especialidad.id_especialidad = dentista.especialidad WHERE personal.fecha_fin IS NULL AND persona.ap_materno ILIKE $1 ORDER BY fecha_crear DESC";
+export const searchDentistasByEspecialidad = `
+  SELECT 
+    persona.id_persona,
+    persona.nombre AS nombre,
+    persona.ap_paterno AS apPaterno,
+    persona.ap_materno AS apMaterno,
+    personal.username AS username,
+    especialidad.nombre AS especialidad
+  FROM Personas persona
+  JOIN Personal personal ON personal.id_personal = persona.id_persona
+  JOIN Dentistas dentista ON dentista.id_dentista = personal.id_personal
+  JOIN Especialidades especialidad ON especialidad.id_especialidad = dentista.especialidad
+  WHERE personal.fecha_fin IS NULL 
+    AND especialidad.nombre ILIKE '%' || $1 || '%' 
+  ORDER BY fecha_crear DESC;
+`;
 
-export const searchDentistasByUsername =
-  "SELECT persona.id_persona,persona.nombre AS nombre,persona.ap_paterno AS apPaterno,persona.ap_materno AS apMaterno, personal.username AS username, especialidad.nombre AS especialidad FROM Personas persona JOIN Personal personal ON personal.id_personal = persona.id_persona JOIN Dentistas dentista ON dentista.id_dentista = personal.id_personal JOIN Especialidades especialidad ON especialidad.id_especialidad = dentista.especialidad WHERE personal.fecha_fin IS NULL AND personal.username ILIKE $1 ORDER BY fecha_crear DESC";
-
-export const searchDentistasByEspecialidad =
-  "SELECT persona.id_persona,persona.nombre AS nombre,persona.ap_paterno AS apPaterno,persona.ap_materno AS apMaterno, personal.username AS username, especialidad.nombre AS especialidad FROM Personas persona JOIN Personal personal ON personal.id_personal = persona.id_persona JOIN Dentistas dentista ON dentista.id_dentista = personal.id_personal JOIN Especialidades especialidad ON especialidad.id_especialidad = dentista.especialidad WHERE personal.fecha_fin IS NULL AND especialidad.nombre ILIKE $1 ORDER BY fecha_crear DESC";
+export const searchDentistaInGeneral = `
+  SELECT 
+    persona.id_persona,
+    persona.nombre AS nombre,
+    persona.ap_paterno AS apPaterno,
+    persona.ap_materno AS apMaterno,
+    personal.username AS username,
+    especialidad.nombre AS especialidad
+  FROM Personas persona
+  JOIN Personal personal ON personal.id_personal = persona.id_persona
+  JOIN Dentistas dentista ON dentista.id_dentista = personal.id_personal
+  JOIN Especialidades especialidad ON especialidad.id_especialidad = dentista.especialidad
+  WHERE personal.fecha_fin IS NULL 
+    AND (
+      persona.nombre ILIKE '%' || $1 || '%' OR
+      persona.ap_paterno ILIKE '%' || $1 || '%' OR
+      persona.ap_materno ILIKE '%' || $1 || '%' OR
+      personal.username ILIKE '%' || $1 || '%' OR
+      especialidad.nombre ILIKE '%' || $1 || '%'
+    )
+  ORDER BY fecha_crear DESC;
+`;

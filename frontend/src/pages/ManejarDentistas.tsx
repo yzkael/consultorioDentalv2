@@ -6,13 +6,26 @@ import { Link } from "react-router-dom";
 import { FaUserEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import SearchBar from "../components/SearchBar";
+import { ManejarDentistaSearch } from "../types/app-types";
+import { useState } from "react";
+
 
 const ManejarDentistas = () => {
+  //Valores de busqueda
+  const [searchValues, setSearchValues] = useState<ManejarDentistaSearch>({ searchValue: "", searchParams: "" })
+
+
   //Logica del fetch (getDentistas)
   const { data: dentistas, isLoading } = useQuery(
-    "allDentistas",
-    apiClient.getAllDentistas
+    ["searchDentistas", searchValues],
+    () => apiClient.searchDentista(searchValues), {
+    enabled: !!searchValues,
+    retry: 1,
+    refetchOnWindowFocus: false
+  }
   );
+
+
   //Logica de Delete
   const { mutate } = useMutation(apiClient.deleteDentista, {
     onSuccess: () => {
@@ -26,7 +39,7 @@ const ManejarDentistas = () => {
     mutate(idDentista);
   };
 
-  if (isLoading || !dentistas) {
+  if (isLoading) {
     return (
       <div className="w-[100vw] h-screen flex justify-center items-center">
         <ColorRing
@@ -41,59 +54,67 @@ const ManejarDentistas = () => {
       </div>
     );
   }
-  const handleSearch = () => {
-    console.log("handled")
+  const handleSearch = (data: ManejarDentistaSearch) => {
+    setSearchValues(data);
   }
 
   return (
-    <div className="flex flex-col h-screen  md:gap-10">
-      <TitleMenus title="Adminsitrar Dentistas" />
-      <SearchBar handleSearch={handleSearch}></SearchBar>
-      <table className="w-full h-full max-h-screen max-w-screen-sm  md:w-[60vw] mx-auto md:h-[80vh] bg-slate-600 border">
-        <thead className="border border-black max-h-2 max-w-screen-sm">
-          <tr className="border border-black ">
-            <th>Nombre:</th>
-            <th>Apellido Paterno:</th>
-            <th>Apellido Materno:</th>
-            <th>Usuario:</th>
-            <th>Especialidad</th>
-            <th>Eliminar</th>
-            <th>Editar</th>
-          </tr>
-        </thead>
-        <tbody className="overflow-scroll">
-          {dentistas.map((dentista) => (
-            <tr
-              className="h-[100px] hover:bg-slate-400"
-              key={dentista.id_persona}
-            >
-              <td>{dentista.nombre}</td>
-              <td>{dentista.appaterno}</td>
-              <td>{dentista.apmaterno}</td>
-              <td>{dentista.username}</td>
-              <td>{dentista.especialidad}</td>
-              <td>
-                <Link to={`/dentistas/editar-dentista/${dentista.id_persona}`}>
-                  <FaUserEdit
-                    color="white"
-                    className="hover:fill-slate-600 hover:scale-110 transition-transform duration-200 "
-                    size={20}
-                  />
-                </Link>
-              </td>
-              <td>
-                <button onClick={() => handleClick(dentista.id_persona)}>
-                  <MdDeleteForever
-                    color="white"
-                    className="hover:fill-slate-600 hover:scale-110 transition-transform duration-200 "
-                    size={20}
-                  />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="flex flex-col h-screen">
+      <TitleMenus title="Administrar Dentistas" />
+      <div className="flex-grow flex flex-col items-center overflow-hidden p-4">
+        <SearchBar handleSearch={handleSearch} />
+        <div className="w-full max-w-4xl bg-white shadow-md rounded-lg overflow-hidden">
+          <div className="overflow-x-auto">
+            <div className="inline-block min-w-full align-middle">
+              <table className="min-w-full">
+                <thead className="bg-slate-600 text-white">
+                  <tr>
+                    <th className="px-4 py-2 whitespace-nowrap">Nombre</th>
+                    <th className="px-4 py-2 whitespace-nowrap">Apellido Paterno</th>
+                    <th className="px-4 py-2 whitespace-nowrap">Apellido Materno</th>
+                    <th className="px-4 py-2 whitespace-nowrap">Usuario</th>
+                    <th className="px-4 py-2 whitespace-nowrap">Especialidad</th>
+                    <th className="px-4 py-2 whitespace-nowrap">Editar</th>
+                    <th className="px-4 py-2 whitespace-nowrap">Eliminar</th>
+                  </tr>
+                </thead>
+                {dentistas &&
+                  <tbody className="bg-white">
+                    {dentistas.map((dentista) => (
+                      <tr
+                        key={dentista.id_persona}
+                        className="border-b hover:bg-slate-100 transition-colors duration-200"
+                      >
+                        <td className="px-4 py-2 whitespace-nowrap">{dentista.nombre}</td>
+                        <td className="px-4 py-2 whitespace-nowrap">{dentista.appaterno}</td>
+                        <td className="px-4 py-2 whitespace-nowrap">{dentista.apmaterno}</td>
+                        <td className="px-4 py-2 whitespace-nowrap">{dentista.username}</td>
+                        <td className="px-4 py-2 whitespace-nowrap">{dentista.especialidad}</td>
+                        <td className="px-4 py-2 whitespace-nowrap">
+                          <Link to={`/dentistas/editar-dentista/${dentista.id_persona}`}>
+                            <FaUserEdit
+                              className="text-slate-600 hover:text-slate-800 hover:scale-110 transition-colors duration-200"
+                              size={20}
+                            />
+                          </Link>
+                        </td>
+                        <td className="px-4 py-2 whitespace-nowrap">
+                          <button onClick={() => handleClick(dentista.id_persona)}>
+                            <MdDeleteForever
+                              className="text-slate-600 hover:text-slate-800 transition-colors hover:scale-110 duration-200"
+                              size={20}
+                            />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                }
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
