@@ -1,11 +1,29 @@
 import { useFormContext } from "react-hook-form";
 import { CrearDentistaFormType } from "../../types/app-types";
+import { useState } from "react";
+import { useQuery } from "react-query";
+import * as apiClient from '../../api-client'
+
 
 const InformacionDentista = () => {
+  const [carnetValue, setCarnetValue] = useState('');
+  // const [esDuplicado, setEsDuplicado] = useState(false); Posible solucion
   const {
     register,
     formState: { errors },
   } = useFormContext<CrearDentistaFormType>();
+
+
+  //Devolvera un valor booleano que dira si es o no unico en la base de datos
+  const { data } = useQuery(["checkCarnet", carnetValue], () => apiClient.checkCarnet(carnetValue), {
+    enabled: !!carnetValue
+  });
+
+  //Reaccionara al e.target.value onChange
+  const handleChange = (value: string) => {
+    // setEsDuplicado(false); Posible Solucion
+    setCarnetValue(value);
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -64,7 +82,7 @@ const InformacionDentista = () => {
         <input
           type="text"
           className="border border-blue-500 w-full py-1 px-2 font-normal"
-          {...register("carnet", { required: "Este campo es necesario" })}
+          {...register("carnet", { required: "Este campo es necesario", onChange: e => handleChange(e.target.value) })}
         />
         {errors.carnet && (
           <div className="flex justify-center">
@@ -73,6 +91,7 @@ const InformacionDentista = () => {
             </span>
           </div>
         )}
+        {!data && carnetValue != "" && <span className="text-sm text-red-500 font-semibold">Ese carnet ya ha sido registrado!</span>}
       </label>
     </div>
   );

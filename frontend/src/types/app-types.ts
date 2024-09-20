@@ -36,3 +36,8 @@ export type ManejarDentistaSearch = {
   searchValue: string;
   searchParams: string;
 };
+
+//Utilizado para revisar si ya existen los datos unique
+export type RevisarDato = {
+  result: boolean;
+};

@@ -3,6 +3,7 @@ import {
   EditarDentistaFormType,
   ManejarDentistaSearch,
   ManejarDentistasTabla,
+  RevisarDato,
 } from "./types/app-types";
 
 const BASE_API_URL = import.meta.env.VITE_BASE_URL as string;
@@ -99,6 +100,23 @@ export const searchDentista = async (
       "Content-type": "application/json",
     },
   });
+  if (!response.ok) {
+    throw new Error("Something went wrong");
+  }
+  const returnData = await response.json();
+  return returnData;
+};
+
+export const checkCarnet = async (carnet: string): Promise<RevisarDato> => {
+  console.log(carnet);
+  const response = await fetch(`${BASE_API_URL}/api/auth/check-carnet`, {
+    method: "POST",
+    body: JSON.stringify({ carnet }),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+
   if (!response.ok) {
     throw new Error("Something went wrong");
   }
