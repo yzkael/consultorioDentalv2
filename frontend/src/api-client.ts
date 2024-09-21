@@ -108,7 +108,6 @@ export const searchDentista = async (
 };
 
 export const checkCarnet = async (carnet: string): Promise<RevisarDato> => {
-  console.log(carnet);
   const response = await fetch(`${BASE_API_URL}/api/auth/check-carnet`, {
     method: "POST",
     body: JSON.stringify({ carnet }),
@@ -117,6 +116,22 @@ export const checkCarnet = async (carnet: string): Promise<RevisarDato> => {
     },
   });
 
+  if (!response.ok) {
+    throw new Error("Something went wrong");
+  }
+  const returnData = await response.json();
+  return returnData;
+};
+
+export const checkCorreo = async (correo: string): Promise<RevisarDato> => {
+  console.log(correo);
+  const response = await fetch(`${BASE_API_URL}/api/auth/check-correo`, {
+    method: "POST",
+    body: JSON.stringify({ correo }),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
   if (!response.ok) {
     throw new Error("Something went wrong");
   }

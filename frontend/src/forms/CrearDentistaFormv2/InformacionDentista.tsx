@@ -5,12 +5,14 @@ import { useQuery } from "react-query";
 import * as apiClient from '../../api-client'
 
 
+
+
 const InformacionDentista = () => {
   const [carnetValue, setCarnetValue] = useState('');
-  // const [esDuplicado, setEsDuplicado] = useState(false); Posible solucion
   const {
     register,
     formState: { errors },
+
   } = useFormContext<CrearDentistaFormType>();
 
 
@@ -21,9 +23,11 @@ const InformacionDentista = () => {
 
   //Reaccionara al e.target.value onChange
   const handleChange = (value: string) => {
-    // setEsDuplicado(false); Posible Solucion
     setCarnetValue(value);
   }
+
+
+
 
   return (
     <div className="flex flex-col gap-4">
@@ -91,8 +95,15 @@ const InformacionDentista = () => {
             </span>
           </div>
         )}
-        {!data && carnetValue != "" && <span className="text-sm text-red-500 font-semibold">Ese carnet ya ha sido registrado!</span>}
+        {!data && carnetValue != "" &&
+          <div className="flex justify-center">
+            <span className="text-sm text-red-600">Ese carnet ya ha sido registrado!</span>
+          </div>}
       </label>
+      {/* Deteca Solito que es un boton y que le dara Next*/}
+      <button className="py-2 px-4 bg-slate-700 rounded-lg w-[5rem] flex justify-center items-center hover:bg-slate-500 text-white font-semibold cursor-pointer" disabled={!data && carnetValue != ""}>
+        Next
+      </button>
     </div>
   );
 };

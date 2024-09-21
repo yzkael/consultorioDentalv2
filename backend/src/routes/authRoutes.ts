@@ -1,8 +1,10 @@
 import express from "express";
-import { checkCarnet } from "../controllers/authControllers";
+import { checkCarnet, checkCorreo } from "../controllers/authControllers";
 
 const router = express.Router();
 
 router.post("/check-carnet", checkCarnet);
+
+router.post("/check-correo", checkCorreo);
 
 export default router;

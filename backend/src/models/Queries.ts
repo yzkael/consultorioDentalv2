@@ -135,3 +135,15 @@ export const searchDentistaInGeneral = `
     )
   ORDER BY fecha_crear DESC;
 `;
+
+export const revisarCarnet = `SELECT p.carnet 
+FROM Personas p 
+JOIN Personal pers 
+ON p.id_persona = pers.id_personal 
+WHERE p.carnet = $1 AND pers.fecha_fin IS NULL;`;
+
+export const revisarCorreo = ` SELECT p.correo
+FROM Personas p
+JOIN Personal pers
+ON p.id_persona = pers.id_personal
+WHERE p.correo = $1 AND pers.fecha_fin IS NULL`;

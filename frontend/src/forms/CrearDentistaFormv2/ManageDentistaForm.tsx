@@ -14,6 +14,18 @@ const ManageDentistaForm = ({ onSave, isLoading }: DentistaFormProps) => {
   const formMethods = useForm<CrearDentistaFormType>();
   const [paginaActual, setPaginaActual] = useState(0);
   const { handleSubmit } = formMethods;
+
+
+  // ------ POSIBLE SOLUCION-----------
+  const handleNext = () => {
+    console.log(paginaActual);
+    setPaginaActual(paginaActual + 1)
+  }
+
+
+  // -----------------------------------
+
+
   const onSubmit = handleSubmit((data: CrearDentistaFormType) => {
     if (paginaActual != 2) {
       setPaginaActual(paginaActual + 1);
@@ -39,7 +51,7 @@ const ManageDentistaForm = ({ onSave, isLoading }: DentistaFormProps) => {
                 Back
               </button>
             )}
-            <button
+            {/* <button
               type="submit"
               className="py-4 px-2 bg-slate-500 disabled:bg-slate-800"
               disabled={isLoading}
@@ -49,7 +61,7 @@ const ManageDentistaForm = ({ onSave, isLoading }: DentistaFormProps) => {
                 : paginaActual === 2
                   ? "Submit"
                   : "Next"}
-            </button>
+            </button> */}
           </div>
         </form>
       </FormProvider>

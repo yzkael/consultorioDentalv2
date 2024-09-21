@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import pool from "../models/DBconnection";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { revisarCarnet, revisarCorreo } from "../models/Queries";
 
 //TODO: Terminar de implementar el JWT
 export const signUp = async (req: Request, res: Response) => {
@@ -50,19 +51,29 @@ export const signUp = async (req: Request, res: Response) => {
 
 export const checkCarnet = async (req: Request, res: Response) => {
   const { carnet } = req.body;
-  console.log(carnet);
   try {
-    const yaExiste = await pool.query(
-      "SELECT * FROM Personas WHERE carnet = $1",
-      [carnet]
-    );
+    const yaExiste = await pool.query(revisarCarnet, [carnet]);
     if (yaExiste.rows.length != 0) {
-      console.log("It checked");
       return res.status(400).json({ result: "ya existe" });
     }
     return res.status(200).json({ message: "disponible" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ result: "Internal Server Error 500" });
+  }
+};
+
+export const checkCorreo = async (req: Request, res: Response) => {
+  const { correo } = req.body;
+  try {
+    const yaExiste = await pool.query(revisarCorreo, [correo]);
+    if (yaExiste.rows.length != 0) {
+      return res.status(400).json({ message: "Ese correo ya existe" });
+    }
+
+    res.status(200).json({ message: "Correo valido" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error 500" });
   }
 };
