@@ -17,9 +17,9 @@ const ManageDentistaForm = ({ onSave, isLoading }: DentistaFormProps) => {
 
 
   // ------ POSIBLE SOLUCION-----------
-  const handleNext = () => {
+  const handleBack = () => {
     console.log(paginaActual);
-    setPaginaActual(paginaActual + 1)
+    setPaginaActual((prev) => prev - 1);
   }
 
 
@@ -38,11 +38,11 @@ const ManageDentistaForm = ({ onSave, isLoading }: DentistaFormProps) => {
       <FormProvider {...formMethods}>
         <form className="w-[60vw] h-[60vh] bg-slate-400" onSubmit={onSubmit}>
           {paginaActual == 0 && <InformacionDentista />}
-          {paginaActual == 1 && <InformacionDentista2 />}
-          {paginaActual == 2 && <DatosUsuarioDentista />}
-          <div className="flex gap-4">
-            {/* Navigation buttons */}
-            {paginaActual > 0 && (
+          {paginaActual == 1 && <InformacionDentista2 handleBack={handleBack} />}
+          {paginaActual == 2 && <DatosUsuarioDentista handleBack={handleBack} />}
+          {/* <div className="flex gap-4"> */}
+          {/* Navigation buttons */}
+          {/* {paginaActual > 0 && (
               <button
                 type="button"
                 onClick={() => setPaginaActual(paginaActual - 1)}
@@ -51,7 +51,7 @@ const ManageDentistaForm = ({ onSave, isLoading }: DentistaFormProps) => {
                 Back
               </button>
             )}
-            {/* <button
+            <button
               type="submit"
               className="py-4 px-2 bg-slate-500 disabled:bg-slate-800"
               disabled={isLoading}
@@ -61,8 +61,8 @@ const ManageDentistaForm = ({ onSave, isLoading }: DentistaFormProps) => {
                 : paginaActual === 2
                   ? "Submit"
                   : "Next"}
-            </button> */}
-          </div>
+            </button>
+          </div> */}
         </form>
       </FormProvider>
     </div>

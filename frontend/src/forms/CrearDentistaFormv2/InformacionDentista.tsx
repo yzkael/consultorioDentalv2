@@ -1,27 +1,40 @@
 import { useFormContext } from "react-hook-form";
 import { CrearDentistaFormType } from "../../types/app-types";
-import { useState } from "react";
-import { useQuery } from "react-query";
+import { useEffect, useState } from "react";
+import { isError, useQuery } from "react-query";
 import * as apiClient from '../../api-client'
 
 
 
 
 const InformacionDentista = () => {
-  const [carnetValue, setCarnetValue] = useState('');
+  const [carnetValue, setCarnetValue] = useState("");
+  // const [carnetDebouncer, setCarnetDebouncer] = useState("");
   const {
     register,
     formState: { errors },
 
   } = useFormContext<CrearDentistaFormType>();
 
+  //Debouncer Proposito: No dejar que el query sea fetcheado constantemente sino despues de un tiempo determinado
+
+  // useEffect(() => {
+  //   const handler = setTimeout(() => {
+  //     setCarnetDebouncer(carnetValue);
+  //   }, 1000);
+  //   return () => clearTimeout(handler)
+  // }, [carnetValue])
+
 
   //Devolvera un valor booleano que dira si es o no unico en la base de datos
-  const { data } = useQuery(["checkCarnet", carnetValue], () => apiClient.checkCarnet(carnetValue), {
-    enabled: !!carnetValue
+  const { data, isError: errorCarnet } = useQuery(["checkCarnet", carnetValue], () => apiClient.checkCarnet(carnetValue), {
+    enabled: !!carnetValue,
+    retry: false
   });
 
+
   //Reaccionara al e.target.value onChange
+
   const handleChange = (value: string) => {
     setCarnetValue(value);
   }
@@ -95,13 +108,13 @@ const InformacionDentista = () => {
             </span>
           </div>
         )}
-        {!data && carnetValue != "" &&
+        {errorCarnet && carnetValue != "" &&
           <div className="flex justify-center">
             <span className="text-sm text-red-600">Ese carnet ya ha sido registrado!</span>
           </div>}
       </label>
       {/* Deteca Solito que es un boton y que le dara Next*/}
-      <button className="py-2 px-4 bg-slate-700 rounded-lg w-[5rem] flex justify-center items-center hover:bg-slate-500 text-white font-semibold cursor-pointer" disabled={!data && carnetValue != ""}>
+      <button className="py-2 px-4 bg-slate-700 rounded-lg w-[5rem] flex justify-center items-center hover:bg-slate-500 text-white font-semibold cursor-pointer" disabled={errorCarnet && carnetValue != ""}>
         Next
       </button>
     </div>

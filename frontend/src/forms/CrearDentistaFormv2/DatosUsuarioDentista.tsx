@@ -1,8 +1,23 @@
 import { useFormContext } from "react-hook-form";
 import { CrearDentistaFormType } from "../../types/app-types";
 import { especialidadesOptions } from "../../config/config-files";
+import { useState } from "react";
+import { useQuery } from "react-query";
+import * as apiClient from '../../api-client'
+type DatosUsuarioDentistaProps = {
+  handleBack: () => void;
 
-const DatosUsuarioDentista = () => {
+}
+
+
+
+const DatosUsuarioDentista = ({ handleBack }: DatosUsuarioDentistaProps) => {
+
+  const [usernameData, setUsernameData] = useState("");
+  const { data: usernameResult } = useQuery(["checkUsername", usernameData], () => apiClient.checkUsername(usernameData), {
+    enabled: !!usernameData
+  })
+  console.log(usernameResult, 2);
   const {
     register,
     formState: { errors },
@@ -18,7 +33,8 @@ const DatosUsuarioDentista = () => {
         <input
           type="text"
           className="border border-blue-500 w-full py-1 px-2 font-normal"
-          {...register("username", { required: "Este campo es necesario" })}
+          {...register("username", { required: "Este campo es necesario", onChange: (e) => setUsernameData(e.target.value) })}
+
         />
         {errors.username && (
           <div className="flex justify-center">
@@ -27,6 +43,7 @@ const DatosUsuarioDentista = () => {
             </span>
           </div>
         )}
+        {!usernameResult && usernameData != "" && <span className="text-sm text-red-600">Ese username ya esta siendo utilizado!</span>}
       </label>
 
       <label className="text-gray-700 text-sm font-bold flex-1 mx-10 ">
@@ -78,6 +95,17 @@ const DatosUsuarioDentista = () => {
           ))}
         </select>
       </label>
+      <div className="flex justify-between w-[80%] mx-auto">
+        <button
+          type="button"
+          onClick={() => handleBack()}
+          className="py-2 px-4 bg-slate-700 rounded-lg w-[5rem] flex justify-center items-center hover:bg-slate-500 text-white font-semibold cursor-pointer disabled:bg-slate-900 disabled:text-red-600"
+        >
+          Back
+        </button>
+
+      </div>
+
     </div>
   );
 };

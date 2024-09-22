@@ -147,3 +147,5 @@ FROM Personas p
 JOIN Personal pers
 ON p.id_persona = pers.id_personal
 WHERE p.correo = $1 AND pers.fecha_fin IS NULL`;
+
+export const revisarUsername = `SELECT username FROM Personal WHERE username = $1 AND fecha_fin IS NULL`;

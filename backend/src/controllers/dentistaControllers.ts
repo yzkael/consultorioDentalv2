@@ -216,8 +216,6 @@ export const getDentista = async (req: Request, res: Response) => {
 
 export const searchDentista = async (req: Request, res: Response) => {
   const { searchValue, searchParams } = req.body;
-
-  console.log(req.body, 1);
   const searchQuery = identificarSearch(searchParams);
   try {
     let searchedValues;
@@ -229,7 +227,6 @@ export const searchDentista = async (req: Request, res: Response) => {
     if (searchedValues.rows.length == 0) {
       return res.status(404).json({ message: "No dentistas Found" });
     }
-    console.log(searchedValues, 2);
     res.status(200).json(searchedValues.rows);
   } catch (error) {
     console.log(error);

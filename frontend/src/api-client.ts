@@ -93,6 +93,8 @@ export const updateDentista = async (
 export const searchDentista = async (
   data: ManejarDentistaSearch
 ): Promise<ManejarDentistasTabla[]> => {
+  if (data.searchParams == null || data.searchParams == "")
+    throw new Error("No search Params");
   const response = await fetch(`${BASE_API_URL}/api/dentistas/search`, {
     method: "POST",
     body: JSON.stringify(data),
@@ -124,10 +126,25 @@ export const checkCarnet = async (carnet: string): Promise<RevisarDato> => {
 };
 
 export const checkCorreo = async (correo: string): Promise<RevisarDato> => {
-  console.log(correo);
   const response = await fetch(`${BASE_API_URL}/api/auth/check-correo`, {
     method: "POST",
     body: JSON.stringify({ correo }),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong");
+  }
+  const returnData = await response.json();
+  return returnData;
+};
+
+export const checkUsername = async (username: string): Promise<RevisarDato> => {
+  console.log(username);
+  const response = await fetch(`${BASE_API_URL}/api/auth/check-username`, {
+    method: "POST",
+    body: JSON.stringify({ username }),
     headers: {
       "Content-type": "application/json",
     },

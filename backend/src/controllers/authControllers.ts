@@ -2,7 +2,11 @@ import { Request, Response } from "express";
 import pool from "../models/DBconnection";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { revisarCarnet, revisarCorreo } from "../models/Queries";
+import {
+  revisarCarnet,
+  revisarCorreo,
+  revisarUsername,
+} from "../models/Queries";
 
 //TODO: Terminar de implementar el JWT
 export const signUp = async (req: Request, res: Response) => {
@@ -72,6 +76,22 @@ export const checkCorreo = async (req: Request, res: Response) => {
     }
 
     res.status(200).json({ message: "Correo valido" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error 500" });
+  }
+};
+
+export const checkUsername = async (req: Request, res: Response) => {
+  const { username } = req.body;
+
+  try {
+    const yaExiste = await pool.query(revisarUsername, [username]);
+    if (yaExiste.rows.length != 0) {
+      return res.status(400).json({ message: "Username ya existe" });
+    }
+
+    res.status(200).json({ message: "Disponible" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error 500" });

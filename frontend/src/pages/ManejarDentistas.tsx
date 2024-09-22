@@ -8,7 +8,7 @@ import { MdDeleteForever } from "react-icons/md";
 import SearchBar from "../components/SearchBar";
 import { ManejarDentistaSearch } from "../types/app-types";
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 
 const ManejarDentistas = () => {
   //Valores de busqueda
@@ -25,11 +25,13 @@ const ManejarDentistas = () => {
   }
   );
 
+  const navigate = useNavigate();
 
   //Logica de Delete
   const { mutate } = useMutation(apiClient.deleteDentista, {
     onSuccess: () => {
       alert("Deleted Succesfully");
+      navigate("/dashboard/dentistas/");
     },
     onError: () => {
       alert("Something went wrong");
