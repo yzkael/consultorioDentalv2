@@ -1,7 +1,7 @@
 import { useFormContext } from "react-hook-form";
 import { CrearDentistaFormType } from "../../types/app-types";
 import { especialidadesOptions } from "../../config/config-files";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import * as apiClient from '../../api-client'
 type DatosUsuarioDentistaProps = {
@@ -14,10 +14,20 @@ type DatosUsuarioDentistaProps = {
 const DatosUsuarioDentista = ({ handleBack }: DatosUsuarioDentistaProps) => {
 
   const [usernameData, setUsernameData] = useState("");
-  const { data: usernameResult } = useQuery(["checkUsername", usernameData], () => apiClient.checkUsername(usernameData), {
-    enabled: !!usernameData
+  const [usernameDebouncer, setUsernameDebouncer] = useState("");
+
+
+  const { data: usernameResult, isError } = useQuery(["checkUsername", usernameDebouncer], () => apiClient.checkUsername(usernameDebouncer), {
+    enabled: !!usernameDebouncer
   })
-  console.log(usernameResult, 2);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setUsernameDebouncer(usernameData)
+    })
+    return () => clearTimeout(handler);
+  }, [usernameData])
+
+
   const {
     register,
     formState: { errors },
@@ -43,7 +53,7 @@ const DatosUsuarioDentista = ({ handleBack }: DatosUsuarioDentistaProps) => {
             </span>
           </div>
         )}
-        {!usernameResult && usernameData != "" && <span className="text-sm text-red-600">Ese username ya esta siendo utilizado!</span>}
+        {(isError || !usernameResult && usernameData != "") && <div className=" flex justify-center"><span className="text-sm text-red-600">Ese username ya esta siendo utilizado!</span></div>}
       </label>
 
       <label className="text-gray-700 text-sm font-bold flex-1 mx-10 ">
@@ -102,6 +112,11 @@ const DatosUsuarioDentista = ({ handleBack }: DatosUsuarioDentistaProps) => {
           className="py-2 px-4 bg-slate-700 rounded-lg w-[5rem] flex justify-center items-center hover:bg-slate-500 text-white font-semibold cursor-pointer disabled:bg-slate-900 disabled:text-red-600"
         >
           Back
+        </button>
+        <button className="py-2 px-4 bg-slate-700 rounded-lg w-[5rem] flex justify-center items-center hover:bg-slate-500 text-white font-semibold cursor-pointer disabled:bg-black"
+          type="submit"
+        >
+          Submit
         </button>
 
       </div>

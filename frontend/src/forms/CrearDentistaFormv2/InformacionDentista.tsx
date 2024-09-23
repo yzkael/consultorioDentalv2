@@ -27,7 +27,7 @@ const InformacionDentista = () => {
 
 
   //Devolvera un valor booleano que dira si es o no unico en la base de datos
-  const { data, isError: errorCarnet } = useQuery(["checkCarnet", carnetValue], () => apiClient.checkCarnet(carnetValue), {
+  const { isError: errorCarnet } = useQuery(["checkCarnet", carnetValue], () => apiClient.checkCarnet(carnetValue), {
     enabled: !!carnetValue,
     retry: false
   });

@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from "react-query";
 import * as apiClient from "../api-client";
 import TitleMenus from "../components/TitleMenus";
-import { ColorRing } from "react-loader-spinner";
+import { ColorRing, TailSpin } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import { FaUserEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
@@ -41,21 +41,21 @@ const ManejarDentistas = () => {
     mutate(idDentista);
   };
 
-  if (isLoading) {
-    return (
-      <div className="w-[100vw] h-screen flex justify-center items-center">
-        <ColorRing
-          visible={true}
-          height="100%"
-          width="100%"
-          ariaLabel="color-ring-loading"
-          wrapperStyle={{}}
-          wrapperClass="color-ring-wrapper"
-          colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
-        />
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="w-[100vw] h-screen flex justify-center items-center">
+  //       <ColorRing
+  //         visible={true}
+  //         height="100%"
+  //         width="100%"
+  //         ariaLabel="color-ring-loading"
+  //         wrapperStyle={{}}
+  //         wrapperClass="color-ring-wrapper"
+  //         colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+  //       />
+  //     </div>
+  //   );
+  // }
   const handleSearch = (data: ManejarDentistaSearch) => {
     setSearchValues(data);
   }
@@ -68,7 +68,20 @@ const ManejarDentistas = () => {
         <div className="w-full max-w-4xl bg-white shadow-md rounded-lg overflow-hidden">
           <div className="overflow-x-auto">
             <div className="inline-block min-w-full align-middle">
-              <table className="min-w-full">
+              {isLoading ? <div className="w-full h-screen flex justify-center items-center">
+                <div className="w-max h-max  flex justify-center items-center mb-10">
+                  <TailSpin
+                    visible={true}
+                    height="100%"
+                    width="100%"
+                    color="#D10056"
+                    ariaLabel="tail-spin-loading"
+                    radius="1"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                  />
+                </div>
+              </div> : <table className="min-w-full">
                 <thead className="bg-slate-600 text-white">
                   <tr>
                     <th className="px-4 py-2 whitespace-nowrap">Nombre</th>
@@ -112,7 +125,8 @@ const ManejarDentistas = () => {
                     ))}
                   </tbody>
                 }
-              </table>
+              </table>}
+
             </div>
           </div>
         </div>

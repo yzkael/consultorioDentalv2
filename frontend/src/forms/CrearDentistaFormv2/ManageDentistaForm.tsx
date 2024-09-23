@@ -4,26 +4,21 @@ import { FormProvider, useForm } from "react-hook-form";
 import InformacionDentista from "./InformacionDentista";
 import InformacionDentista2 from "./InformacionDentista2";
 import DatosUsuarioDentista from "./DatosUsuarioDentista";
+import TitleMenus from "../../components/TitleMenus";
 
 type DentistaFormProps = {
   onSave: (dentistaFormData: CrearDentistaFormType) => void;
-  isLoading: boolean;
 };
 //Its lit
-const ManageDentistaForm = ({ onSave, isLoading }: DentistaFormProps) => {
+const ManageDentistaForm = ({ onSave }: DentistaFormProps) => {
   const formMethods = useForm<CrearDentistaFormType>();
   const [paginaActual, setPaginaActual] = useState(0);
   const { handleSubmit } = formMethods;
 
 
-  // ------ POSIBLE SOLUCION-----------
   const handleBack = () => {
-    console.log(paginaActual);
     setPaginaActual((prev) => prev - 1);
   }
-
-
-  // -----------------------------------
 
 
   const onSubmit = handleSubmit((data: CrearDentistaFormType) => {
@@ -35,34 +30,12 @@ const ManageDentistaForm = ({ onSave, isLoading }: DentistaFormProps) => {
   });
   return (
     <div className="w-full h-screen">
+      <TitleMenus title={"Crear Dentista"} />
       <FormProvider {...formMethods}>
         <form className="w-[60vw] h-[60vh] bg-slate-400" onSubmit={onSubmit}>
           {paginaActual == 0 && <InformacionDentista />}
           {paginaActual == 1 && <InformacionDentista2 handleBack={handleBack} />}
           {paginaActual == 2 && <DatosUsuarioDentista handleBack={handleBack} />}
-          {/* <div className="flex gap-4"> */}
-          {/* Navigation buttons */}
-          {/* {paginaActual > 0 && (
-              <button
-                type="button"
-                onClick={() => setPaginaActual(paginaActual - 1)}
-                className="btn btn-secondary"
-              >
-                Back
-              </button>
-            )}
-            <button
-              type="submit"
-              className="py-4 px-2 bg-slate-500 disabled:bg-slate-800"
-              disabled={isLoading}
-            >
-              {isLoading
-                ? "Loading..."
-                : paginaActual === 2
-                  ? "Submit"
-                  : "Next"}
-            </button>
-          </div> */}
         </form>
       </FormProvider>
     </div>

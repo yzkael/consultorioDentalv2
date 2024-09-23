@@ -23,7 +23,7 @@ const CrearEmpleado = () => {
     mutate(dentistaFormData);
   };
 
-  return <ManageDentistaForm onSave={handleSave} isLoading={isLoading} />;
+  return <ManageDentistaForm onSave={handleSave} />;
 };
 
 export default CrearEmpleado;

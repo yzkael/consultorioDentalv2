@@ -29,11 +29,11 @@ CREATE TABLE Administrativo(
     cargo INTEGER REFERENCES Cargos(id_cargo)
 );
 
+--Valores Cargos son HARDCODED
 CREATE TABLE Cargos (
     id_cargo BIGSERIAL PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL
 );
-
 
 -- Cargos Administrativos
 INSERT INTO Cargos(nombre) VALUES ('Recepcionista');

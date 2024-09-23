@@ -1,8 +1,9 @@
 import { useFormContext } from "react-hook-form";
 import { CrearDentistaFormType } from "../../types/app-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import * as apiClient from "../../api-client"
+import { Hourglass } from "react-loader-spinner";
 
 
 type InformacionDentista2Props = {
@@ -16,13 +17,20 @@ const InformacionDentista2 = ({ handleBack }: InformacionDentista2Props) => {
   } = useFormContext<CrearDentistaFormType>();
 
   const [correoValue, setCorreoValue] = useState("");
+  const [correoDebouncer, setCorreoDebouncer] = useState("");
 
   //En este contexto isError y isLoading son opuestos asi que ambos deben ser usados para la inhabilitacion del boton
-  const { data, isError, isLoading } = useQuery(["checkCorreo", correoValue], () => apiClient.checkCorreo(correoValue), { enabled: !!correoValue });
+  const { isError, isLoading } = useQuery(["checkCorreo", correoDebouncer], () => apiClient.checkCorreo(correoDebouncer), { enabled: !!correoDebouncer });
+
+  //Debouncer para isLoading y para mostrar si esta cargando
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setCorreoDebouncer(correoValue);
+    }, 500)
+    return () => clearTimeout(handler);
+  }, [correoValue])
 
 
-  console.log(isLoading, 4)
-  console.log(isError, 3)
   const handleChange = (correo: string) => {
     setCorreoValue(correo);
   }
@@ -48,7 +56,16 @@ const InformacionDentista2 = ({ handleBack }: InformacionDentista2Props) => {
         />
         {isLoading &&
           <div className="flex justify-center">
-            <span className="text-sm text-gray-700">Revisando Disponibilidad...</span>
+            <span className="text-sm text-gray-700 flex items-center">Revisando Disponibilidad... {
+              <Hourglass
+                visible={true}
+                height="10"
+                width="10"
+                ariaLabel="hourglass-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                colors={['#2d517a', '#5c7fae']}
+              />}</span>
           </div>}
         {errors.correo && (
           <div className="flex justify-center">
