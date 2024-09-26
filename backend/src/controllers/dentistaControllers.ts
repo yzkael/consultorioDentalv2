@@ -20,6 +20,7 @@ import {
 } from "../models/Queries";
 import bcrypt from "bcrypt";
 import { validationResult } from "express-validator";
+import { identificarSearchDentista } from "../utils/searchQueryFunct";
 
 export const createDentistas = async (req: Request, res: Response) => {
   const errors = validationResult(req);
@@ -216,7 +217,7 @@ export const getDentista = async (req: Request, res: Response) => {
 
 export const searchDentista = async (req: Request, res: Response) => {
   const { searchValue, searchParams } = req.body;
-  const searchQuery = identificarSearch(searchParams);
+  const searchQuery = identificarSearchDentista(searchParams);
   try {
     let searchedValues;
     if (searchParams === "-buscar-" && searchValue === "") {
@@ -231,24 +232,5 @@ export const searchDentista = async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error 500" });
-  }
-};
-
-const identificarSearch = (searchParametros: string) => {
-  switch (searchParametros) {
-    case "-buscar-":
-      return searchDentistaInGeneral;
-    case "nombre":
-      return searchDentistasByName;
-    case "apPaterno":
-      return searchDentistasByApPaterno;
-    case "apMaterno":
-      return searchDentistasByApMaterno;
-    case "usuario":
-      return searchDentistasByUsername;
-    case "especialidad":
-      return searchDentistasByEspecialidad;
-    default:
-      return "Not found";
   }
 };

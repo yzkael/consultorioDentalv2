@@ -41,3 +41,17 @@ export type ManejarDentistaSearch = {
 export type RevisarDato = {
   result: boolean;
 };
+
+export type CrearAdmFormType = {
+  nombre: string;
+  apPaterno: string;
+  apMaterno: string;
+  correo: string;
+  carnet: string;
+  telefono: string;
+  fechaNacimiento: Date;
+  username: string;
+  password: string;
+  confirmPassword: string;
+  cargo: number;
+};

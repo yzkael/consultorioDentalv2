@@ -29,16 +29,18 @@ const ManageDentistaForm = ({ onSave }: DentistaFormProps) => {
     }
   });
   return (
-    <div className="w-full h-screen">
+    <div className="w-full h-screen flex flex-col">
       <TitleMenus title={"Crear Dentista"} />
       <FormProvider {...formMethods}>
-        <form className="w-[60vw] h-[60vh] bg-slate-400" onSubmit={onSubmit}>
-          {paginaActual == 0 && <InformacionDentista />}
-          {paginaActual == 1 && <InformacionDentista2 handleBack={handleBack} />}
-          {paginaActual == 2 && <DatosUsuarioDentista handleBack={handleBack} />}
-        </form>
+        <div className="form-wrapper">
+          <form className="form" onSubmit={onSubmit}>
+            {paginaActual == 0 && <InformacionDentista />}
+            {paginaActual == 1 && <InformacionDentista2 handleBack={handleBack} />}
+            {paginaActual == 2 && <DatosUsuarioDentista handleBack={handleBack} />}
+          </form>
+        </div>
       </FormProvider>
-    </div>
+    </div >
   );
 };
 

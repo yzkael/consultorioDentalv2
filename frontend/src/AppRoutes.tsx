@@ -7,6 +7,9 @@ import CrearDentista from "./pages/CrearDentista";
 import ManejarDentistas from "./pages/ManejarDentistas";
 import EditarDentista from "./pages/EditarDentista";
 import TestPage from "./pages/TestPage";
+import { crearAdministrativo } from "./api-client";
+import CrearAdm from "./pages/CrearAdm";
+import ManejarEmpleado from "./pages/ManejarEmpleado";
 
 const AppRoutes = () => {
   return (
@@ -29,15 +32,18 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
+      <Route path="/empleados/administrar/" element={
+        <ManejarEmpleado />
+      } />
       <Route
-        path="/dashboard/dentistas/"
+        path="/empleados/administrar/dentistas"
         element={
           <MainLayout>
             <ManejarDentistas />
           </MainLayout>
         }
       />
-      <Route path="/dentistas/editar-dentista/:idDentista"
+      <Route path="/empleados/Administrar/dentistas/editar-dentista/:idDentista"
         element={
           <MainLayout>
             <EditarDentista />
@@ -47,6 +53,8 @@ const AppRoutes = () => {
         element={
           <TestPage />
         } />
+      <Route path="/empleados/crear/administrativos"
+        element={<CrearAdm />} />
     </Routes>
 
   );

@@ -1,19 +1,18 @@
 import { useQuery, useMutation } from "react-query";
 import * as apiClient from "../api-client";
 import TitleMenus from "../components/TitleMenus";
-import { ColorRing, TailSpin } from "react-loader-spinner";
-import { Link } from "react-router-dom";
-import { FaUserEdit } from "react-icons/fa";
-import { MdDeleteForever } from "react-icons/md";
+import { TailSpin } from "react-loader-spinner";
 import SearchBar from "../components/SearchBar";
 import { ManejarDentistaSearch } from "../types/app-types";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "react-query";
+import TablaManejar from "../components/TablaManejar";
+
 
 const ManejarDentistas = () => {
   //Valores de busqueda
   const [searchValues, setSearchValues] = useState<ManejarDentistaSearch>({ searchValue: "", searchParams: "" })
-
+  const queryClient = useQueryClient();
 
   //Logica del fetch (getDentistas)
   const { data: dentistas, isLoading } = useQuery(
@@ -25,13 +24,12 @@ const ManejarDentistas = () => {
   }
   );
 
-  const navigate = useNavigate();
 
   //Logica de Delete
   const { mutate } = useMutation(apiClient.deleteDentista, {
     onSuccess: () => {
       alert("Deleted Succesfully");
-      navigate("/dashboard/dentistas/");
+      queryClient.invalidateQueries("searchDentistas");
     },
     onError: () => {
       alert("Something went wrong");
@@ -41,21 +39,6 @@ const ManejarDentistas = () => {
     mutate(idDentista);
   };
 
-  // if (isLoading) {
-  //   return (
-  //     <div className="w-[100vw] h-screen flex justify-center items-center">
-  //       <ColorRing
-  //         visible={true}
-  //         height="100%"
-  //         width="100%"
-  //         ariaLabel="color-ring-loading"
-  //         wrapperStyle={{}}
-  //         wrapperClass="color-ring-wrapper"
-  //         colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
-  //       />
-  //     </div>
-  //   );
-  // }
   const handleSearch = (data: ManejarDentistaSearch) => {
     setSearchValues(data);
   }
@@ -81,51 +64,7 @@ const ManejarDentistas = () => {
                     wrapperClass=""
                   />
                 </div>
-              </div> : <table className="min-w-full">
-                <thead className="bg-slate-600 text-white">
-                  <tr>
-                    <th className="px-4 py-2 whitespace-nowrap">Nombre</th>
-                    <th className="px-4 py-2 whitespace-nowrap">Apellido Paterno</th>
-                    <th className="px-4 py-2 whitespace-nowrap">Apellido Materno</th>
-                    <th className="px-4 py-2 whitespace-nowrap">Usuario</th>
-                    <th className="px-4 py-2 whitespace-nowrap">Especialidad</th>
-                    <th className="px-4 py-2 whitespace-nowrap">Editar</th>
-                    <th className="px-4 py-2 whitespace-nowrap">Eliminar</th>
-                  </tr>
-                </thead>
-                {dentistas &&
-                  <tbody className="bg-white">
-                    {dentistas.map((dentista) => (
-                      <tr
-                        key={dentista.id_persona}
-                        className="border-b hover:bg-slate-100 transition-colors duration-200"
-                      >
-                        <td className="px-4 py-2 whitespace-nowrap">{dentista.nombre}</td>
-                        <td className="px-4 py-2 whitespace-nowrap">{dentista.appaterno}</td>
-                        <td className="px-4 py-2 whitespace-nowrap">{dentista.apmaterno}</td>
-                        <td className="px-4 py-2 whitespace-nowrap">{dentista.username}</td>
-                        <td className="px-4 py-2 whitespace-nowrap">{dentista.especialidad}</td>
-                        <td className="px-4 py-2 whitespace-nowrap">
-                          <Link to={`/dentistas/editar-dentista/${dentista.id_persona}`}>
-                            <FaUserEdit
-                              className="text-slate-600 hover:text-slate-800 hover:scale-110 transition-colors duration-200"
-                              size={20}
-                            />
-                          </Link>
-                        </td>
-                        <td className="px-4 py-2 whitespace-nowrap">
-                          <button onClick={() => handleClick(dentista.id_persona)}>
-                            <MdDeleteForever
-                              className="text-slate-600 hover:text-slate-800 transition-colors hover:scale-110 duration-200"
-                              size={20}
-                            />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                }
-              </table>}
+              </div> : <TablaManejar data={dentistas} handleClick={handleClick} differentAttribute="especialidad" dataName="dentista" />}
 
             </div>
           </div>

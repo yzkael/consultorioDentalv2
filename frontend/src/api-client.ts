@@ -1,4 +1,5 @@
 import {
+  CrearAdmFormType,
   CrearDentistaFormType,
   EditarDentistaFormType,
   ManejarDentistaSearch,
@@ -145,6 +146,22 @@ export const checkUsername = async (username: string): Promise<RevisarDato> => {
   const response = await fetch(`${BASE_API_URL}/api/auth/check-username`, {
     method: "POST",
     body: JSON.stringify({ username }),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong");
+  }
+  const returnData = await response.json();
+  return returnData;
+};
+
+export const crearAdministrativo = async (data: CrearAdmFormType) => {
+  console.log(data);
+  const response = await fetch(`${BASE_API_URL}/api/administrativo`, {
+    method: "POST",
+    body: JSON.stringify(data),
     headers: {
       "Content-type": "application/json",
     },

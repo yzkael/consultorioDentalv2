@@ -4,6 +4,7 @@ import { EditarDentistaFormType } from "../../types/app-types";
 import { TailSpin } from "react-loader-spinner";
 import Pagina1FormularioEditar from "./Pagina1FormularioEditar";
 import Pagina2FormularioEditarDentista from "./Pagina2FormularioEditarDentista";
+import TitleMenus from "../../components/TitleMenus";
 
 type ManageEditarDentistaProps = {
     onSave: (data: EditarDentistaFormType) => void;
@@ -74,22 +75,27 @@ const ManageEditarDentista = ({ onSave, isEditing, dentista, isFetching }: Manag
     });
 
     return (
-        <div className="w-full h-full flex items-center justify-center">
+        <div className="w-full h-full flex flex-col items-center justify-center">
+            <TitleMenus title="Editar Dentista" />
             <FormProvider {...formMethods}>
-                <form className="w-full h-full bg-slate-400" onSubmit={onSubmit}>
-                    {paginaActual === 0 && <Pagina1FormularioEditar />}
-                    {paginaActual === 1 && <Pagina2FormularioEditarDentista />}
-                    {paginaActual == 1 && <button onClick={() => setPaginaActual(paginaActual - 1)}>Back</button>}
-                    <button
-                        disabled={isEditing}
-                        className="py-1 px-2 disabled:bg-slate-800 bg-slate-500 hover:bg-slate-300"
-                        type="submit"
-                    >
-                        {isEditing ? "Loading..." : paginaActual === 1 ? "Submit" : "Next"}
-                    </button>
-                </form>
+                <div className="w-full h-full flex flex-col justify-center items-center ">
+                    <form className="w-[60vw] h-[60vh] bg-slate-400" onSubmit={onSubmit}>
+                        {paginaActual === 0 && <Pagina1FormularioEditar />}
+                        {paginaActual === 1 && <Pagina2FormularioEditarDentista />}
+                        {paginaActual == 1 && <button className="py-1 px-2 disabled:bg-slate-800 bg-slate-500 hover:bg-slate-300 ml-10 mr-[60%]"
+                            onClick={() => setPaginaActual(paginaActual - 1)}>Back</button>}
+                        <button
+                            disabled={isEditing}
+                            className="py-1 px-2 disabled:bg-slate-800 bg-slate-500 hover:bg-slate-300"
+                            type="submit"
+                        >
+                            {isEditing ? "Loading..." : paginaActual === 1 ? "Submit" : "Next"}
+                        </button>
+                    </form>
+                </div>
             </FormProvider>
         </div>
+
     );
 }
 

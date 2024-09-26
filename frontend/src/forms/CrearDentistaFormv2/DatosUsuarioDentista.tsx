@@ -17,13 +17,15 @@ const DatosUsuarioDentista = ({ handleBack }: DatosUsuarioDentistaProps) => {
   const [usernameDebouncer, setUsernameDebouncer] = useState("");
 
 
-  const { data: usernameResult, isError } = useQuery(["checkUsername", usernameDebouncer], () => apiClient.checkUsername(usernameDebouncer), {
+  const { data: usernameResult, isError, isLoading } = useQuery(["checkUsername", usernameDebouncer], () => apiClient.checkUsername(usernameDebouncer), {
     enabled: !!usernameDebouncer
   })
+
+
   useEffect(() => {
     const handler = setTimeout(() => {
       setUsernameDebouncer(usernameData)
-    })
+    }, 200)
     return () => clearTimeout(handler);
   }, [usernameData])
 
@@ -53,7 +55,8 @@ const DatosUsuarioDentista = ({ handleBack }: DatosUsuarioDentistaProps) => {
             </span>
           </div>
         )}
-        {(isError || !usernameResult && usernameData != "") && <div className=" flex justify-center"><span className="text-sm text-red-600">Ese username ya esta siendo utilizado!</span></div>}
+        {(isLoading && usernameData) && <div className=" flex justify-center"><span className="text-sm text-red-600">Cargando.....</span></div>}
+        {(isError && usernameData != "") && <div className=" flex justify-center"><span className="text-sm text-red-600">Ese username ya esta siendo utilizado!</span></div>}
       </label>
 
       <label className="text-gray-700 text-sm font-bold flex-1 mx-10 ">

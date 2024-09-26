@@ -16,7 +16,7 @@ const Dashboard = () => {
           image={imgEmpleado}
           title="Administrar Empleados"
           description="Maneja la data de los empleados"
-          link="/dashboard/dentistas/"
+          link="/empleados/administrar/"
         />
         <DashboardCardButton
           image={imgCrearEmpleado}

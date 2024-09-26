@@ -17,6 +17,17 @@ export const especialidadesOptions = [
   },
 ];
 
+export const cargoOptions = [
+  {
+    id: 1,
+    nombre: "Recepcionista",
+  },
+  {
+    id: 3,
+    nombre: "Limpieza",
+  },
+];
+
 export const searchDentistaOptions = [
   "-buscar-",
   "nombre",

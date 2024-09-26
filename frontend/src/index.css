@@ -3,3 +3,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.form {
+  @apply w-[60vw] h-[60vh] bg-slate-400 rounded-lg  pb-5;
+}
+
+.label {
+  @apply text-gray-700 text-sm font-bold flex-1 mx-10;
+}
+
+.input {
+  @apply border border-blue-500 w-full py-1 px-2 font-normal;
+}
+
+.form-wrapper {
+  @apply w-full h-full flex justify-center items-center;
+}
+
+.full-screen-fill {
+  @apply w-full h-screen flex flex-col;
+}
+
+.btn {
+  @apply py-2 px-4 bg-slate-700 rounded-lg w-[5rem] flex justify-center items-center hover:bg-slate-500 text-white font-semibold cursor-pointer;
+}

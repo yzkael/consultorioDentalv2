@@ -5,7 +5,7 @@ import * as apiClient from "../api-client";
 import { useNavigate } from "react-router-dom";
 const CrearEmpleado = () => {
   const navigate = useNavigate();
-  const { mutate, isLoading } = useMutation(
+  const { mutate } = useMutation(
     "crearDentista",
     apiClient.crearDentista,
     {

@@ -4,22 +4,28 @@ CREATE DATABASE simple_consultorio_v2;
 
 use simple_consultorio_v2;
 
+    -- Debo quitar Unique
+    -- Esto con el proposito de permitir que se creen diferentes personas y diferentes roles
+    -- DEBO ANHADIR EL creado_por Column luego cuando introduzca el logins
 
 CREATE TABLE Personas(
     id_persona BIGSERIAL PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     ap_paterno VARCHAR(50) NOT NULL,
     ap_materno VARCHAR(50) NOT NULL,
-    carnet VARCHAR(50) NOT NULL UNIQUE,
-    correo  VARCHAR(50) NOT NULL UNIQUE,
+    carnet VARCHAR(50) NOT NULL,
+    correo  VARCHAR(50) NOT NULL,
     telefono VARCHAR(10) NOT NULL,
     fecha_nacimiento DATE NOT NULL,
     fecha_crear DATE DEFAULT CURRENT_DATE
 );
 
+    -- Debo quitar el unique para denotar el fin de ese usuario con ese rol especifico
+    -- El valor seguira manteniendose en la base de datos
+    -- DEBO ANHADIR EL creado_por Column luego cuando introduzca el logins
 CREATE TABLE Personal(
     id_personal INTEGER PRIMARY KEY REFERENCES Personas(id_persona),
-    username VARCHAR(50) NOT NULL UNIQUE,
+    username VARCHAR(50) NOT NULL,
     password TEXT NOT NULL,
     fecha_fin DATE
 );
