@@ -19,7 +19,7 @@ const TablaManejar = ({ data, differentAttribute, handleClick, dataName }: Tabla
                     <th className="px-4 py-2 whitespace-nowrap">Apellido Paterno</th>
                     <th className="px-4 py-2 whitespace-nowrap">Apellido Materno</th>
                     <th className="px-4 py-2 whitespace-nowrap">Usuario</th>
-                    <th className="px-4 py-2 whitespace-nowrap">Especialidad</th>
+                    <th className="px-4 py-2 whitespace-nowrap">{differentAttribute.charAt(0).toUpperCase() + differentAttribute.slice(1)}</th>
                     <th className="px-4 py-2 whitespace-nowrap">Editar</th>
                     <th className="px-4 py-2 whitespace-nowrap">Eliminar</th>
                 </tr>

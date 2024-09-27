@@ -10,6 +10,7 @@ import TestPage from "./pages/TestPage";
 import { crearAdministrativo } from "./api-client";
 import CrearAdm from "./pages/CrearAdm";
 import ManejarEmpleado from "./pages/ManejarEmpleado";
+import ManejarAdm from "./pages/ManejarAdm";
 
 const AppRoutes = () => {
   return (
@@ -43,12 +44,14 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
-      <Route path="/empleados/Administrar/dentistas/editar-dentista/:idDentista"
+      <Route path="/empleados/administrar/dentistas/editar-dentista/:idDentista"
         element={
           <MainLayout>
             <EditarDentista />
           </MainLayout>
         } />
+
+      <Route path="/empleados/administrar/administrativos" element={<ManejarAdm />} />
       <Route path="/test"
         element={
           <TestPage />

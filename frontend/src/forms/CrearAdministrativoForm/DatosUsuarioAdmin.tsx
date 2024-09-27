@@ -4,6 +4,7 @@ import { cargoOptions } from "../../config/config-files";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import * as apiClient from '../../api-client'
+import LoadingMessageInput from "../../components/LoadingMessageInput";
 type DatosUsuarioAdmProps = {
     handleBack: () => void;
 
@@ -55,7 +56,7 @@ const DatosUsuarioAdm = ({ handleBack }: DatosUsuarioAdmProps) => {
                         </span>
                     </div>
                 )}
-                {(isLoading && usernameData) && <div className=" flex justify-center"><span className="text-sm text-red-600">Cargando.....</span></div>}
+                {(isLoading && usernameData) && <div className=" flex justify-center"><LoadingMessageInput /></div>}
                 {(isError && usernameData != "") && <div className=" flex justify-center"><span className="text-sm text-red-600">Ese username ya esta siendo utilizado!</span></div>}
             </label>
 

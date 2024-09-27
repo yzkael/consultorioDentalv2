@@ -1,16 +1,16 @@
-import { searchDentistaOpciones as options } from "../config/config-files"
-import { ManejarDentistaSearch } from "../types/app-types";
+import { ManejarSearch } from "../types/app-types";
 import { useForm } from 'react-hook-form'
 
 type searchBarProps = {
-    handleSearch: (data: ManejarDentistaSearch) => void;
+    handleSearch: (data: ManejarSearch) => void;
+    options: any[];
 }
 
-const SearchBar = ({ handleSearch }: searchBarProps) => {
+const SearchBar = ({ handleSearch, options }: searchBarProps) => {
 
-    const { handleSubmit, register } = useForm<ManejarDentistaSearch>();
+    const { handleSubmit, register } = useForm<ManejarSearch>();
 
-    const onSubmit = (handleSubmit((data: ManejarDentistaSearch) => {
+    const onSubmit = (handleSubmit((data: ManejarSearch) => {
         handleSearch(data);
     }))
 

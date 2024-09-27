@@ -26,7 +26,6 @@ export const crearAdministrativo = async (req: Request, res: Response) => {
     password,
     cargo, //Sera un valor numerico id_cargo
   } = req.body;
-  // console.log(req.body); //Debugger
   const client = await pool.connect(); //Inicia Conexion al servidor
   try {
     await client.query("BEGIN"); //Inicia la transaccion
@@ -145,6 +144,38 @@ export const updateAdministrativo = async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error);
     await client.query("ROLLBACK"); //Deshace la transaccion
+    res.status(500).json({ message: "Internal Server Error 500" });
+  } finally {
+    client.release(); //Deshace la conexion
+  }
+};
+
+export const softDelete = async (req: Request, res: Response) => {
+  const idAdm = req.params.id;
+  const client = await pool.connect(); //Inicia la conexion
+  try {
+    const existeAdm = await client.query(
+      "SELECT * FROM Personal WHERE id_personal = $1",
+      [idAdm]
+    );
+    if (existeAdm.rows.length == 0) {
+      return res.status(404).json({ message: "Empleado Not Found" });
+    }
+    const fechaActual = new Date().toLocaleDateString("en-CA");
+    const softDeleteAdm = await client.query(
+      "UPDATE Personal SET fecha_fin = $1 WHERE id_personal = $2 RETURNING *",
+      [fechaActual, idAdm]
+    );
+    if (softDeleteAdm.rows.length == 0) {
+      return res
+        .status(400)
+        .json({ message: "Something went wrong while deleting" });
+    }
+    await client.query("COMMIT"); // Termina la transaccion
+    res.status(200).json({ message: "Deleted Succesfully" });
+  } catch (error) {
+    console.log(error);
+    await client.query("ROLLBACK"); // Deshace la transaccion
     res.status(500).json({ message: "Internal Server Error 500" });
   } finally {
     client.release(); //Deshace la conexion

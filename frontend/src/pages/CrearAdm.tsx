@@ -9,7 +9,7 @@ const CrearAdm = () => {
     const { mutate } = useMutation("crearAdm", apiClient.crearAdministrativo, {
         onSuccess: () => {
             alert("Super Dupper");
-            navigate("/")
+            navigate("/empleados/administrar/administrativos")
         },
         onError: () => {
             alert("Something went wrong");

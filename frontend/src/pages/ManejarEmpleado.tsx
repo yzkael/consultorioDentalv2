@@ -13,7 +13,7 @@ const AdministrarEmpleado = () => {
                     {/* Administrative Card */}
                     <div className="flex flex-col justify-center items-center">
                         <Link
-                            to={"/empleados/Administrar/administrativos"}
+                            to={"/empleados/administrar/administrativos"}
                             className="bg-blue-700 py-10 px-20 rounded-lg"
                         >
                             <FaComputer size={100} color="white" />
@@ -24,7 +24,7 @@ const AdministrarEmpleado = () => {
                     {/* Dentist Card */}
                     <div className="flex flex-col justify-center items-center">
                         <Link
-                            to={"/empleados/Administrar/dentistas"}
+                            to={"/empleados/administrar/dentistas"}
                             className="bg-blue-700 py-10 px-20 rounded-lg"
                         >
                             <PiToothLight size={100} color="white" />

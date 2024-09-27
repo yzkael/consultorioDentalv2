@@ -32,9 +32,19 @@ export type ManejarDentistasTabla = {
   especialidad: string;
 };
 
-export type ManejarDentistaSearch = {
+export type ManejarSearch = {
   searchValue: string;
   searchParams: string;
+};
+
+//Minusculas por que asi lo devuelve la DB por alguna extranha razon
+export type ManejarAdministrativoTabla = {
+  id_persona: string;
+  nombre: string;
+  appaterno: string;
+  apmaterno: string;
+  username: string;
+  cargo: string;
 };
 
 //Utilizado para revisar si ya existen los datos unique

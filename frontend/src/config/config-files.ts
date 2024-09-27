@@ -28,15 +28,6 @@ export const cargoOptions = [
   },
 ];
 
-export const searchDentistaOptions = [
-  "-buscar-",
-  "nombre",
-  "apPaterno",
-  "apMaterno",
-  "usuario",
-  "especialidad",
-];
-
 export const searchDentistaOpciones = [
   { value: "-buscar-", description: "Buscar por.." },
   { value: "nombre", description: "Nombre" },
@@ -44,4 +35,13 @@ export const searchDentistaOpciones = [
   { value: "apMaterno", description: "Apellido Materno" },
   { value: "usuario", description: "Usuario" },
   { value: "especialidad", description: "Especialidad" },
+];
+
+export const searchAdmOpciones = [
+  { value: "-buscar-", description: "Buscar por.." },
+  { value: "nombre", description: "Nombre" },
+  { value: "apPaterno", description: "Apellido Paterno" },
+  { value: "apMaterno", description: "Apellido Materno" },
+  { value: "usuario", description: "Usuario" },
+  { value: "cargo", description: "Cargo" },
 ];

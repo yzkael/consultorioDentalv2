@@ -3,15 +3,16 @@ import * as apiClient from "../api-client";
 import TitleMenus from "../components/TitleMenus";
 import { TailSpin } from "react-loader-spinner";
 import SearchBar from "../components/SearchBar";
-import { ManejarDentistaSearch } from "../types/app-types";
+import { ManejarSearch } from "../types/app-types";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import TablaManejar from "../components/TablaManejar";
+import { searchDentistaOpciones as options } from "../config/config-files"
 
 
 const ManejarDentistas = () => {
   //Valores de busqueda
-  const [searchValues, setSearchValues] = useState<ManejarDentistaSearch>({ searchValue: "", searchParams: "" })
+  const [searchValues, setSearchValues] = useState<ManejarSearch>({ searchValue: "", searchParams: "" })
   const queryClient = useQueryClient();
 
   //Logica del fetch (getDentistas)
@@ -39,7 +40,7 @@ const ManejarDentistas = () => {
     mutate(idDentista);
   };
 
-  const handleSearch = (data: ManejarDentistaSearch) => {
+  const handleSearch = (data: ManejarSearch) => {
     setSearchValues(data);
   }
 
@@ -47,7 +48,7 @@ const ManejarDentistas = () => {
     <div className="flex flex-col h-screen">
       <TitleMenus title="Administrar Dentistas" />
       <div className="flex-grow flex flex-col items-center overflow-hidden p-4">
-        <SearchBar handleSearch={handleSearch} />
+        <SearchBar handleSearch={handleSearch} options={options} />
         <div className="w-full max-w-4xl bg-white shadow-md rounded-lg overflow-hidden">
           <div className="overflow-x-auto">
             <div className="inline-block min-w-full align-middle">

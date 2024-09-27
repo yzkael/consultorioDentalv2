@@ -4,6 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import InformacionPersonal2 from "./InformacionPersonal2";
 import InformacionPersonal1 from "./InformacionPersonal1";
 import DatosUsuarioAdm from "./DatosUsuarioAdmin";
+import TitleMenus from "../../components/TitleMenus";
 
 type ManageCrearAdmProps = {
     onSave: (data: CrearAdmFormType) => void;
@@ -32,15 +33,19 @@ const ManageCrearAdm = ({ onSave }: ManageCrearAdmProps) => {
 
 
     return (
-        <div className="full-screen-fill">
-            <FormProvider {...formMethods}>
-                <form className="form" onSubmit={onSubmit}>
-                    {currentPage == 0 && <InformacionPersonal1 />}
-                    {currentPage == 1 && <InformacionPersonal2 handleBack={handleBack} />}
-                    {currentPage == 2 && <DatosUsuarioAdm handleBack={handleBack} />}
-                </form>
-            </FormProvider>
-        </div>
+        <div className="w-full h-screen flex flex-col">
+            <TitleMenus title={"Crear Administrativo"} />
+            <div className="form-wrapper">
+                <FormProvider {...formMethods}>
+                    <form className="form" onSubmit={onSubmit}>
+                        {currentPage == 0 && <InformacionPersonal1 />}
+                        {currentPage == 1 && <InformacionPersonal2 handleBack={handleBack} />}
+                        {currentPage == 2 && <DatosUsuarioAdm handleBack={handleBack} />}
+                    </form>
+                </FormProvider>
+            </div>
+
+        </div >
     )
 }
 

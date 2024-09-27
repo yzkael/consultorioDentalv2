@@ -20,7 +20,7 @@ const EditarDentista = () => {
     {
       onSuccess: () => {
         alert("Success");
-        navigate('/dashboard/dentistas/');
+        navigate('/empleados/administrar/dentistas');
       },
       onError: () => {
         alert("Error:");

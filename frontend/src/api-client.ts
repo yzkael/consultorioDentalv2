@@ -2,9 +2,10 @@ import {
   CrearAdmFormType,
   CrearDentistaFormType,
   EditarDentistaFormType,
-  ManejarDentistaSearch,
+  ManejarSearch,
   ManejarDentistasTabla,
   RevisarDato,
+  ManejarAdministrativoTabla,
 } from "./types/app-types";
 
 const BASE_API_URL = import.meta.env.VITE_BASE_URL as string;
@@ -92,7 +93,7 @@ export const updateDentista = async (
 };
 
 export const searchDentista = async (
-  data: ManejarDentistaSearch
+  data: ManejarSearch
 ): Promise<ManejarDentistasTabla[]> => {
   if (data.searchParams == null || data.searchParams == "")
     throw new Error("No search Params");
@@ -166,6 +167,41 @@ export const crearAdministrativo = async (data: CrearAdmFormType) => {
       "Content-type": "application/json",
     },
   });
+  if (!response.ok) {
+    throw new Error("Something went wrong");
+  }
+  const returnData = await response.json();
+  return returnData;
+};
+
+export const searchAdministrativo = async (
+  data: ManejarSearch
+): Promise<ManejarAdministrativoTabla> => {
+  console.log(data);
+  const response = await fetch(`${BASE_API_URL}/api/administrativo/search`, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong");
+  }
+  const returnData = await response.json();
+  return returnData;
+};
+
+export const deleteAdm = async (idAdm: string) => {
+  const response = await fetch(
+    `${BASE_API_URL}/api/administrativo/delete/${idAdm}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+      },
+    }
+  );
   if (!response.ok) {
     throw new Error("Something went wrong");
   }

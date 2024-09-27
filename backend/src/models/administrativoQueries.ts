@@ -1,5 +1,8 @@
 export const crearAdministrativoQuery = `INSERT INTO Administrativo(id_administrativo, cargo) VALUES ($1, $2) RETURNING *`;
 
+export const getAllAdm =
+  "SELECT persona.id_persona,persona.nombre AS nombre,persona.ap_paterno AS apPaterno,persona.ap_materno AS apMaterno, personal.username AS username, cargo.nombre AS cargo FROM Personas persona JOIN Personal personal ON personal.id_personal = persona.id_persona JOIN Administrativos adm ON adm.id_adminsitrativo = personal.id_personal JOIN Cargos cargo ON cargo.id_especialidad = adm.cargo WHERE personal.fecha_fin IS NULL ORDER BY fecha_crear DESC";
+
 export const searchAdmByCargo = `
   SELECT 
     persona.id_persona,
@@ -10,8 +13,8 @@ export const searchAdmByCargo = `
     cargo.nombre AS cargo
   FROM Personas persona
   JOIN Personal personal ON personal.id_personal = persona.id_persona
-  JOIN Administrativo adm ON adm.id_adminsitrativo = personal.id_personal
-  JOIN Cargos cargo ON cargo.id_especialidad = adm.cargo
+  JOIN Administrativo adm ON adm.id_administrativo = personal.id_personal
+  JOIN Cargos cargo ON cargo.id_cargo = adm.cargo
   WHERE personal.fecha_fin IS NULL 
     AND cargo.nombre ILIKE '%' || $1 || '%' 
   ORDER BY fecha_crear DESC;
@@ -26,7 +29,7 @@ SELECT
     personal.username AS username,
     cargo.nombre AS cargo
 FROM Personas persona
-JOIN Personal personal ON personal.id_persona = persona.id_persona 
+JOIN Personal personal ON personal.id_personal = persona.id_persona 
 JOIN Administrativo adm ON adm.id_administrativo = personal.id_personal
 JOIN Cargos cargo ON cargo.id_cargo = adm.cargo 
 WHERE personal.fecha_fin IS NULL 
@@ -42,7 +45,7 @@ SELECT
     personal.username AS username,
     cargo.nombre AS cargo
 FROM Personas persona
-JOIN Personal personal ON personal.id_persona = persona.id_persona 
+JOIN Personal personal ON personal.id_personal = persona.id_persona 
 JOIN Administrativo adm ON adm.id_administrativo = personal.id_personal
 JOIN Cargos cargo ON cargo.id_cargo = adm.cargo 
 WHERE personal.fecha_fin IS NULL 
@@ -58,7 +61,7 @@ SELECT
     personal.username AS username,
     cargo.nombre AS cargo
 FROM Personas persona
-JOIN Personal personal ON personal.id_persona = persona.id_persona 
+JOIN Personal personal ON personal.id_personal = persona.id_persona 
 JOIN Administrativo adm ON adm.id_administrativo = personal.id_personal
 JOIN Cargos cargo ON cargo.id_cargo = adm.cargo 
 WHERE personal.fecha_fin IS NULL 

@@ -14,7 +14,7 @@ const CrearEmpleado = () => {
       },
       onSuccess: () => {
         alert("Yay");
-        navigate("/dashboard/dentistas/");
+        navigate("/empleados/administrar/dentistas");
       },
     }
   );
