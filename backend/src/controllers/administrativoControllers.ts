@@ -3,10 +3,15 @@ import pool from "../models/DBconnection";
 import {
   crearPersona,
   crearPersonal,
+  updatePersona,
   yaExisteEmpleado,
 } from "../models/Queries";
-import { crearAdministrativoQuery } from "../models/administrativoQueries";
+import {
+  crearAdministrativoQuery,
+  updateAdm,
+} from "../models/administrativoQueries";
 import bcrypt from "bcrypt";
+import { identificarSearchAdm } from "../utils/searchQueryFunct";
 
 export const crearAdministrativo = async (req: Request, res: Response) => {
   const {
@@ -82,17 +87,66 @@ export const crearAdministrativo = async (req: Request, res: Response) => {
 };
 
 export const searchAdministrativo = async (req: Request, res: Response) => {
-  const { searchValue, searchParamsValue } = req.body;
+  const { searchValue, searchParams } = req.body;
   const client = await pool.connect(); //Inicia la conexion
   try {
     await client.query("BEGIN"); //inicia la transaccion
-    const searchParams = checkParamsValues(searchParamsValue);
-  } catch (error) {}
+    const searchParamsValue = identificarSearchAdm(searchParams);
+    const searchResult = await client.query(searchParamsValue, [searchValue]);
+    if (searchResult.rows.length == 0) {
+      return res.status(404).json({ message: "Not Result Founds" });
+    }
+    await client.query("COMMIT"); //fINALIZA LA TRANSACCION
+    res.status(200).json(searchResult.rows);
+  } catch (error) {
+    console.log(error);
+    await client.query("ROLLBACK"); //reinicia la transaccion
+    res.status(500).json({ message: "Internal Server Error 500" });
+  } finally {
+    client.release(); //Deshace la conexion
+  }
 };
 
-const checkParamsValues = (searchParamsValues: string) => {
-  switch (searchParamsValues) {
-    case "-- buscar --":
-      return "Hello";
+export const updateAdministrativo = async (req: Request, res: Response) => {
+  const {
+    nombre,
+    apPaterno,
+    apMaterno,
+    correo,
+    carnet,
+    telefono,
+    fechaNacimiento,
+    cargo, //Number value of the Cargos Table
+  } = req.body;
+  const idAdm = req.params.id;
+  const client = await pool.connect(); //Inicia la conexion
+  try {
+    await client.query("BEGIN"); //Inicia la transaccion
+    const cambiarPersona = await client.query(updatePersona, [
+      nombre,
+      apPaterno,
+      apMaterno,
+      carnet,
+      correo,
+      telefono,
+      fechaNacimiento,
+      idAdm,
+    ]);
+    if (cambiarPersona.rows.length === 0) {
+      return res.status(400).json({ message: "Invalid Data Input" });
+    }
+    const updatedAdmRows = await client.query(updateAdm, [cargo, idAdm]);
+
+    if (updatedAdmRows.rows.length == 0) {
+      return res.status(400).json({ message: "Invalid Data Input" });
+    }
+    await client.query("COMMIT"); //Finaliza Exitosamente la transaccion
+    res.status(200).json({ message: "Updated Succesfully" });
+  } catch (error) {
+    console.log(error);
+    await client.query("ROLLBACK"); //Deshace la transaccion
+    res.status(500).json({ message: "Internal Server Error 500" });
+  } finally {
+    client.release(); //Deshace la conexion
   }
 };

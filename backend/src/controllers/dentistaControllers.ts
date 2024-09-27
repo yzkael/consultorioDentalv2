@@ -11,12 +11,6 @@ import {
   updateDentista,
   getDentistaData,
   checkActive,
-  searchDentistasByName,
-  searchDentistasByApPaterno,
-  searchDentistasByApMaterno,
-  searchDentistasByUsername,
-  searchDentistasByEspecialidad,
-  searchDentistaInGeneral,
 } from "../models/Queries";
 import bcrypt from "bcrypt";
 import { validationResult } from "express-validator";

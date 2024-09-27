@@ -1,4 +1,11 @@
-import { searchAdmByCargo } from "../models/administrativoQueries";
+import {
+  searchAdmByApMaterno,
+  searchAdmByApPaterno,
+  searchAdmByCargo,
+  searchAdmByName,
+  searchAdmByUsername,
+  searchAdmInGeneral,
+} from "../models/administrativoQueries";
 import {
   searchDentistaInGeneral,
   searchDentistasByApMaterno,
@@ -26,5 +33,24 @@ export const identificarSearchDentista = (searchParametros: string) => {
     //   return searchAdmByCargo;
     default:
       return "Not found";
+  }
+};
+
+export const identificarSearchAdm = (searchParams: string) => {
+  switch (searchParams) {
+    case "-buscar-":
+      return searchAdmInGeneral;
+    case "nombre":
+      return searchAdmByName;
+    case "apPaterno":
+      return searchAdmByApPaterno;
+    case "apMaterno":
+      return searchAdmByApMaterno;
+    case "usuario":
+      return searchAdmByUsername;
+    case "cargo":
+      return searchAdmByCargo;
+    default:
+      return "Not Found";
   }
 };
