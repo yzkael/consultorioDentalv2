@@ -7,20 +7,22 @@ import {
   revisarCorreo,
   revisarUsername,
 } from "../models/Queries";
+import { checkAdministrativo, checkDentista } from "../models/authQueries";
 
 //TODO: Terminar de implementar el JWT
 export const signUp = async (req: Request, res: Response) => {
   const { username, password } = req.body;
-
+  console.log(username, password);
   const client = await pool.connect();
 
   try {
     await client.query("BEGIN"); //Comienza la transaccion
 
     const usuarioValido = await client.query(
-      "SELECT * from Personal WHERE username = $1",
+      "SELECT * from Personal WHERE username = $1 AND fecha_fin IS NULL",
       [username]
     );
+    console.log(usuarioValido.rows, 0);
     if (usuarioValido.rows.length === 0) {
       return res
         .status(400)
@@ -36,21 +38,66 @@ export const signUp = async (req: Request, res: Response) => {
         .json({ message: "Usuario o contrasenha Invalido" });
     }
 
+    console.log(checkContrasenha, "Hello");
     //Revisar si es Administrativo o dentista
-    let tipoEmpleado;
-    tipoEmpleado = await client.query(
-      "SELECT * FROM Administrativo WHERE id_administrativo = $1",
-      [usuarioValido.rows[0].id_personal]
-    );
+    let empleadoData;
+    let tipoEmpleado = "administrativo";
+    empleadoData = await client.query(checkAdministrativo, [
+      usuarioValido.rows[0].id_personal,
+    ]);
+
+    console.log(empleadoData.rows, 1);
+
     //Si es 0 significa que es Dentista
-    if (tipoEmpleado.rows[0].length === 0) {
-      tipoEmpleado = await client.query(
-        "SELECT * FROM Dentistas WHERE id_dentista = $1",
-        [usuarioValido.rows[0].id_personal]
+    if (empleadoData.rows[0].length == 0) {
+      empleadoData = await client.query(checkDentista, [
+        usuarioValido.rows[0].id_personal,
+      ]);
+      tipoEmpleado = "dentista";
+    }
+    const userData = empleadoData.rows[0];
+    console.log(userData, 2);
+
+    //--------------IMPORTANTE -------------
+    // utilice role como nombre generico para facilitarme su uso en el frontend
+    let token;
+
+    if (tipoEmpleado == "administrativo") {
+      token = jwt.sign(
+        {
+          userId: userData.id_administrativo,
+          username: userData.username,
+          role: userData.cargo,
+        },
+        process.env.JWT_SECRET_KEY as string,
+        {
+          expiresIn: "1d",
+        }
+      );
+    } else {
+      token = jwt.sign(
+        {
+          userId: userData.id_dentista,
+          username: userData.username,
+          role: userData.especialidad,
+        },
+        process.env.JWT_SECRET_KEY as string,
+        {
+          expiresIn: "1d",
+        }
       );
     }
-    //Web Tokens para la autenticacion y autorizacion
-  } catch (error) {}
+    res.cookie("auth_token", token, {
+      httpOnly: true,
+      secure: false, //Por que es development
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    res.status(200).json({ userData });
+  } catch (error) {
+    // console.log(error);
+    res.status(500).json({ message: "Internal Server Error 500" });
+  }
 };
 
 export const checkCarnet = async (req: Request, res: Response) => {
