@@ -6,6 +6,7 @@ import {
   ManejarDentistasTabla,
   RevisarDato,
   ManejarAdministrativoTabla,
+  EditarAdmFormType,
 } from "./types/app-types";
 
 const BASE_API_URL = import.meta.env.VITE_BASE_URL as string;
@@ -204,6 +205,37 @@ export const deleteAdm = async (idAdm: string) => {
   );
   if (!response.ok) {
     throw new Error("Something went wrong");
+  }
+  const returnData = await response.json();
+  return returnData;
+};
+
+export const getSingleAdm = async (
+  idAdm: string
+): Promise<EditarAdmFormType> => {
+  const response = await fetch(`${BASE_API_URL}/api/administrativo/${idAdm}`, {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong");
+  }
+  const returnData = await response.json();
+  return returnData;
+};
+
+export const updateAdm = async (idAdm: string, data: EditarAdmFormType) => {
+  const response = await fetch(`${BASE_API_URL}/api/administrativo/${idAdm}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong...");
   }
   const returnData = await response.json();
   return returnData;

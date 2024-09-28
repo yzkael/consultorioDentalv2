@@ -8,6 +8,7 @@ import {
 } from "../models/Queries";
 import {
   crearAdministrativoQuery,
+  getSingleAdmForUpdate,
   updateAdm,
 } from "../models/administrativoQueries";
 import bcrypt from "bcrypt";
@@ -179,5 +180,22 @@ export const softDelete = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal Server Error 500" });
   } finally {
     client.release(); //Deshace la conexion
+  }
+};
+
+export const getSingleAdm = async (req: Request, res: Response) => {
+  const idAdm = req.params.id;
+  const client = await pool.connect(); //Connecta a la DB
+  try {
+    const singleAdm = await client.query(getSingleAdmForUpdate, [idAdm]);
+    if (singleAdm.rows.length == 0) {
+      return res.status(404).json({ message: "Empleado not found" });
+    }
+    res.status(200).json(singleAdm.rows[0]);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error 500" });
+  } finally {
+    client.release(); // Se desconecta a la DB
   }
 };

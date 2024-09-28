@@ -108,3 +108,26 @@ export const searchAdmInGeneral = `
 `;
 
 export const updateAdm = `UPDATE Administrativo SET cargo = $1 WHERE id_administrativo = $2 RETURNING *`;
+
+export const getSingleAdmForUpdate = `SELECT 
+    p.nombre AS nombre,
+    p.ap_paterno AS apPaterno,
+    p.ap_materno AS apMaterno,
+    p.correo AS correo,
+    p.carnet AS carnet,
+    p.fecha_nacimiento AS fechaNacimiento,
+    a.cargo AS cargo 
+FROM 
+    Personas p
+JOIN 
+    Administrativo a 
+ON 
+    p.id_persona = a.id_administrativo
+JOIN
+    Personal pers
+ON
+    pers.id_personal = a.id_administrativo
+WHERE 
+    p.id_persona = $1 
+AND 
+    pers.fecha_fin IS NULL;`;

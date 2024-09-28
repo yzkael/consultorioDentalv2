@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useQueryClient } from "react-query";
 import TablaManejar from "../components/TablaManejar";
 import { searchAdmOpciones } from "../config/config-files";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 
 const ManejarAdm = () => {
@@ -52,20 +53,7 @@ const ManejarAdm = () => {
                 <div className="w-full max-w-4xl bg-white shadow-md rounded-lg overflow-hidden">
                     <div className="overflow-x-auto">
                         <div className="inline-block min-w-full align-middle">
-                            {isLoading ? <div className="w-full h-screen flex justify-center items-center">
-                                <div className="w-max h-max  flex justify-center items-center mb-10">
-                                    <TailSpin
-                                        visible={true}
-                                        height="100%"
-                                        width="100%"
-                                        color="#D10056"
-                                        ariaLabel="tail-spin-loading"
-                                        radius="1"
-                                        wrapperStyle={{}}
-                                        wrapperClass=""
-                                    />
-                                </div>
-                            </div> : <TablaManejar data={administrativos} handleClick={handleClick} differentAttribute="cargo" dataName="administrativo" />}
+                            {isLoading ? <LoadingSpinner /> : <TablaManejar data={administrativos} handleClick={handleClick} differentAttribute="cargo" dataName="administrativo" />}
 
                         </div>
                     </div>

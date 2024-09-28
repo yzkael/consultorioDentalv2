@@ -19,7 +19,7 @@ export type EditarDentistaFormType = {
   correo: string;
   carnet: string;
   telefono: string;
-  fechanacimiento: Date | string;
+  fechanacimiento: Date | string; //Debe aceptar los dos tipos para asegurarse de que el form le mande bien la info
   especialidad: number;
 };
 
@@ -63,5 +63,16 @@ export type CrearAdmFormType = {
   username: string;
   password: string;
   confirmPassword: string;
+  cargo: number;
+};
+
+export type EditarAdmFormType = {
+  nombre: string;
+  appaterno: string;
+  apmaterno: string;
+  correo: string;
+  carnet: string;
+  telefono: string;
+  fechanacimiento: Date | string;
   cargo: number;
 };
