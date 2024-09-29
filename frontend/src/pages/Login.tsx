@@ -1,6 +1,26 @@
 import imgLogin from "../assets/dentistaLogin.png";
+import { useMutation } from "react-query";
+import * as apiClient from '../api-client';
+import { useNavigate } from "react-router-dom";
+import { LoginFormType } from "../types/app-types";
 import LoginForm from "../forms/LoginForm";
+
+
 const Login = () => {
+
+  const navigate = useNavigate();
+  const { mutate, isLoading } = useMutation("signUp", apiClient.signUp, {
+    onSuccess: () => {
+      alert("Yay");
+      navigate("/dashboard");
+    },
+    onError: () => {
+      alert("Not Yay")
+    }
+  })
+  const onSave = (data: LoginFormType) => {
+    mutate(data);
+  }
   return (
     // Body
     <div className="flex flex-col h-screen bg-loginBgPink">
@@ -12,7 +32,7 @@ const Login = () => {
         </div>
         {/* Login Form */}
         <div className="h-full  w-full">
-          <LoginForm />
+          <LoginForm onSave={onSave} isLoading={isLoading} />
         </div>
       </div>
     </div>

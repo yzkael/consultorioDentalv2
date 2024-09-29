@@ -12,7 +12,6 @@ import { checkAdministrativo, checkDentista } from "../models/authQueries";
 //TODO: Terminar de implementar el JWT
 export const signUp = async (req: Request, res: Response) => {
   const { username, password } = req.body;
-  console.log(username, password);
   const client = await pool.connect();
 
   try {
@@ -22,7 +21,6 @@ export const signUp = async (req: Request, res: Response) => {
       "SELECT * from Personal WHERE username = $1 AND fecha_fin IS NULL",
       [username]
     );
-    console.log(usuarioValido.rows, 0);
     if (usuarioValido.rows.length === 0) {
       return res
         .status(400)
@@ -37,8 +35,6 @@ export const signUp = async (req: Request, res: Response) => {
         .status(400)
         .json({ message: "Usuario o contrasenha Invalido" });
     }
-
-    console.log(checkContrasenha, "Hello");
     //Revisar si es Administrativo o dentista
     let empleadoData;
     let tipoEmpleado = "administrativo";
@@ -46,17 +42,14 @@ export const signUp = async (req: Request, res: Response) => {
       usuarioValido.rows[0].id_personal,
     ]);
 
-    console.log(empleadoData.rows, 1);
-
     //Si es 0 significa que es Dentista
-    if (empleadoData.rows[0].length == 0) {
+    if (empleadoData.rows.length == 0) {
       empleadoData = await client.query(checkDentista, [
         usuarioValido.rows[0].id_personal,
       ]);
       tipoEmpleado = "dentista";
     }
     const userData = empleadoData.rows[0];
-    console.log(userData, 2);
 
     //--------------IMPORTANTE -------------
     // utilice role como nombre generico para facilitarme su uso en el frontend
@@ -68,6 +61,7 @@ export const signUp = async (req: Request, res: Response) => {
           userId: userData.id_administrativo,
           username: userData.username,
           role: userData.cargo,
+          tipoEmpleado: tipoEmpleado,
         },
         process.env.JWT_SECRET_KEY as string,
         {
@@ -80,6 +74,7 @@ export const signUp = async (req: Request, res: Response) => {
           userId: userData.id_dentista,
           username: userData.username,
           role: userData.especialidad,
+          tipoEmpleado: tipoEmpleado,
         },
         process.env.JWT_SECRET_KEY as string,
         {
@@ -92,10 +87,9 @@ export const signUp = async (req: Request, res: Response) => {
       secure: false, //Por que es development
       maxAge: 24 * 60 * 60 * 1000,
     });
-
     res.status(200).json({ userData });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     res.status(500).json({ message: "Internal Server Error 500" });
   }
 };

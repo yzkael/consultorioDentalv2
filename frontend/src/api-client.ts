@@ -7,6 +7,7 @@ import {
   RevisarDato,
   ManejarAdministrativoTabla,
   EditarAdmFormType,
+  LoginFormType,
 } from "./types/app-types";
 
 const BASE_API_URL = import.meta.env.VITE_BASE_URL as string;
@@ -236,6 +237,37 @@ export const updateAdm = async (idAdm: string, data: EditarAdmFormType) => {
   });
   if (!response.ok) {
     throw new Error("Something went wrong...");
+  }
+  const returnData = await response.json();
+  return returnData;
+};
+
+export const signUp = async (data: LoginFormType) => {
+  const response = await fetch(`${BASE_API_URL}/api/auth/login`, {
+    method: "POST",
+    body: JSON.stringify(data),
+    credentials: "include",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong");
+  }
+  const returnData = await response.json();
+  return returnData;
+};
+
+export const checkJWT = async () => {
+  const response = await fetch(`${BASE_API_URL}/api/auth/check-jwt`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong");
   }
   const returnData = await response.json();
   return returnData;

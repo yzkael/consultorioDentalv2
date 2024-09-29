@@ -76,3 +76,8 @@ export type EditarAdmFormType = {
   fechanacimiento: Date | string;
   cargo: number;
 };
+
+export type LoginFormType = {
+  username: string;
+  password: string;
+};
