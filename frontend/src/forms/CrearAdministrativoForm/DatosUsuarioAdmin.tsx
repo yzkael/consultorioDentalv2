@@ -100,7 +100,7 @@ const DatosUsuarioAdm = ({ handleBack }: DatosUsuarioAdmProps) => {
                 )}
             </label>
             <label className="text-gray-700 text-sm font-bold flex-1 mx-10 ">
-                Especialidad:
+                Cargo:
                 <select
                     {...register("cargo", { required: "Este campo es requerido" })}
                 >

@@ -110,26 +110,28 @@ export const searchAdministrativo = async (req: Request, res: Response) => {
 export const updateAdministrativo = async (req: Request, res: Response) => {
   const {
     nombre,
-    apPaterno,
-    apMaterno,
+    appaterno,
+    apmaterno,
     correo,
     carnet,
     telefono,
-    fechaNacimiento,
+    fechanacimiento,
     cargo, //Number value of the Cargos Table
   } = req.body;
   const idAdm = req.params.id;
+  console.log("Reached");
+  console.log(req.body, idAdm);
   const client = await pool.connect(); //Inicia la conexion
   try {
     await client.query("BEGIN"); //Inicia la transaccion
     const cambiarPersona = await client.query(updatePersona, [
       nombre,
-      apPaterno,
-      apMaterno,
+      appaterno,
+      apmaterno,
       carnet,
       correo,
       telefono,
-      fechaNacimiento,
+      fechanacimiento,
       idAdm,
     ]);
     if (cambiarPersona.rows.length === 0) {

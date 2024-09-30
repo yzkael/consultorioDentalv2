@@ -14,7 +14,6 @@ const InformacionDentista = () => {
   const {
     register,
     formState: { errors },
-
   } = useFormContext<CrearDentistaFormType>();
 
   //Debouncer Proposito: No dejar que el query sea fetcheado constantemente sino despues de un tiempo determinado

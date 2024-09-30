@@ -1,9 +1,17 @@
 
 const TestPage = () => {
     return (
-        <button onClick={() => {
-            console.log("Clicked")
-        }} className="py-1 px-2 bg-purple-500 rounded-lg">asdasd</button>
+        <div className="flex flex-col min-h-screen bg-slate-400">
+            {/* Header */}
+            <div className="h-[10vh] flex justify-center items-center text-white text-2xl font-bold bg-yellow-300">
+                Pagina Pereira
+            </div>
+            {/* Main */}
+            <div className="grid grid-cols-[1fr_5fr]">
+                <div className="w-full h-screen bg-green-600">SEctio</div>
+                <div className="bg-blue-500"></div>
+            </div>
+        </div>
     )
 }
 

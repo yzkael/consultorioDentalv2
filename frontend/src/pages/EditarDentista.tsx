@@ -3,10 +3,12 @@ import * as apiClient from '../api-client';
 import { EditarDentistaFormType } from '../types/app-types';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import ManageEditarDentista from '../forms/EditarDentistaForm/ManageEditarDentista';
+import { useToast } from '../context/ToastContextProvider';
 
 
 const EditarDentista = () => {
   const { idDentista } = useParams();
+  const { notifySuccess, notifyError } = useToast();
   const navigate = useNavigate();
   const { data: dentista, isLoading: fetching } = useQuery(
     ["fetchDentista", idDentista], // Include idDentista in the query key
@@ -19,11 +21,11 @@ const EditarDentista = () => {
       apiClient.updateDentista(idDentista, data),
     {
       onSuccess: () => {
-        alert("Success");
+        notifySuccess("Dentista editado exitosamente!");
         navigate('/empleados/administrar/dentistas');
       },
       onError: () => {
-        alert("Error:");
+        notifyError("Formato de datos invalido");
       },
     }
   );

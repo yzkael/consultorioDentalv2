@@ -4,6 +4,7 @@ import * as apiClient from '../api-client'
 import { EditarAdmFormType } from "../types/app-types";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ManageEditarAdm from "../forms/EditarAdministrativoForm/ManageEditarAdm";
+import { useToast } from "../context/ToastContextProvider";
 
 
 
@@ -11,18 +12,20 @@ import ManageEditarAdm from "../forms/EditarAdministrativoForm/ManageEditarAdm";
 const EditarAdm = () => {
     const { idAdm } = useParams();
     const navigate = useNavigate();
+    const { notifyError, notifySuccess } = useToast();
 
     //Informacion Fetcheada del Adm (Para displayear al user lo que va a cambiar)
     const { data: admData, isLoading: isFetching } = useQuery(["fetchSingleAdm", idAdm], () => apiClient.getSingleAdm(idAdm as string), { retry: 0 })
 
 
+
     //Logica del Edit en si
     const { mutate, isLoading: isUpdating } = useMutation(({ idAdm, data }: { idAdm: string; data: EditarAdmFormType }) => apiClient.updateAdm(idAdm, data), {
         onSuccess: () => {
-            alert("Yay")
-            navigate("/dashboard")
+            notifySuccess("Administrativo editado exitosamente");
+            navigate("/empleados/administrar/administrativos");
         }, onError: () => {
-            alert("Fuck you");
+            notifyError("Formato de datos invalido")
         }
     })
 

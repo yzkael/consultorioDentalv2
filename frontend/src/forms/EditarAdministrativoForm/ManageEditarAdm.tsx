@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { EditarAdmFormType } from "../../types/app-types"
 import { useForm, FormProvider } from "react-hook-form";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import TitleMenus from "../../components/TitleMenus";
+import EditarAdmPag1 from "./EditarAdmPag1";
+import EditarAdmPag2 from "./EditarAdmPag2";
 
 
 type ManageEditarAdmProps = {
@@ -28,6 +31,7 @@ const ManageEditarAdm = ({ admData, isFetching, isUpdating, onSave }: ManageEdit
     const formMethods = useForm<EditarAdmFormType>();
     const { handleSubmit, setValue, reset } = formMethods;
 
+
     useEffect(() => {
         if (admData) {
             const formatedDate = new Date(admData.fechanacimiento).toISOString().split("T")[0];
@@ -44,12 +48,37 @@ const ManageEditarAdm = ({ admData, isFetching, isUpdating, onSave }: ManageEdit
         }
     }, [admData, reset])
 
+    const handleBack = () => {
+        setCurrentPage(prev => prev - 1);
+    }
 
+
+    const onSubmit = handleSubmit((data: EditarAdmFormType) => {
+        if (currentPage !== 1) {
+            setCurrentPage(prev => prev + 1);
+        } else {
+            onSave(data);
+        }
+    })
 
 
     return (
-        <div>
-
+        <div className="page-wrapper">
+            <TitleMenus title="Editar Administrativo" />
+            <div className="page-wrapper">
+                <FormProvider {...formMethods}>
+                    <form className="form" onSubmit={onSubmit}>
+                        {currentPage == 0 && <EditarAdmPag1 originalCarnet={admData.carnet} />}
+                        {currentPage == 1 && <EditarAdmPag2 originalCorreo={admData.correo} handleBack={handleBack} />}
+                        {currentPage == 1 && (
+                            <div className="flex justify-around">
+                                <button className="btn" onClick={handleBack}>Back</button>
+                                <button className="btn" disabled={isFetching}>Submit</button>
+                            </div>
+                        )}
+                    </form>
+                </FormProvider>
+            </div>
         </div>
     )
 }

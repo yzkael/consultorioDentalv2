@@ -113,6 +113,7 @@ export const getSingleAdmForUpdate = `SELECT
     p.nombre AS nombre,
     p.ap_paterno AS apPaterno,
     p.ap_materno AS apMaterno,
+    p.telefono AS telefono,
     p.correo AS correo,
     p.carnet AS carnet,
     p.fecha_nacimiento AS fechaNacimiento,

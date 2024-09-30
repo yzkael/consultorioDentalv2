@@ -4,18 +4,20 @@ import * as apiClient from '../api-client';
 import { useNavigate } from "react-router-dom";
 import { LoginFormType } from "../types/app-types";
 import LoginForm from "../forms/LoginForm";
-
+import { useToast } from "../context/ToastContextProvider";
 
 const Login = () => {
+
+  const { notifyError, notifySuccess } = useToast();
 
   const navigate = useNavigate();
   const { mutate, isLoading } = useMutation("signUp", apiClient.signUp, {
     onSuccess: () => {
-      alert("Yay");
+      notifySuccess("Bienvenido de vuelta!")
       navigate("/dashboard");
     },
     onError: () => {
-      alert("Not Yay")
+      notifyError("Usuario o contrasenha incorrectos!");
     }
   })
   const onSave = (data: LoginFormType) => {
