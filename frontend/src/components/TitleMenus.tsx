@@ -4,6 +4,9 @@ type TitleProps = {
   title: string;
 };
 
+//Utilizar el useAuth para cambiar de logout a menu botton!
+
+
 const TitleMenus = ({ title }: TitleProps) => {
   return (
     <div className=" bg-slate-500 w-full h-[15vh]  flex justify-around items-center max-h-[10vh]">

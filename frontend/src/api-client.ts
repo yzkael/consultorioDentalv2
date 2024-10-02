@@ -1,3 +1,4 @@
+import { JwtPayload } from "./context/RoleContextProvider";
 import {
   CrearAdmFormType,
   CrearDentistaFormType,
@@ -258,7 +259,18 @@ export const signUp = async (data: LoginFormType) => {
   return returnData;
 };
 
-export const checkJWT = async () => {
+export const logout = async () => {
+  const response = await fetch(`${BASE_API_URL}/api/auth/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong...");
+  }
+  //No necesita response.json() por que solo se maneja en el navegador: httpOnly cookie
+};
+
+export const checkJWT = async (): Promise<JwtPayload> => {
   const response = await fetch(`${BASE_API_URL}/api/auth/check-jwt`, {
     method: "GET",
     credentials: "include",
@@ -270,5 +282,6 @@ export const checkJWT = async () => {
     throw new Error("Something went wrong");
   }
   const returnData = await response.json();
+  console.log(returnData, "En el apiClient");
   return returnData;
 };

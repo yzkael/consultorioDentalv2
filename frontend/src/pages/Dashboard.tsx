@@ -6,12 +6,14 @@ import { FaUsers as imgDetallePacientes } from "react-icons/fa6";
 import { MdOutlinePersonalInjury as imgCrearPaciente } from "react-icons/md";
 import DashboardCardButton from "../components/DashboardCardButton";
 import LeftSidePanel from "../components/LeftSidePanelDashboard";
+import TitleMenus from "../components/TitleMenus";
 
 const Dashboard = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[1fr_4fr] h-screen">
-      <LeftSidePanel />
-      <div className="py-10 px-16 grid grid-cols-1 md:grid-cols-2 gap-5 w-full h-full bg-blue-400">
+    <div className="flex bg-black flex-col min-h-screen h-full justify-center items-center">
+      {/* <LeftSidePanel /> */}
+      <TitleMenus title="Bienvenido de vuelta" />
+      <div className="grid grid-cols-1 gap-10 h-full w-full m-auto md:grid-cols-2  md:w-[60vw] md:h-[60vh]  bg-loginBgPink">
         <DashboardCardButton
           image={imgEmpleado}
           title="Administrar Empleados"

@@ -81,7 +81,7 @@ export const createDentistas = async (req: Request, res: Response) => {
 
     res.status(200).json({ message: "Dentista creado con exito" });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     await client.query("ROLLBACK");
     res.status(500).json({ message: "Internal Server Error 500" });
   } finally {

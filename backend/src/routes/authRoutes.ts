@@ -18,7 +18,17 @@ router.post("/check-correo", checkCorreo);
 router.post("/check-username", checkUsername);
 
 router.get("/check-jwt", revisarJWT, async (req: Request, res: Response) => {
-  res.status(200).json(req.tipoEmpleado);
+  res.status(200).json(req.userInfo);
 });
+
+router.post("/logout", async (req: Request, res: Response) => {
+  res.cookie("auth_token", "", {
+    expires: new Date(0),
+  });
+  res.send();
+});
+
+//Aqui vendran las routes que revisaran el role del usuario dependiendo de su numero en role:
+//esto se utilizara para proteger las rutas
 
 export default router;

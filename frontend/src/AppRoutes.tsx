@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import MainLayout from "./layouts/MainLayout";
 import Dashboard from "./pages/Dashboard";
@@ -7,23 +7,26 @@ import CrearDentista from "./pages/CrearDentista";
 import ManejarDentistas from "./pages/ManejarDentistas";
 import EditarDentista from "./pages/EditarDentista";
 import TestPage from "./pages/TestPage";
-import ToastContextProvider from "./context/ToastContextProvider";
 import EditarAdm from "./pages/EditarAdm";
 import CrearAdm from "./pages/CrearAdm";
 import ManejarEmpleado from "./pages/ManejarEmpleado";
 import ManejarAdm from "./pages/ManejarAdm";
+import { useAuth } from "./context/RoleContextProvider";
 
 const AppRoutes = () => {
+  const { isLoggedIn } = useAuth();
+  console.log(isLoggedIn); //DEBUGER
   return (
-    <ToastContextProvider>
-
-      <Routes>
-        <Route path="/" element={
-
-          <Login />
-
-        } />
-        <Route path="/dashboard" element={<Dashboard />} />
+    <Routes>
+      {!isLoggedIn && (
+        <>
+          <Route path="/" element={
+            <Login />
+          } />
+          <Route path="*" element={<Navigate to={'/'} />} />
+        </>)}
+      {isLoggedIn && (<>
+        <Route path="/" element={<Dashboard />} />
         <Route
           path="/empleados/crear"
           element={
@@ -68,8 +71,12 @@ const AppRoutes = () => {
 
         <Route path="/test"
           element={<TestPage />} />
-      </Routes>
-    </ToastContextProvider>
+
+        <Route path="*" element={<Navigate to={'/'} />} />
+
+      </>)}
+
+    </Routes>
 
 
   );

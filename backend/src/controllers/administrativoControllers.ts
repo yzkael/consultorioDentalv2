@@ -119,8 +119,6 @@ export const updateAdministrativo = async (req: Request, res: Response) => {
     cargo, //Number value of the Cargos Table
   } = req.body;
   const idAdm = req.params.id;
-  console.log("Reached");
-  console.log(req.body, idAdm);
   const client = await pool.connect(); //Inicia la conexion
   try {
     await client.query("BEGIN"); //Inicia la transaccion

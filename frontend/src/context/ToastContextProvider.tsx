@@ -23,7 +23,7 @@ const ToastContextProvider = ({ children }: { children: ReactNode }) => {
 
     const notifySuccess = useCallback((message: string) => {
         toast.success(message, {
-            position: 'top-right',
+            position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
