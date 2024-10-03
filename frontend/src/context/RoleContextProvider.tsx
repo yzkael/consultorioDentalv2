@@ -24,9 +24,6 @@ const RoleContextProvider = ({ children }: { children: ReactNode }) => {
         retry: 1,
     });
 
-    console.log(data, "En el contexto");
-    console.log(isError);
-
 
     //Para que no salte Error revisaremos la data y le daremos null en vez de undefined
     const userId = data ? data.userId : null;
@@ -34,9 +31,9 @@ const RoleContextProvider = ({ children }: { children: ReactNode }) => {
     const tipoEmpleado = data ? data.tipoEmpleado : null;
 
     const roleContextValues: AuthContextType = {
-        userId,
-        role,
-        tipoEmpleado,
+        userId, // For createdBy
+        role, // For consulta types and.... Maybe.... Protected Routes?
+        tipoEmpleado, // For dashboard
         isLoggedIn: !isError //Sino es error entonces significa que esta logeado
     }
 

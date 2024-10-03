@@ -15,7 +15,6 @@ import { useAuth } from "./context/RoleContextProvider";
 
 const AppRoutes = () => {
   const { isLoggedIn } = useAuth();
-  console.log(isLoggedIn); //DEBUGER
   return (
     <Routes>
       {!isLoggedIn && (

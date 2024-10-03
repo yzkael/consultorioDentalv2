@@ -282,6 +282,5 @@ export const checkJWT = async (): Promise<JwtPayload> => {
     throw new Error("Something went wrong");
   }
   const returnData = await response.json();
-  console.log(returnData, "En el apiClient");
   return returnData;
 };

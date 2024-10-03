@@ -86,8 +86,11 @@ export const crearAdministrativo = async (req: Request, res: Response) => {
   }
 };
 
+//--------------TODO: Anhadir un LIMIT a la query para que no sobrecarge el frontend
 export const searchAdministrativo = async (req: Request, res: Response) => {
   const { searchValue, searchParams } = req.body;
+  if (searchParams == "")
+    return res.status(400).json({ message: "No search params" });
   const client = await pool.connect(); //Inicia la conexion
   try {
     await client.query("BEGIN"); //inicia la transaccion

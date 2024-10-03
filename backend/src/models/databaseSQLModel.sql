@@ -45,6 +45,9 @@ CREATE TABLE Cargos (
 INSERT INTO Cargos(nombre) VALUES ('Recepcionista');
 INSERT INTO Cargos(nombre) VALUES ('Administrador');
 
+--Cargo especial Sudo
+INSERT INTO Cargos(nombre) VALUES ('sudo');
+
 
 CREATE TABLE Dentistas(
     id_dentista INTEGER PRIMARY KEY REFERENCES Personal(id_personal),
@@ -63,7 +66,7 @@ INSERT INTO Especialidades(nombre) VALUES ('General');
 INSERT INTO Especialidades(nombre) VALUES ('Ayudante');
 
 
-
+--Anhadir creado_por column para identificar el trabajador
 CREATE TABLE Pacientes(
     id_paciente INTEGER REFERENCES Personas(id_persona)
 );
@@ -73,7 +76,6 @@ CREATE TABLE Consultas_Medicos(
     destista INTEGER REFERENCES Dentistas(id_dentista),
     consulta INTEGER REFERENCES Consultas(id_consulta)
 );
-
 
 CREATE TABLE Consultas(
     id_consulta BIGSERIAL PRIMARY KEY,
@@ -85,11 +87,17 @@ CREATE TABLE Consultas(
     procedimientos INTEGER REFERENCES Procedimientos(id_procedimiento)    
 );
 
+
+--Tal vez sea mejor deshacerse del procedimiento y simplemente dejar un espacio libre para que el medico/dentista pueda describir libremente lo que realizo. 
+
 CREATE TABLE Procedimientos_Consultas(
     id_procedimientos_consultas BIGSERIAL PRIMARY KEY,
     procedimiento INTEGER REFERENCES Procedimientos(id_procedimiento),
     consulta INTEGER REFERENCES Consultas(id_consulta)
 );
+
+--Podria simplemente crear Procedimiento: Titlo, Descripcion y precio asi podriamos tambien facilitar el cobro en caja.
+-- Esto debido que aunque el procedimiento sea "el mismo" por las diferentes razones que conllevan cada tratamiento y las complicaciones que se dieron en su realizacion, el cobro podria variar
 
 CREATE TABLE Procedimientos(
     id_procedimiento BIGSERIAL PRIMARY KEY,
@@ -97,13 +105,14 @@ CREATE TABLE Procedimientos(
     descripcion TEXT NOT NULL
 );
 
+--Anhadir la columna: Dosis para identificar cada cuantas horas sera requerido su consumo
 CREATE TABLE Procedimientos_Medicamentos(
     id_procedimiento_medicamento BIGSERIAL PRIMARY KEY,
     medicamento INTEGER REFERENCES Medicamentos(id_medicamento),
     procedimiento INTEGER REFERENCES Procedimientos(id_procedimiento)
 );
 
-
+--Me gustaria intentar utilizar una API para reunir los medicamentos
 CREATE TABLE Medicamentos(
     id_medicamento BIGSERIAL PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,

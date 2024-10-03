@@ -209,6 +209,8 @@ export const getDentista = async (req: Request, res: Response) => {
   }
 };
 
+//--------------TODO: Anhadir un LIMIT a la query para que no sobrecarge el frontend
+
 export const searchDentista = async (req: Request, res: Response) => {
   const { searchValue, searchParams } = req.body;
   const searchQuery = identificarSearchDentista(searchParams);

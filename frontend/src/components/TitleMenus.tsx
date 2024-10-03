@@ -1,20 +1,28 @@
-import MenuButton from "./MenuButton";
+import Logout from "./buttons/Logout";
+import MenuButton from "./buttons/MenuButton";
+import { useLocation } from "react-router-dom";
 
 type TitleProps = {
   title: string;
 };
 
 //Utilizar el useAuth para cambiar de logout a menu botton!
+// 
 
 
 const TitleMenus = ({ title }: TitleProps) => {
+
+  const location = useLocation();
+  const isMainPage = location.pathname === '/';
+
   return (
     <div className=" bg-slate-500 w-full h-[15vh]  flex justify-around items-center max-h-[10vh]">
-      <MenuButton />
+      <div className="invisible">adsa</div>
       <div className="text-white font-bold tracking-tight text-3xl">
         {title}
       </div>
-      <div className="invisible">adsa</div>
+      {isMainPage ? <Logout /> : <MenuButton />}
+
     </div>
   );
 };

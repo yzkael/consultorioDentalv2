@@ -23,7 +23,7 @@ const SearchBar = ({ handleSearch, options }: searchBarProps) => {
                         <option value={option.value} >{option.description}</option>
                     ))}
                 </select>
-                <button className="py-1 px-2 rounded-lg bg-purple-600 hover:bg-purple-400" type="submit">Search</button>
+                <button className="btn" type="submit">Search</button>
             </form>
         </div>
     )
