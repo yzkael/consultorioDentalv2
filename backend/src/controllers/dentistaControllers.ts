@@ -18,6 +18,7 @@ import { identificarSearchDentista } from "../utils/searchQueryFunct";
 
 export const createDentistas = async (req: Request, res: Response) => {
   const errors = validationResult(req);
+  console.log(errors);
   if (!errors.isEmpty()) {
     return res.status(400).json({ message: errors.array() });
   }

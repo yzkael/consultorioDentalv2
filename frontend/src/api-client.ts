@@ -146,7 +146,6 @@ export const checkCorreo = async (correo: string): Promise<RevisarDato> => {
 };
 
 export const checkUsername = async (username: string): Promise<RevisarDato> => {
-  console.log(username);
   const response = await fetch(`${BASE_API_URL}/api/auth/check-username`, {
     method: "POST",
     body: JSON.stringify({ username }),
@@ -162,9 +161,9 @@ export const checkUsername = async (username: string): Promise<RevisarDato> => {
 };
 
 export const crearAdministrativo = async (data: CrearAdmFormType) => {
-  console.log(data);
   const response = await fetch(`${BASE_API_URL}/api/administrativo`, {
     method: "POST",
+    credentials: "include",
     body: JSON.stringify(data),
     headers: {
       "Content-type": "application/json",

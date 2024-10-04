@@ -7,8 +7,7 @@ const Dashboard = () => {
 
   const { tipoEmpleado, role } = useAuth();
 
-  console.log(role);
-  console.log(tipoEmpleado);
+
   //"adminsitrativo" o "dentista" 
   //Para no complicarme la vida voy a crear un role especial para el sudo Admin 
   //Es decir existira doble checking para el administrativo

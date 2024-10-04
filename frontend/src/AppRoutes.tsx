@@ -12,10 +12,15 @@ import CrearAdm from "./pages/CrearAdm";
 import ManejarEmpleado from "./pages/ManejarEmpleado";
 import ManejarAdm from "./pages/ManejarAdm";
 import { useAuth } from "./context/RoleContextProvider";
-
+import SudoRoutes from "./utils/SudoRoutes";
 const AppRoutes = () => {
   const { isLoggedIn } = useAuth();
   return (
+
+
+    //IMPLEMENTAR ROUTAS PROTEGIDAS DEPENDIENDO SEAN REQUERIDAS
+
+
     <Routes>
       {!isLoggedIn && (
         <>
@@ -25,51 +30,56 @@ const AppRoutes = () => {
           <Route path="*" element={<Navigate to={'/'} />} />
         </>)}
       {isLoggedIn && (<>
-        <Route path="/" element={<Dashboard />} />
-        <Route
-          path="/empleados/crear"
-          element={
-            <MainLayout>
-              <CrearEmpleado />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/empleados/crear/dentistas"
-          element={
-            <MainLayout>
-              <CrearDentista />
-            </MainLayout>
-          }
-        />
-        <Route path="/empleados/administrar/" element={
-          <ManejarEmpleado />
-        } />
-        <Route
-          path="/empleados/administrar/dentistas"
-          element={
-            <MainLayout>
-              <ManejarDentistas />
-            </MainLayout>
-          }
-        />
-        <Route path="/empleados/administrar/dentistas/editar-dentista/:idDentista"
-          element={
-            <MainLayout>
-              <EditarDentista />
-            </MainLayout>
+
+        {/* RUTAS PARA EL ADMIN (Usuario SUDO) */}
+        <SudoRoutes>
+          <Route path="/" element={<Dashboard />} />
+          <Route
+            path="/empleados/crear"
+            element={
+              <MainLayout>
+                <CrearEmpleado />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/empleados/crear/dentistas"
+            element={
+              <MainLayout>
+                <CrearDentista />
+              </MainLayout>
+            }
+          />
+          <Route path="/empleados/administrar/" element={
+            <ManejarEmpleado />
           } />
+          <Route
+            path="/empleados/administrar/dentistas"
+            element={
+              <MainLayout>
+                <ManejarDentistas />
+              </MainLayout>
+            }
+          />
+          <Route path="/empleados/administrar/dentistas/editar-dentista/:idDentista"
+            element={
+              <MainLayout>
+                <EditarDentista />
+              </MainLayout>
+            } />
 
-        <Route path="/empleados/administrar/administrativos" element={<ManejarAdm />} />
+          <Route path="/empleados/administrar/administrativos" element={<ManejarAdm />} />
 
-        <Route path="/empleados/administrar/administrativos/editar-administrativo/:idAdm" element={<EditarAdm />} />
+          <Route path="/empleados/administrar/administrativos/editar-administrativo/:idAdm" element={<EditarAdm />} />
 
 
-        <Route path="/empleados/crear/administrativos"
-          element={<CrearAdm />} />
+          <Route path="/empleados/crear/administrativos"
+            element={<CrearAdm />} />
 
-        <Route path="/test"
-          element={<TestPage />} />
+          <Route path="/test"
+            element={<TestPage />} />
+        </SudoRoutes>
+
 
         <Route path="*" element={<Navigate to={'/'} />} />
 

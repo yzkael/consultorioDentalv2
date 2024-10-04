@@ -29,6 +29,7 @@ export const revisarJWT = async (
     if (!req.userInfo) {
       req.userInfo = { userId: 0, tipoEmpleado: "", role: "" };
     }
+
     req.userInfo.userId = (decoded as JwtPayload).userId;
     req.userInfo.role = (decoded as JwtPayload).role;
     req.userInfo.tipoEmpleado = (decoded as JwtPayload).tipoEmpleado;

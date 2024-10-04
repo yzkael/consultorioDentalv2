@@ -3,11 +3,10 @@ import { useAuth } from '../context/RoleContextProvider'
 import { Navigate, useLocation } from 'react-router-dom';
 import LoadingSpinner from '../components/LoadingSpinner';
 
-const AdministrativoRoutes = ({ children }: { children: ReactNode }) => {
+const SudoRoutes = ({ children }: { children: ReactNode }) => {
 
     const location = useLocation();
     const { tipoEmpleado, role } = useAuth();
-
     const compareRoleVar = Number(role);
 
     if (!tipoEmpleado || !role) {
@@ -19,14 +18,12 @@ const AdministrativoRoutes = ({ children }: { children: ReactNode }) => {
 
     }
 
-    //Por si quiere que solamente algunos roles especificos sean los que puedan acceder
+    if (compareRoleVar != 4) {
+        return <Navigate to={'/'} state={{ from: location }} />
+    }
 
-    // if (compareRoleVar != 4) {
-    //     return <Navigate to={'/'} state={{ from: location }} />
-    // }
     return children;
-
 
 }
 
-export default AdministrativoRoutes
+export default SudoRoutes

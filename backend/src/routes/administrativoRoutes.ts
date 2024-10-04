@@ -6,10 +6,11 @@ import {
   softDelete,
   updateAdministrativo,
 } from "../controllers/administrativoControllers";
+import revisarSudo from "../middlewares/checkSudo";
 
 const router = express.Router();
 
-router.post("/", crearAdministrativo);
+router.post("/", revisarSudo, crearAdministrativo);
 
 router.post("/search", searchAdministrativo);
 

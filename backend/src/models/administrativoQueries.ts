@@ -15,8 +15,9 @@ export const searchAdmByCargo = `
   JOIN Personal personal ON personal.id_personal = persona.id_persona
   JOIN Administrativo adm ON adm.id_administrativo = personal.id_personal
   JOIN Cargos cargo ON cargo.id_cargo = adm.cargo
-  WHERE personal.fecha_fin IS NULL 
-    AND cargo.nombre ILIKE '%' || $1 || '%' 
+  WHERE personal.fecha_fin IS NULL
+  AND cargo.id_cargo != 4 
+  AND cargo.nombre ILIKE '%' || $1 || '%' 
   ORDER BY fecha_crear DESC;
 `;
 
@@ -32,7 +33,8 @@ FROM Personas persona
 JOIN Personal personal ON personal.id_personal = persona.id_persona 
 JOIN Administrativo adm ON adm.id_administrativo = personal.id_personal
 JOIN Cargos cargo ON cargo.id_cargo = adm.cargo 
-WHERE personal.fecha_fin IS NULL 
+WHERE personal.fecha_fin IS NULL
+AND cargo.id_cargo != 4 
 AND persona.nombre ILIKE '%' || $1 || '%' 
 ORDER BY persona.fecha_crear DESC`;
 
@@ -49,6 +51,7 @@ JOIN Personal personal ON personal.id_personal = persona.id_persona
 JOIN Administrativo adm ON adm.id_administrativo = personal.id_personal
 JOIN Cargos cargo ON cargo.id_cargo = adm.cargo 
 WHERE personal.fecha_fin IS NULL 
+AND cargo.id_cargo != 4
 AND persona.ap_paterno ILIKE '%' || $1 || '%' 
 ORDER BY persona.fecha_crear DESC`;
 
@@ -65,6 +68,7 @@ JOIN Personal personal ON personal.id_personal = persona.id_persona
 JOIN Administrativo adm ON adm.id_administrativo = personal.id_personal
 JOIN Cargos cargo ON cargo.id_cargo = adm.cargo 
 WHERE personal.fecha_fin IS NULL 
+AND cargo.id_cargo != 4
 AND persona.ap_materno ILIKE '%' || $1 || '%' 
 ORDER BY persona.fecha_crear DESC`;
 
@@ -80,7 +84,8 @@ FROM Personas persona
 JOIN Personal personal ON personal.id_personal = persona.id_persona 
 JOIN Administrativo adm ON adm.id_administrativo = personal.id_personal
 JOIN Cargos cargo ON cargo.id_cargo = adm.cargo 
-WHERE personal.fecha_fin IS NULL 
+WHERE personal.fecha_fin IS NULL
+AND cargo.id_cargo != 4
 AND personal.username ILIKE '%' || $1 || '%' 
 ORDER BY persona.fecha_crear DESC`;
 
@@ -97,6 +102,7 @@ export const searchAdmInGeneral = `
   JOIN Administrativo adm ON adm.id_administrativo = personal.id_personal
   JOIN Cargos cargo ON cargo.id_cargo = adm.cargo
   WHERE personal.fecha_fin IS NULL 
+  AND cargo.id_cargo != 4
     AND (
       persona.nombre ILIKE '%' || $1 || '%' OR
       persona.ap_paterno ILIKE '%' || $1 || '%' OR
