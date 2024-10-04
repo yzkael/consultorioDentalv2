@@ -12,6 +12,16 @@ export type CrearDentistaFormType = {
   especialidad: number;
 };
 
+export type CrearPersonaFormType = {
+  nombre: string;
+  apPaterno: string;
+  apMaterno: string;
+  correo: string;
+  carnet: string;
+  telefono: string;
+  fechaNacimiento: Date;
+};
+
 export type EditarDentistaFormType = {
   nombre: string;
   appaterno: string;

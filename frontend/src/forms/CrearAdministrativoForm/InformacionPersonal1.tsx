@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import { CrearDentistaFormType } from "../../types/app-types";
+import { CrearDentistaFormType, CrearPersonaFormType } from "../../types/app-types";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import * as apiClient from '../../api-client'
@@ -14,7 +14,7 @@ const InformacionDentista = () => {
         register,
         formState: { errors },
 
-    } = useFormContext<CrearDentistaFormType>();
+    } = useFormContext<CrearPersonaFormType>();
 
     const { isError: errorCarnet } = useQuery(["checkCarnet", carnetValue], () => apiClient.checkCarnet(carnetValue), {
         enabled: !!carnetValue,

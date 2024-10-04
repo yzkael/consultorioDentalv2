@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import { CrearDentistaFormType } from "../../types/app-types";
+import { CrearDentistaFormType, CrearPersonaFormType } from "../../types/app-types";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import * as apiClient from "../../api-client"
@@ -16,7 +16,7 @@ const InformacionPersonal2 = ({ handleBack }: InformacionPersonal2Props) => {
     const {
         register,
         formState: { errors },
-    } = useFormContext<CrearDentistaFormType>();
+    } = useFormContext<CrearPersonaFormType>();
 
     const [correoValue, setCorreoValue] = useState("");
     const [correoDebouncer, setCorreoDebouncer] = useState("");
