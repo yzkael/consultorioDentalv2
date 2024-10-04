@@ -4,10 +4,9 @@ CREATE DATABASE simple_consultorio_v2;
 
 use simple_consultorio_v2;
 
-    -- Debo quitar Unique
-    -- Esto con el proposito de permitir que se creen diferentes personas y diferentes roles
     -- DEBO ANHADIR EL creado_por Column luego cuando introduzca el logins
-
+    --En realidad supongo que si anhado un "gerente" rol que pueda crear necesitare un creado_por
+    
 CREATE TABLE Personas(
     id_persona BIGSERIAL PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
@@ -68,7 +67,8 @@ INSERT INTO Especialidades(nombre) VALUES ('Ayudante');
 
 --Anhadir creado_por column para identificar el trabajador
 CREATE TABLE Pacientes(
-    id_paciente INTEGER REFERENCES Personas(id_persona)
+    id_paciente INTEGER REFERENCES Personas(id_persona),
+    creado_por INTEGER REFERENCES Administrativo(id_administrativo)
 );
 
 CREATE TABLE Consultas_Medicos(

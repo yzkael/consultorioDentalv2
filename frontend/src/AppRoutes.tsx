@@ -32,53 +32,53 @@ const AppRoutes = () => {
       {isLoggedIn && (<>
 
         {/* RUTAS PARA EL ADMIN (Usuario SUDO) */}
-        <SudoRoutes>
-          <Route path="/" element={<Dashboard />} />
-          <Route
-            path="/empleados/crear"
-            element={
-              <MainLayout>
+        <Route path="/" element={<Dashboard />} />
+        <Route
+          path="/empleados/crear"
+          element={
+            <MainLayout>
+              <SudoRoutes>
                 <CrearEmpleado />
-              </MainLayout>
-            }
-          />
-          <Route
-            path="/empleados/crear/dentistas"
-            element={
-              <MainLayout>
-                <CrearDentista />
-              </MainLayout>
-            }
-          />
-          <Route path="/empleados/administrar/" element={
-            <ManejarEmpleado />
+              </SudoRoutes>
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/empleados/crear/dentistas"
+          element={
+            <MainLayout>
+              <CrearDentista />
+            </MainLayout>
+          }
+        />
+        <Route path="/empleados/administrar/" element={
+          <ManejarEmpleado />
+        } />
+        <Route
+          path="/empleados/administrar/dentistas"
+          element={
+            <MainLayout>
+              <ManejarDentistas />
+            </MainLayout>
+          }
+        />
+        <Route path="/empleados/administrar/dentistas/editar-dentista/:idDentista"
+          element={
+            <MainLayout>
+              <EditarDentista />
+            </MainLayout>
           } />
-          <Route
-            path="/empleados/administrar/dentistas"
-            element={
-              <MainLayout>
-                <ManejarDentistas />
-              </MainLayout>
-            }
-          />
-          <Route path="/empleados/administrar/dentistas/editar-dentista/:idDentista"
-            element={
-              <MainLayout>
-                <EditarDentista />
-              </MainLayout>
-            } />
 
-          <Route path="/empleados/administrar/administrativos" element={<ManejarAdm />} />
+        <Route path="/empleados/administrar/administrativos" element={<ManejarAdm />} />
 
-          <Route path="/empleados/administrar/administrativos/editar-administrativo/:idAdm" element={<EditarAdm />} />
+        <Route path="/empleados/administrar/administrativos/editar-administrativo/:idAdm" element={<EditarAdm />} />
 
 
-          <Route path="/empleados/crear/administrativos"
-            element={<CrearAdm />} />
+        <Route path="/empleados/crear/administrativos"
+          element={<CrearAdm />} />
 
-          <Route path="/test"
-            element={<TestPage />} />
-        </SudoRoutes>
+        <Route path="/test"
+          element={<TestPage />} />
 
 
         <Route path="*" element={<Navigate to={'/'} />} />

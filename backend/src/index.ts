@@ -5,6 +5,7 @@ import "dotenv/config";
 import dentistaRoutes from "./routes/dentistaRoutes";
 import authRoutes from "./routes/authRoutes";
 import administrativoRoutes from "./routes/administrativoRoutes";
+import pacienteRoutes from "./routes/pacientesRoutes";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use("/api/dentistas", dentistaRoutes);
 app.use("/api/administrativo", administrativoRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/pacientes", pacienteRoutes);
 
 //Connection
 

@@ -8,7 +8,7 @@ const AdministrativoRoutes = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
     const { tipoEmpleado, role } = useAuth();
 
-    const compareRoleVar = Number(role);
+    // const compareRoleVar = Number(role);
 
     if (!tipoEmpleado || !role) {
         return <LoadingSpinner />
