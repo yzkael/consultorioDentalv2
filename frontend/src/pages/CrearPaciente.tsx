@@ -1,9 +1,27 @@
+import { useMutation } from "react-query";
+import * as apiClient from '../api-client';
+import { useToast } from "../context/ToastContextProvider";
+import { CrearPersonaFormType } from "../types/app-types";
+import ManageCrearPaciente from "../forms/CrearPacienteForm/ManageCrearPaciente";
 
 const CrearPaciente = () => {
-    return (
-        <div>
+    const { notifyError, notifySuccess } = useToast();
+    const { mutate } = useMutation("crearPaciente", apiClient.createPaciente, {
+        onSuccess: () => {
+            notifySuccess("Paciente Creado Exitosamente!")
+            // TODO: Aqui vendra el navigate a el Ver Pacientes
+        },
+        onError: () => {
+            notifyError("Datos invalidos. Porfavor cambiar los datos un formato valido");
+        }
+    })
 
-        </div>
+    const onSave = (data: CrearPersonaFormType) => {
+        mutate(data);
+    }
+
+    return (
+        <ManageCrearPaciente onSave={onSave} />
     )
 }
 

@@ -9,6 +9,7 @@ import {
   ManejarAdministrativoTabla,
   EditarAdmFormType,
   LoginFormType,
+  CrearPersonaFormType,
 } from "./types/app-types";
 
 const BASE_API_URL = import.meta.env.VITE_BASE_URL as string;
@@ -279,6 +280,22 @@ export const checkJWT = async (): Promise<JwtPayload> => {
   });
   if (!response.ok) {
     throw new Error("Something went wrong");
+  }
+  const returnData = await response.json();
+  return returnData;
+};
+
+export const createPaciente = async (data: CrearPersonaFormType) => {
+  const response = await fetch(`${BASE_API_URL}/api/pacientes`, {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong...");
   }
   const returnData = await response.json();
   return returnData;

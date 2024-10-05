@@ -66,9 +66,11 @@ INSERT INTO Especialidades(nombre) VALUES ('Ayudante');
 
 
 --Anhadir creado_por column para identificar el trabajador
+--Anhadire la columna is_active para identificar que no fue softDeleteado
 CREATE TABLE Pacientes(
-    id_paciente INTEGER REFERENCES Personas(id_persona),
-    creado_por INTEGER REFERENCES Administrativo(id_administrativo)
+    id_paciente INTEGER PRIMARY KEY REFERENCES Personas(id_persona),
+    creado_por INTEGER REFERENCES Administrativo(id_administrativo),
+    is_active BOOLEAN DEFAULT true
 );
 
 CREATE TABLE Consultas_Medicos(

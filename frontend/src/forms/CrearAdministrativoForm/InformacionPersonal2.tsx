@@ -1,18 +1,18 @@
 import { useFormContext } from "react-hook-form";
-import { CrearDentistaFormType, CrearPersonaFormType } from "../../types/app-types";
+import { CrearPersonaFormType } from "../../types/app-types";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import * as apiClient from "../../api-client"
-import { Hourglass } from "react-loader-spinner";
 import FormFragmentWrapper from "../FormFragments/FormFragmentWrapper";
 import LoadingMessageInput from "../../components/LoadingMessageInput";
 
 
 type InformacionPersonal2Props = {
+    paciente?: boolean;
     handleBack: () => void;
 }
 
-const InformacionPersonal2 = ({ handleBack }: InformacionPersonal2Props) => {
+const InformacionPersonal2 = ({ handleBack, paciente }: InformacionPersonal2Props) => {
     const {
         register,
         formState: { errors },
@@ -112,7 +112,8 @@ const InformacionPersonal2 = ({ handleBack }: InformacionPersonal2Props) => {
                 <button className="py-2 px-4 bg-slate-700 rounded-lg w-[5rem] flex justify-center items-center hover:bg-slate-500 text-white font-semibold cursor-pointer disabled:bg-black"
                     disabled={isLoading || (isError && correoValue != "")}
                 >
-                    Next
+
+                    {paciente ? "Submit" : "Next"}
                 </button>
             </div>
         </FormFragmentWrapper>

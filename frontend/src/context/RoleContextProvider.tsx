@@ -22,6 +22,8 @@ const RoleContextProvider = ({ children }: { children: ReactNode }) => {
 
     const { data, isError } = useQuery<JwtPayload>("revisarEmpleado", apiClient.checkJWT, {
         retry: 1,
+        refetchOnWindowFocus: true,
+        refetchInterval: 5
     });
 
 

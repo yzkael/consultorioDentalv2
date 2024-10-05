@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import { CrearDentistaFormType, CrearPersonaFormType } from "../../types/app-types";
+import { CrearPersonaFormType } from "../../types/app-types";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import * as apiClient from '../../api-client'

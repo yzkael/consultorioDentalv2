@@ -13,6 +13,8 @@ import ManejarEmpleado from "./pages/ManejarEmpleado";
 import ManejarAdm from "./pages/ManejarAdm";
 import { useAuth } from "./context/RoleContextProvider";
 import SudoRoutes from "./utils/SudoRoutes";
+import CrearPaciente from "./pages/CrearPaciente";
+import AdministrativoRoutes from "./utils/AdministrativoRoutes";
 const AppRoutes = () => {
   const { isLoggedIn } = useAuth();
   return (
@@ -77,8 +79,13 @@ const AppRoutes = () => {
         <Route path="/empleados/crear/administrativos"
           element={<CrearAdm />} />
 
-        <Route path="/test"
-          element={<TestPage />} />
+        <Route path="/pacientes/crear" element={
+          <AdministrativoRoutes>
+            <CrearPaciente />
+          </AdministrativoRoutes>
+
+        }>
+        </Route>
 
 
         <Route path="*" element={<Navigate to={'/'} />} />

@@ -12,6 +12,9 @@ export type CrearDentistaFormType = {
   especialidad: number;
 };
 
+//Utilizado como tipo generico para crear Personas y para crear Pacientes
+//El valor Creado Por se manejara en el backend
+
 export type CrearPersonaFormType = {
   nombre: string;
   apPaterno: string;
@@ -57,7 +60,7 @@ export type ManejarAdministrativoTabla = {
   cargo: string;
 };
 
-//Utilizado para revisar si ya existen los datos unique
+//Utilizado para revisar si ya existen los datos unique (correo, carnet, username)
 export type RevisarDato = {
   result: boolean;
 };

@@ -138,14 +138,17 @@ export const searchDentistaInGeneral = `
 
 export const revisarCarnet = `SELECT p.carnet 
 FROM Personas p 
-JOIN Personal pers 
-ON p.id_persona = pers.id_personal 
-WHERE p.carnet = $1 AND pers.fecha_fin IS NULL;`;
+LEFT JOIN Personal pers ON p.id_persona = pers.id_personal 
+LEFT JOIN pacientes pac ON pac.id_paciente = p.id_persona
+WHERE p.carnet = $1
+  AND (pers.fecha_fin IS NULL OR pac.is_active = true);
+`;
 
-export const revisarCorreo = ` SELECT p.correo
-FROM Personas p
-JOIN Personal pers
-ON p.id_persona = pers.id_personal
-WHERE p.correo = $1 AND pers.fecha_fin IS NULL`;
+export const revisarCorreo = ` SELECT p.correo 
+FROM Personas p 
+LEFT JOIN Personal pers ON p.id_persona = pers.id_personal 
+LEFT JOIN pacientes pac ON pac.id_paciente = p.id_persona
+WHERE p.correo = $1
+  AND (pers.fecha_fin IS NULL OR pac.is_active = true)`;
 
 export const revisarUsername = `SELECT username FROM Personal WHERE username = $1 AND fecha_fin IS NULL`;

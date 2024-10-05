@@ -15,6 +15,7 @@ export const crearPaciente = async (req: Request, res: Response) => {
     telefono,
     fechaNacimiento,
   } = req.body;
+  console.log(req.body);
   const client = await pool.connect(); //Inicia la conexion
   try {
     client.query("BEGIN"); //Inicia la transaccion
