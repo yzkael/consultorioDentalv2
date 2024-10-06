@@ -1,7 +1,6 @@
 import { useQuery, useMutation } from "react-query";
 import * as apiClient from "../api-client";
 import TitleMenus from "../components/TitleMenus";
-import { TailSpin } from "react-loader-spinner";
 import SearchBar from "../components/SearchBar";
 import { ManejarSearch } from "../types/app-types";
 import { useState } from "react";

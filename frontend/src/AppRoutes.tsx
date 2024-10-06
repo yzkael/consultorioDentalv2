@@ -6,7 +6,6 @@ import CrearEmpleado from "./pages/CrearEmpleado";
 import CrearDentista from "./pages/CrearDentista";
 import ManejarDentistas from "./pages/ManejarDentistas";
 import EditarDentista from "./pages/EditarDentista";
-import TestPage from "./pages/TestPage";
 import EditarAdm from "./pages/EditarAdm";
 import CrearAdm from "./pages/CrearAdm";
 import ManejarEmpleado from "./pages/ManejarEmpleado";
@@ -15,6 +14,7 @@ import { useAuth } from "./context/RoleContextProvider";
 import SudoRoutes from "./utils/SudoRoutes";
 import CrearPaciente from "./pages/CrearPaciente";
 import AdministrativoRoutes from "./utils/AdministrativoRoutes";
+import ManejarPacientes from "./pages/ManejarPacientes";
 const AppRoutes = () => {
   const { isLoggedIn } = useAuth();
   return (
@@ -84,8 +84,11 @@ const AppRoutes = () => {
             <CrearPaciente />
           </AdministrativoRoutes>
 
-        }>
-        </Route>
+        } />
+
+        <Route path="/pacientes/administrar/" element={
+          <ManejarPacientes />
+        } />
 
 
         <Route path="*" element={<Navigate to={'/'} />} />

@@ -10,6 +10,7 @@ import {
   EditarAdmFormType,
   LoginFormType,
   CrearPersonaFormType,
+  ManejarPacienteType,
 } from "./types/app-types";
 
 const BASE_API_URL = import.meta.env.VITE_BASE_URL as string;
@@ -180,7 +181,6 @@ export const crearAdministrativo = async (data: CrearAdmFormType) => {
 export const searchAdministrativo = async (
   data: ManejarSearch
 ): Promise<ManejarAdministrativoTabla> => {
-  console.log(data);
   const response = await fetch(`${BASE_API_URL}/api/administrativo/search`, {
     method: "POST",
     body: JSON.stringify(data),
@@ -296,6 +296,21 @@ export const createPaciente = async (data: CrearPersonaFormType) => {
   });
   if (!response.ok) {
     throw new Error("Something went wrong...");
+  }
+  const returnData = await response.json();
+  return returnData;
+};
+
+export const getAllPacientes = async (): Promise<ManejarPacienteType[]> => {
+  const response = await fetch(`${BASE_API_URL}/api/pacientes/`, {
+    method: "GET",
+    credentials: "include", //For later protected functions
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong");
   }
   const returnData = await response.json();
   return returnData;

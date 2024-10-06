@@ -2,7 +2,10 @@ import { Request, Response } from "express";
 import pool from "../models/DBconnection";
 import { crearPersona, revisarCarnet } from "../models/Queries";
 import { revisarExistenciaPersona } from "../models/authQueries";
-import { crearPacienteQuery } from "../models/pacienteQueries";
+import {
+  crearPacienteQuery,
+  getAllPacientesQuery,
+} from "../models/pacienteQueries";
 
 export const crearPaciente = async (req: Request, res: Response) => {
   //El valor de creado_por vendra en el req.userInfo
@@ -57,4 +60,16 @@ export const crearPaciente = async (req: Request, res: Response) => {
   }
 };
 
-export const getAllPacientes = async () => {};
+//Para mostrar en tabla Frontend (No devuelve todos los datos)
+export const getAllPacientes = async (req: Request, res: Response) => {
+  try {
+    const allPacientes = await pool.query(getAllPacientesQuery);
+    if (allPacientes.rows.length == 0) {
+      return res.status(404).json({ message: "No Pacientes Found" });
+    }
+    res.status(200).json(allPacientes.rows);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error 500" });
+  }
+};

@@ -40,7 +40,7 @@ const SudoDashboard = () => {
                     image={imgDetallePacientes}
                     title="Adminsitrar Pacientes"
                     description="Maneja la data del registro de pacientes"
-                    link="/pacientes/"
+                    link="/pacientes/administrar"
                 />
                 <DashboardCardButton
                     image={imgCrearPaciente}

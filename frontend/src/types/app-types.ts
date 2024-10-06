@@ -94,3 +94,11 @@ export type LoginFormType = {
   username: string;
   password: string;
 };
+
+export type ManejarPacienteType = {
+  nombre: string;
+  appaterno: string;
+  apmaterno: string;
+  carnet: string;
+  telefono: string;
+};
