@@ -10,3 +10,14 @@ FROM
 JOIN 
     Pacientes pac ON p.id_persona = pac.id_paciente 
 WHERE pac.is_active;`;
+
+//Tal vez necesite Trimmearlo para el Details Paciente y el Update Paciente
+export const getSinglePaciente = `SELECT * FROM Pacientes WHERE id_paciente = $1`;
+
+export const softDeletePacienteQuery = `
+UPDATE 
+    Pacientes 
+SET 
+    is_active = false
+WHERE
+    id_paciente = $1`;

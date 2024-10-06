@@ -5,6 +5,7 @@ import { revisarExistenciaPersona } from "../models/authQueries";
 import {
   crearPacienteQuery,
   getAllPacientesQuery,
+  getSinglePaciente,
 } from "../models/pacienteQueries";
 
 export const crearPaciente = async (req: Request, res: Response) => {
@@ -71,5 +72,35 @@ export const getAllPacientes = async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error 500" });
+  }
+};
+
+export const searchPacientes = async (req: Request, res: Response) => {
+  const { searchValues, searchParams } = req.body;
+  const searchQuery = identifySearchQuery(searchParams);
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN"); //Inicia la transaccion
+  } catch (error) {}
+};
+
+export const softDeletePaciente = async (req: Request, res: Response) => {
+  const idPaciente = req.params.id;
+  try {
+    const existePaciente = await pool.query(getSinglePaciente, [idPaciente]);
+    if (existePaciente.rows.length == 0) {
+      return res.status(404).json({ message: "Paciente Not Found" });
+    }
+    res.status(200).json({ message: "Paciente Eliminado Exitosamente" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const identifySearchQuery = (searchParams: string) => {
+  //Debo crear las queries para el buscador
+  switch (searchParams) {
+    case "-buscar-":
   }
 };
