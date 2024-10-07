@@ -26,7 +26,7 @@ const TablaManejarBody = ({ data, differentAttribute, paciente, handleClick, dat
                         <td className="px-4 py-2 whitespace-nowrap">{singleData.nombre}</td>
                         <td className="px-4 py-2 whitespace-nowrap">{singleData.appaterno}</td>
                         <td className="px-4 py-2 whitespace-nowrap">{singleData.apmaterno}</td>
-                        <td className="px-4 py-2 whitespace-nowrap">{singleData.correo}</td>
+                        <td className="px-4 py-2 whitespace-nowrap">{singleData.carnet}</td>
                         <td className="px-4 py-2 whitespace-nowrap">{singleData.telefono}</td>
                         {Number(role) === 4 ? (
                             <>

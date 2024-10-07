@@ -4,6 +4,7 @@ import { crearPersona, revisarCarnet } from "../models/Queries";
 import { revisarExistenciaPersona } from "../models/authQueries";
 import {
   crearPacienteQuery,
+  getSinglePacienteQuery,
   getAllPacientesQuery,
   getSinglePaciente,
   searchPacientesApMaterno,
@@ -81,13 +82,15 @@ export const getAllPacientes = async (req: Request, res: Response) => {
   }
 };
 
+// Para el Frontend (No devuelve todos los datos)
+
 export const searchPacientes = async (req: Request, res: Response) => {
-  const { searchValues, searchParams } = req.body;
+  const { searchValue, searchParams } = req.body;
   const searchQuery = identifySearchQuery(searchParams);
   const client = await pool.connect(); //Conecta a la DB
   try {
     await client.query("BEGIN"); //Inicia la transaccion
-    const searchResult = await client.query(searchQuery, [searchValues]);
+    const searchResult = await client.query(searchQuery, [searchValue]);
     if (searchResult.rows.length == 0) {
       return res.status(404).json({ message: "No Pacientes Found" });
     }
@@ -134,4 +137,32 @@ const identifySearchQuery = (searchParams: string) => {
     default:
       return "Not found";
   }
+};
+
+export const fetchSinglePaciente = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    const singlePaciente = await pool.query(getSinglePacienteQuery, [id]);
+    if (singlePaciente.rows.length == 0) {
+      return res.status(404).json({ message: "No paciente found" });
+    }
+    res.status(200).json(singlePaciente.rows[0]);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error 500" });
+  }
+};
+
+export const updatePaciente = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const { nombre, appaterno, apmaterno, carnet, correo, telefono } = req.body;
+  const client = await pool.connect(); //Inicia la conexion
+  try {
+    await client.query("BEGIN"); //Inicia la transaccion
+    const singlePaciente = await client.query(getSinglePacienteQuery, [id]);
+    if (singlePaciente.rows.length == 0) {
+      return res.status(404).json({ message: "Paciente Not Found" });
+    }
+    // const updatedPaciente = await
+  } catch (error) {}
 };

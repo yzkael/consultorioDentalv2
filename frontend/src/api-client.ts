@@ -315,3 +315,34 @@ export const getAllPacientes = async (): Promise<ManejarPacienteType[]> => {
   const returnData = await response.json();
   return returnData;
 };
+
+export const searchPacientesAPI = async (
+  data: ManejarSearch
+): Promise<ManejarPacienteType> => {
+  const response = await fetch(`${BASE_API_URL}/api/pacientes/search`, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong");
+  }
+  const returnData = await response.json();
+  return returnData;
+};
+
+export const getSinglePaciente = async (id: string) => {
+  const response = await fetch(`${BASE_API_URL}/api/pacientes/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong");
+  }
+  const returnData = await response.json();
+  return returnData;
+};

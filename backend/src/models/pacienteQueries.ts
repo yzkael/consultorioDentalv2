@@ -141,3 +141,22 @@ export const searchPacientesTelefono = `
         pac.is_active
     AND
         p.telefono ILIKE '%' || $1 || '%'`;
+
+export const getSinglePacienteQuery = `
+SELECT 
+    p.nombre,
+    p.ap_paterno AS apPaterno,
+    p.ap_materno AS apMaterno,
+    p.carnet AS carnet,
+    p.correo AS correo,
+    p.telefono AS telefono
+FROM
+    Personas p 
+JOIN
+    Pacientes pac
+ON
+    p.id_persona = pac.id_paciente
+WHERE   
+    pac.is_active
+AND
+    p.id_persona = $1`;
