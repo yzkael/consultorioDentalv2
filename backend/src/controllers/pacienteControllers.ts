@@ -6,6 +6,12 @@ import {
   crearPacienteQuery,
   getAllPacientesQuery,
   getSinglePaciente,
+  searchPacientesApMaterno,
+  searchPacientesApPaterno,
+  searchPacientesCarnet,
+  searchPacientesDefault,
+  searchPacientesNombre,
+  searchPacientesTelefono,
 } from "../models/pacienteQueries";
 
 export const crearPaciente = async (req: Request, res: Response) => {
@@ -78,10 +84,22 @@ export const getAllPacientes = async (req: Request, res: Response) => {
 export const searchPacientes = async (req: Request, res: Response) => {
   const { searchValues, searchParams } = req.body;
   const searchQuery = identifySearchQuery(searchParams);
-  const client = await pool.connect();
+  const client = await pool.connect(); //Conecta a la DB
   try {
     await client.query("BEGIN"); //Inicia la transaccion
-  } catch (error) {}
+    const searchResult = await client.query(searchQuery, [searchValues]);
+    if (searchResult.rows.length == 0) {
+      return res.status(404).json({ message: "No Pacientes Found" });
+    }
+    await client.query("COMMIT");
+    res.status(200).json(searchResult.rows);
+  } catch (error) {
+    console.log(error);
+    await client.query("ROLLBACK");
+    res.status(500).json({ message: "Internal Server Error 500" });
+  } finally {
+    client.release();
+  }
 };
 
 export const softDeletePaciente = async (req: Request, res: Response) => {
@@ -102,5 +120,18 @@ const identifySearchQuery = (searchParams: string) => {
   //Debo crear las queries para el buscador
   switch (searchParams) {
     case "-buscar-":
+      return searchPacientesDefault;
+    case "nombre":
+      return searchPacientesNombre;
+    case "appaterno":
+      return searchPacientesApPaterno;
+    case "apmaterno":
+      return searchPacientesApMaterno;
+    case "carnet":
+      return searchPacientesCarnet;
+    case "telefono":
+      return searchPacientesTelefono;
+    default:
+      return "Not found";
   }
 };
