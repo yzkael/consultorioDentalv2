@@ -13,6 +13,7 @@ import {
   searchPacientesDefault,
   searchPacientesNombre,
   searchPacientesTelefono,
+  updatePacienteQuery,
 } from "../models/pacienteQueries";
 
 export const crearPaciente = async (req: Request, res: Response) => {
@@ -163,6 +164,25 @@ export const updatePaciente = async (req: Request, res: Response) => {
     if (singlePaciente.rows.length == 0) {
       return res.status(404).json({ message: "Paciente Not Found" });
     }
-    // const updatedPaciente = await
-  } catch (error) {}
+    const updatedPaciente = await client.query(updatePacienteQuery, [
+      nombre,
+      appaterno,
+      apmaterno,
+      carnet,
+      correo,
+      telefono,
+      id,
+    ]);
+    if (updatedPaciente.rows.length == 0) {
+      return res.status(400).json({ message: "Invalid Data Format" });
+    }
+    await client.query("COMMIT"); //Termina la transaccion
+    res.status(200).json({ message: "Paciente Actualizado Exitosamente" });
+  } catch (error) {
+    console.log(error);
+    await client.query("ROLLBACK"); //Deshace la transaccion en caso de error
+    res.status(500).json({ message: "Internal Server Error 500" });
+  } finally {
+    client.release();
+  }
 };

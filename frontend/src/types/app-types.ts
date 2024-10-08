@@ -102,3 +102,12 @@ export type ManejarPacienteType = {
   carnet: string;
   telefono: string;
 };
+
+export type ManejarEditarPacienteType = {
+  nombre: string;
+  appaterno: string;
+  apmaterno: string;
+  carnet: string;
+  correo: string;
+  telefono: string;
+};

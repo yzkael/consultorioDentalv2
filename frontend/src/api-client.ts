@@ -11,6 +11,7 @@ import {
   LoginFormType,
   CrearPersonaFormType,
   ManejarPacienteType,
+  ManejarEditarPacienteType,
 } from "./types/app-types";
 
 const BASE_API_URL = import.meta.env.VITE_BASE_URL as string;
@@ -336,6 +337,27 @@ export const searchPacientesAPI = async (
 export const getSinglePaciente = async (id: string) => {
   const response = await fetch(`${BASE_API_URL}/api/pacientes/${id}`, {
     method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong");
+  }
+  const returnData = await response.json();
+  return returnData;
+};
+
+export const updatePacienteAPI = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: ManejarEditarPacienteType;
+}) => {
+  const response = await fetch(`${BASE_API_URL}/api/pacientes/update/${id}`, {
+    method: "POST",
+    body: JSON.stringify(data),
     headers: {
       "Content-type": "application/json",
     },

@@ -160,3 +160,15 @@ WHERE
     pac.is_active
 AND
     p.id_persona = $1`;
+
+export const updatePacienteQuery = `
+UPDATE Personal
+SET
+    nombre = $1,
+    ap_paterno = $2,
+    ap_materno = $3,
+    carnet = $4,
+    correo = $5,
+    telefono = $6
+WHERE 
+    id_persona = $7 RETURNING *`;
