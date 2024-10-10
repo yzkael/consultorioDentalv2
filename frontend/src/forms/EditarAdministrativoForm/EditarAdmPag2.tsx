@@ -6,14 +6,19 @@ import { useFormContext } from "react-hook-form";
 import { EditarAdmFormType } from "../../types/app-types";
 import DisplayError from "../../components/DisplayError";
 import { cargoOptions } from "../../config/config-files";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 type EditarAdmPag2Props = {
-    originalCorreo: string;
-    handleBack: () => void;
+    originalCorreo: string | undefined;
+    paciente?: boolean;
 }
 
 
-const EditarAdmPag2 = ({ originalCorreo, handleBack }: EditarAdmPag2Props) => {
+const EditarAdmPag2 = ({ originalCorreo, paciente }: EditarAdmPag2Props) => {
+
+    if (originalCorreo == undefined) {
+        return <LoadingSpinner />
+    }
 
     const [correoValue, setCorreoValue] = useState(originalCorreo);
 
@@ -42,19 +47,23 @@ const EditarAdmPag2 = ({ originalCorreo, handleBack }: EditarAdmPag2Props) => {
                 <input type="text" className="input" {...register("telefono", { required: "Este campo es necesario" })} />
                 {errors.telefono && <DisplayError message={errors.telefono.message as string} />}
             </label>
-            <label className="label">
-                Fecha de Nacimiento:
-                <input type="date" className="input"{...register("fechanacimiento", { required: "Este campo es necesario" })} />
-                {errors.fechanacimiento && <DisplayError message={errors.fechanacimiento.message as string} />}
-            </label>
-            <label className="label">
-                Cargo:
-                <select {...register("cargo", { required: "Este campo es necesario" })}>
-                    {cargoOptions.map((cargo) => (
-                        <option value={cargo.id}>{cargo.nombre}</option>
-                    ))}
-                </select>
-            </label>
+            {!paciente &&
+                <>
+                    <label className="label">
+                        Fecha de Nacimiento:
+                        <input type="date" className="input"{...register("fechanacimiento", { required: "Este campo es necesario" })} />
+                        {errors.fechanacimiento && <DisplayError message={errors.fechanacimiento.message as string} />}
+                    </label>
+                    <label className="label">
+                        Cargo:
+                        <select {...register("cargo", { required: "Este campo es necesario" })}>
+                            {cargoOptions.map((cargo) => (
+                                <option value={cargo.id}>{cargo.nombre}</option>
+                            ))}
+                        </select>
+                    </label>
+                </>
+            }
 
 
         </FormFragmentWrapper>

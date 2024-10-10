@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { EditarAdmFormType } from "../../types/app-types"
+import { EditarAdmFormType, ManejarEditarPacienteType } from "../../types/app-types"
 import { useForm, FormProvider } from "react-hook-form";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import TitleMenus from "../../components/TitleMenus";
@@ -8,30 +8,23 @@ import EditarAdmPag2 from "./EditarAdmPag2";
 
 
 type ManageEditarAdmProps = {
-    admData: EditarAdmFormType | undefined;
     isFetching: boolean;
+    admData?: EditarAdmFormType | undefined;
     isUpdating: boolean;
     onSave: (data: EditarAdmFormType) => void;
 }
 
 const ManageEditarAdm = ({ admData, isFetching, isUpdating, onSave }: ManageEditarAdmProps) => {
 
-    if (!admData) {
-        return <LoadingSpinner />
-    }
-    if (isUpdating) {
-        return <LoadingSpinner />
-    }
-    if (isUpdating) {
-        return <LoadingSpinner />
-    }
 
+
+    if (isUpdating || isFetching) {
+        return <LoadingSpinner />
+    }
 
     const [currentPage, setCurrentPage] = useState(0);
     const formMethods = useForm<EditarAdmFormType>();
-    const { handleSubmit, setValue, reset } = formMethods;
-
-
+    const { handleSubmit, reset } = formMethods;
     useEffect(() => {
         if (admData) {
             const formatedDate = new Date(admData.fechanacimiento).toISOString().split("T")[0];
@@ -42,9 +35,9 @@ const ManageEditarAdm = ({ admData, isFetching, isUpdating, onSave }: ManageEdit
                 correo: admData.correo,
                 carnet: admData.carnet,
                 telefono: admData.telefono,
-                cargo: admData.cargo
+                cargo: admData.cargo,
+                fechanacimiento: formatedDate
             });
-            setValue("fechanacimiento", formatedDate);
         }
     }, [admData, reset])
 
@@ -68,8 +61,11 @@ const ManageEditarAdm = ({ admData, isFetching, isUpdating, onSave }: ManageEdit
             <div className="page-wrapper">
                 <FormProvider {...formMethods}>
                     <form className="form" onSubmit={onSubmit}>
-                        {currentPage == 0 && <EditarAdmPag1 originalCarnet={admData.carnet} />}
-                        {currentPage == 1 && <EditarAdmPag2 originalCorreo={admData.correo} handleBack={handleBack} />}
+
+                        {currentPage == 0 && <EditarAdmPag1 originalCarnet={admData?.carnet} />}
+                        {currentPage == 1 && <EditarAdmPag2 originalCorreo={admData?.correo} />}
+
+
                         {currentPage == 1 && (
                             <div className="flex justify-around">
                                 <button className="btn" onClick={handleBack}>Back</button>

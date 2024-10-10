@@ -1,6 +1,7 @@
 export const crearPacienteQuery = `INSERT INTO Pacientes(id_paciente, creado_por) VALUES ($1, $2) RETURNING *`;
 
 export const getAllPacientesQuery = `SELECT 
+    p.id_persona,
     p.nombre,
     p.ap_paterno AS apPaterno, 
     p.ap_materno AS apMaterno, 
@@ -162,7 +163,7 @@ AND
     p.id_persona = $1`;
 
 export const updatePacienteQuery = `
-UPDATE Personal
+UPDATE Personas
 SET
     nombre = $1,
     ap_paterno = $2,

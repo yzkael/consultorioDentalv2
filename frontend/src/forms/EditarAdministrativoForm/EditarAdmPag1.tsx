@@ -5,19 +5,22 @@ import * as apiClient from '../../api-client'
 import FormFragmentWrapper from '../FormFragments/FormFragmentWrapper';
 import { EditarAdmFormType } from '../../types/app-types';
 import DisplayError from '../../components/DisplayError';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 
 type EditarAdmPag1Props = {
-    originalCarnet: string;
+    originalCarnet: string | undefined;
 }
 
 
 const EditarAdmPag1 = ({ originalCarnet }: EditarAdmPag1Props) => {
+
+    if (originalCarnet == undefined) {
+        return <LoadingSpinner />
+    }
+
     const [carnetValue, setCarnetValue] = useState(originalCarnet);
-
-
     const { register, formState: { errors } } = useFormContext<EditarAdmFormType>()
-
     const { isError } = useQuery(["checkCarnet", carnetValue], () => apiClient.checkCarnet(carnetValue), {
         enabled: !!carnetValue,
         retry: false

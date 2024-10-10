@@ -96,6 +96,7 @@ export type LoginFormType = {
 };
 
 export type ManejarPacienteType = {
+  id_persona: string;
   nombre: string;
   appaterno: string;
   apmaterno: string;

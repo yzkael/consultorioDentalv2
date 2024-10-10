@@ -157,6 +157,7 @@ export const fetchSinglePaciente = async (req: Request, res: Response) => {
 export const updatePaciente = async (req: Request, res: Response) => {
   const id = req.params.id;
   const { nombre, appaterno, apmaterno, carnet, correo, telefono } = req.body;
+  console.log(req.body, "Reached");
   const client = await pool.connect(); //Inicia la conexion
   try {
     await client.query("BEGIN"); //Inicia la transaccion

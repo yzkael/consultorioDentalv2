@@ -15,6 +15,7 @@ import SudoRoutes from "./utils/SudoRoutes";
 import CrearPaciente from "./pages/CrearPaciente";
 import AdministrativoRoutes from "./utils/AdministrativoRoutes";
 import ManejarPacientes from "./pages/ManejarPacientes";
+import EditarPacientes from "./pages/EditarPacientes";
 const AppRoutes = () => {
   const { isLoggedIn } = useAuth();
   return (
@@ -90,7 +91,9 @@ const AppRoutes = () => {
           <ManejarPacientes />
         } />
 
-
+        <Route path="/pacientes/administrar/editar-pacientes/:id" element={
+          <EditarPacientes />
+        } />
         <Route path="*" element={<Navigate to={'/'} />} />
 
       </>)}
