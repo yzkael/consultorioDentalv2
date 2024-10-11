@@ -86,6 +86,8 @@ export const getAllPacientes = async (req: Request, res: Response) => {
 
 // Para el Frontend (No devuelve todos los datos)
 
+// Anhadir Paginacion
+
 export const searchPacientes = async (req: Request, res: Response) => {
   const { searchValue, searchParams } = req.body;
 
