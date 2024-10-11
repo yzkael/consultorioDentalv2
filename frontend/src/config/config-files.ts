@@ -45,3 +45,12 @@ export const searchAdmOpciones = [
   { value: "usuario", description: "Usuario" },
   { value: "cargo", description: "Cargo" },
 ];
+
+export const searchPacienteOpciones = [
+  { value: "-buscar-", description: "Buscar por.." },
+  { value: "nombre", description: "Nombre" },
+  { value: "appaterno", description: "Apellido Paterno" },
+  { value: "apmaterno", description: "Apellido Materno" },
+  { value: "carnet", description: "Carnet" },
+  { value: "telefono", description: "Telefono" },
+];

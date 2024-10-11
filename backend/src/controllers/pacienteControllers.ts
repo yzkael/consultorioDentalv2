@@ -14,6 +14,7 @@ import {
   searchPacientesNombre,
   searchPacientesTelefono,
   updatePacienteQuery,
+  softDeletePacienteQuery,
 } from "../models/pacienteQueries";
 
 export const crearPaciente = async (req: Request, res: Response) => {
@@ -87,6 +88,7 @@ export const getAllPacientes = async (req: Request, res: Response) => {
 
 export const searchPacientes = async (req: Request, res: Response) => {
   const { searchValue, searchParams } = req.body;
+
   const searchQuery = identifySearchQuery(searchParams);
   const client = await pool.connect(); //Conecta a la DB
   try {
@@ -108,15 +110,28 @@ export const searchPacientes = async (req: Request, res: Response) => {
 
 export const softDeletePaciente = async (req: Request, res: Response) => {
   const idPaciente = req.params.id;
+  const client = await pool.connect(); //Inicia Conexion
   try {
-    const existePaciente = await pool.query(getSinglePaciente, [idPaciente]);
+    await client.query("BEGIN"); //Inicia Transaccion
+    const existePaciente = await client.query(getSinglePaciente, [idPaciente]);
     if (existePaciente.rows.length == 0) {
       return res.status(404).json({ message: "Paciente Not Found" });
     }
+    //Falta la Query que enserio lo eliminara
+    const pacienteEliminado = await client.query(softDeletePacienteQuery, [
+      idPaciente,
+    ]);
+    if (pacienteEliminado.rows.length == 0) {
+      return res.status(500).json({ message: "Internal Server Error 500" });
+    }
+    await client.query("COMMIT"); //Termina la Transaccion
     res.status(200).json({ message: "Paciente Eliminado Exitosamente" });
   } catch (error) {
     console.log(error);
+    await client.query("ROLLBACK"); //Deshace la query
     res.status(500).json({ message: "Internal Server Error" });
+  } finally {
+    client.release();
   }
 };
 
@@ -136,7 +151,7 @@ const identifySearchQuery = (searchParams: string) => {
     case "telefono":
       return searchPacientesTelefono;
     default:
-      return "Not found";
+      return searchPacientesDefault;
   }
 };
 
@@ -157,7 +172,6 @@ export const fetchSinglePaciente = async (req: Request, res: Response) => {
 export const updatePaciente = async (req: Request, res: Response) => {
   const id = req.params.id;
   const { nombre, appaterno, apmaterno, carnet, correo, telefono } = req.body;
-  console.log(req.body, "Reached");
   const client = await pool.connect(); //Inicia la conexion
   try {
     await client.query("BEGIN"); //Inicia la transaccion

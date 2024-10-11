@@ -368,3 +368,18 @@ export const updatePacienteAPI = async ({
   const returnData = await response.json();
   return returnData;
 };
+
+export const deletePaciente = async (idPaciente: string) => {
+  const response = await fetch(`${BASE_API_URL}/api/pacientes/${idPaciente}`, {
+    method: "DELETE",
+    credentials: "include",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong");
+  }
+  const returnData = await response.json();
+  return returnData;
+};

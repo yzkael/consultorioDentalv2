@@ -22,10 +22,12 @@ UPDATE
 SET 
     is_active = false
 WHERE
-    id_paciente = $1`;
+    id_paciente = $1
+RETURNING *`;
 
 export const searchPacientesDefault = `
 SELECT
+    p.id_persona,
     p.nombre,
     p.ap_paterno AS apPaterno,
     p.ap_materno AS apMaterno,
@@ -55,6 +57,7 @@ AND
 
 export const searchPacientesNombre = `
 SELECT
+    p.id_persona,
     p.nombre,
     p.ap_paterno AS apPaterno,
     p.ap_materno AS apMaterno,
@@ -73,6 +76,7 @@ AND
 
 export const searchPacientesApPaterno = `
     SELECT
+        p.id_persona,
         p.nombre,
         p.ap_paterno AS apPaterno,
         p.ap_materno AS apMaterno,
@@ -91,6 +95,7 @@ export const searchPacientesApPaterno = `
 
 export const searchPacientesApMaterno = `
     SELECT
+        p.id_persona,
         p.nombre,
         p.ap_paterno AS apPaterno,
         p.ap_materno AS apMaterno,
@@ -109,6 +114,7 @@ export const searchPacientesApMaterno = `
 
 export const searchPacientesCarnet = `
         SELECT
+            p.id_persona,
             p.nombre,
             p.ap_paterno AS apPaterno,
             p.ap_materno AS apMaterno,
@@ -127,6 +133,7 @@ export const searchPacientesCarnet = `
 
 export const searchPacientesTelefono = `
     SELECT
+        p.id_persona,
         p.nombre,
         p.ap_paterno AS apPaterno,
         p.ap_materno AS apMaterno,
@@ -145,6 +152,7 @@ export const searchPacientesTelefono = `
 
 export const getSinglePacienteQuery = `
 SELECT 
+    p.id_persona,
     p.nombre,
     p.ap_paterno AS apPaterno,
     p.ap_materno AS apMaterno,

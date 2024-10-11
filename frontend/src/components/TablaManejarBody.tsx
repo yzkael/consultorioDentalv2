@@ -14,9 +14,7 @@ type TablaManejarBodyProps = {
 const TablaManejarBody = ({ data, differentAttribute, paciente, handleClick, dataName }: TablaManejarBodyProps) => {
     const { role } = useAuth();
 
-
     return (
-        //Hice al reves la logica de si hay pacientes... 
         <tbody className="bg-white">
             {paciente ? <>
                 {data.map((singleData: any) => (
