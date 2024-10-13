@@ -124,25 +124,28 @@ export const getTotalPacienteNumber = async (req: Request, res: Response) => {
 
 export const searchPacientes = async (req: Request, res: Response) => {
   const { searchValue, searchParams } = req.body;
-
   const searchQuery = identifySearchQuery(searchParams);
   const client = await pool.connect(); //Conecta a la DB
 
-  const limitPagina = req.query.page;
-  const pagina = Number(limitPagina) - 1;
-  const offSetQuery = String(pagina * 10);
+  const paginaActual = req.query.page ? Number(req.query.page) : 1;
+  console.log(req.query.page);
+  const maximoDatos = 10; //Valor Hardcoded que delimita el numero de datos devueltos
+  const rangoMinDatos = (paginaActual - 1) * maximoDatos;
+  const rangoMaxDatos = paginaActual * maximoDatos;
 
   try {
     await client.query("BEGIN"); //Inicia la transaccion
-    const searchResult = await client.query(searchQuery, [
-      searchValue,
-      offSetQuery,
-    ]);
+
+    const searchResult = await client.query(searchQuery, [searchValue]);
     if (searchResult.rows.length == 0) {
       return res.status(404).json({ message: "No Pacientes Found" });
     }
     await client.query("COMMIT");
-    res.status(200).json(searchResult.rows);
+    res.status(200).json({
+      data: searchResult.rows.slice(rangoMinDatos, rangoMaxDatos),
+      total: searchResult.rows.length,
+      limite: maximoDatos,
+    });
   } catch (error) {
     console.log(error);
     await client.query("ROLLBACK");

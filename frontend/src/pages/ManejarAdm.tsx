@@ -14,6 +14,7 @@ import { useToast } from "../context/ToastContextProvider";
 
 const ManejarAdm = () => {
     //Valores de busqueda
+    //------------TODO: FALTA IMPLEMENTAR LA PAGINATION A ESTA PARTE
     const [searchValues, setSearchValues] = useState<ManejarSearch>({ searchValue: "", searchParams: "" })
     const queryClient = useQueryClient();
 
@@ -73,6 +74,7 @@ const ManejarAdm = () => {
                             {isLoading ? <LoadingSpinner /> : <TablaManejar data={administrativos} handleClick={handleClick} differentAttribute="cargo" dataName="administrativo" />}
 
                         </div>
+
                     </div>
                 </div>
             </div>

@@ -112,3 +112,9 @@ export type ManejarEditarPacienteType = {
   correo: string;
   telefono: string;
 };
+
+export type ResultadoSearchPaciente = {
+  data: ManejarPacienteType;
+  total: number;
+  limite: number;
+};

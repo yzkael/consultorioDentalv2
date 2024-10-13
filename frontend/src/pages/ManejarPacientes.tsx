@@ -9,10 +9,13 @@ import { useToast } from "../context/ToastContextProvider";
 import SearchBar from "../components/SearchBar";
 import { searchPacienteOpciones } from "../config/config-files";
 import LoadingSpinner from "../components/LoadingSpinner";
+import PaginationComponent from "../components/PaginationComponent";
 
 
 //Debo hacerlo igual al ManejarAdm con los useStates y todo para poder tener la misma funcionalidad
 const ManejarPacientes = () => {
+    // Valores de Paginacion
+    const [paginaActual, setPaginaActual] = useState(1);
     //Para invalidar la query y reiniciar la busqueda
     const queryClient = useQueryClient();
     const { notifyError, notifySuccess } = useToast();
@@ -26,16 +29,19 @@ const ManejarPacientes = () => {
     const [idDelete, setIdDelete] = useState(""); //Guardan el Id para ser borrado luego
 
 
-    // // Informacion Fetcheada de pantalla
-    // const { data: pacientes, isLoading } = useQuery("getPacientes", apiClient.getAllPacientes, {
-    //     retry: 1
-    // })
+    console.log(paginaActual); //DEBUGGER
 
-    const { data: pacientes, isLoading } = useQuery(["searchPacientes", searchValues], () => apiClient.searchPacientesAPI(searchValues), {
-        enabled: !!searchValues,
+
+    const { data: pacientes, isLoading } = useQuery(["searchPacientes", searchValues, paginaActual], () => apiClient.searchPacientesAPI(searchValues, paginaActual), {
+        enabled: !!searchValues || !!paginaActual,
         retry: 1,
         refetchOnWindowFocus: false
     })
+
+    const handleSearch = (data: ManejarSearch) => {
+        setSearchValues(data);
+    }
+
 
     //Logica del Delete:
 
@@ -48,9 +54,7 @@ const ManejarPacientes = () => {
             notifyError("Error al Eliminar Paciente. Por favor Intentelo mas tarde")
         }
     })
-
-
-
+    //Logica del estas seguro?
     const reaccionClick = (respuesta: boolean) => {
         if (respuesta) {
             mutate(idDelete);
@@ -58,14 +62,12 @@ const ManejarPacientes = () => {
         }
     }
 
-    const handleSearch = (data: ManejarSearch) => {
-        setSearchValues(data);
-    }
-
     const handleClick = (idPaciente: string) => {
         setIsActive(prev => !prev);
         setIdDelete(idPaciente)
     }
+
+    //Logica de la paginacion
 
 
     return (
@@ -76,12 +78,10 @@ const ManejarPacientes = () => {
                 <SearchBar handleSearch={handleSearch} options={searchPacienteOpciones} />
                 <div className="flex-grow flex flex-col items-center overflow-hidden p-4">
                     {isLoading ? <LoadingSpinner /> :
-                        <TablaManejar data={pacientes} handleClick={handleClick} differentAttribute="ninguno" dataName="pacientes" paciente={true} />
-
+                        <TablaManejar data={pacientes?.data} handleClick={handleClick} differentAttribute="ninguno" dataName="pacientes" paciente={true} />
                     }
-
                 </div>
-
+                <PaginationComponent numeroDatos={pacientes?.total} selected={paginaActual} setSelected={setPaginaActual} limite={pacientes?.limite as number} />
             </div>
 
 

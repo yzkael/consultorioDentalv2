@@ -12,6 +12,7 @@ import {
   CrearPersonaFormType,
   ManejarPacienteType,
   ManejarEditarPacienteType,
+  ResultadoSearchPaciente,
 } from "./types/app-types";
 
 const BASE_API_URL = import.meta.env.VITE_BASE_URL as string;
@@ -318,15 +319,19 @@ export const getAllPacientes = async (): Promise<ManejarPacienteType[]> => {
 };
 
 export const searchPacientesAPI = async (
-  data: ManejarSearch
-): Promise<ManejarPacienteType> => {
-  const response = await fetch(`${BASE_API_URL}/api/pacientes/search`, {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      "Content-type": "application/json",
-    },
-  });
+  data: ManejarSearch,
+  id: any
+): Promise<ResultadoSearchPaciente> => {
+  const response = await fetch(
+    `${BASE_API_URL}/api/pacientes/search?page=${id}`,
+    {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-type": "application/json",
+      },
+    }
+  );
   if (!response.ok) {
     throw new Error("Something went wrong");
   }
@@ -379,6 +384,20 @@ export const deletePaciente = async (idPaciente: string) => {
   });
   if (!response.ok) {
     throw new Error("Something went wrong");
+  }
+  const returnData = await response.json();
+  return returnData;
+};
+
+export const getTotalNumberPacientes = async () => {
+  const response = await fetch(`${BASE_API_URL}/api/pacientes/total`, {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong...");
   }
   const returnData = await response.json();
   return returnData;

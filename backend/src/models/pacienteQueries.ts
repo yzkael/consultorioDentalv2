@@ -52,10 +52,7 @@ AND
         p.carnet ILIKE '%' || $1 || '%'
         OR
         p.telefono ILIKE '%' || $1 || '%'
-    )
-LIMIT 10
-OFFSET $2
-    `;
+    )`;
 
 export const searchPacientesNombre = `
 SELECT
@@ -74,9 +71,7 @@ ON
 WHERE
     pac.is_active
 AND
-    p.nombre ILIKE '%' || $1 || '%'
-LIMIT 10
-OFFSET $2`;
+    p.nombre ILIKE '%' || $1 || '%'`;
 
 export const searchPacientesApPaterno = `
     SELECT
@@ -96,8 +91,7 @@ export const searchPacientesApPaterno = `
         pac.is_active
     AND
         p.ap_paterno ILIKE '%' || $1 || '%'
-    LIMIT 10
-    OFFSET $2`;
+ `;
 
 export const searchPacientesApMaterno = `
     SELECT
@@ -116,9 +110,7 @@ export const searchPacientesApMaterno = `
     WHERE
         pac.is_active
     AND
-        p.ap_materno ILIKE '%' || $1 || '%'
-    LIMIT 10
-    OFFSET $2`;
+        p.ap_materno ILIKE '%' || $1 || '%'`;
 
 export const searchPacientesCarnet = `
         SELECT
@@ -137,9 +129,7 @@ export const searchPacientesCarnet = `
         WHERE
             pac.is_active
         AND
-            p.carnet ILIKE '%' || $1 || '%'
-        LIMIT 10
-        OFFSET $2    `;
+            p.carnet ILIKE '%' || $1 || '%'   `;
 
 export const searchPacientesTelefono = `
     SELECT
@@ -158,9 +148,7 @@ export const searchPacientesTelefono = `
     WHERE
         pac.is_active
     AND
-        p.telefono ILIKE '%' || $1 || '%'
-    LIMIT 10
-    OFFSET $2`;
+        p.telefono ILIKE '%' || $1 || '%'`;
 
 export const getSinglePacienteQuery = `
 SELECT 

@@ -5,6 +5,7 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import TitleMenus from "../../components/TitleMenus";
 import EditarAdmPag1 from "./EditarAdmPag1";
 import EditarAdmPag2 from "./EditarAdmPag2";
+import PaginationComponent from "../../components/PaginationComponent";
 
 
 type ManageEditarAdmProps = {

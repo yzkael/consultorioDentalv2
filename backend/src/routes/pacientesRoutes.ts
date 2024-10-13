@@ -23,7 +23,7 @@ router.post("/update/:id", updatePaciente);
 
 router.post("/", revisarAdm, revisarJWT, crearPaciente);
 
-router.post("/search/", searchPacientes);
+router.post("/search", searchPacientes);
 
 router.delete("/:id", softDeletePaciente);
 
