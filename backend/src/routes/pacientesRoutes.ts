@@ -3,6 +3,7 @@ import {
   crearPaciente,
   fetchSinglePaciente,
   getAllPacientes,
+  getTotalPacienteNumber,
   searchPacientes,
   softDeletePaciente,
   updatePaciente,
@@ -14,13 +15,15 @@ const router = express.Router();
 
 router.get("/", getAllPacientes);
 
+router.get("/total", getTotalPacienteNumber);
+
 router.get("/:id", fetchSinglePaciente);
 
 router.post("/update/:id", updatePaciente);
 
 router.post("/", revisarAdm, revisarJWT, crearPaciente);
 
-router.post("/search", searchPacientes);
+router.post("/search/", searchPacientes);
 
 router.delete("/:id", softDeletePaciente);
 

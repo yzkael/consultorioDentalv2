@@ -15,6 +15,7 @@ import {
   searchPacientesTelefono,
   updatePacienteQuery,
   softDeletePacienteQuery,
+  numeroTotalPacientesQuery,
 } from "../models/pacienteQueries";
 
 export const crearPaciente = async (req: Request, res: Response) => {
@@ -88,14 +89,55 @@ export const getAllPacientes = async (req: Request, res: Response) => {
 
 // Anhadir Paginacion
 
+/*
+          Funciona en el API TESTER
+  Es muy probable que necesite reestructurar mi frontend para emplear la
+  Pagination... Necesito
+      1ro.- Ver como enviar Queries en el URL sin cagar la search
+          Ideas: Podria enviarlo con un fetch todo chuto y cagarme ne la tapa 
+          dejando que React se encarge de actualizar la imagen
+      2do.- Cambiar el Frontend para que entre el boton que se encargara de ello
+              OJO: La funcion  getTotalPacienteNumber fue creada para sacar el numero total de 
+                    Pacientes Activos y asi poder generar los numeros por si solos
+                    Tambien me interesa muchisimo Resolver el problema de como podriamos cambiar
+                    del 1 hasta el 10 y que los botones se vayan cambiando..
+                    Es decir: Que cuando este en el numero por ejemplo: 15
+                    los numeros visibles sean del 5 al 25
+      3ro.- Necesitare una forma de sacar el numero total de Resultados posibles en Cada Search para 
+      poder rearmar el tamanho o la cantidad de numeros para la pagination
+*/
+
+export const getTotalPacienteNumber = async (req: Request, res: Response) => {
+  try {
+    const numeroTotal = await pool.query(numeroTotalPacientesQuery);
+    if (numeroTotal.rows.length == 0) {
+      return res
+        .status(404)
+        .json({ message: "No existen pacientes registrados" });
+    }
+    res.status(200).json(numeroTotal.rows);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error 500" });
+  }
+};
+
 export const searchPacientes = async (req: Request, res: Response) => {
   const { searchValue, searchParams } = req.body;
 
   const searchQuery = identifySearchQuery(searchParams);
   const client = await pool.connect(); //Conecta a la DB
+
+  const limitPagina = req.query.page;
+  const pagina = Number(limitPagina) - 1;
+  const offSetQuery = String(pagina * 10);
+
   try {
     await client.query("BEGIN"); //Inicia la transaccion
-    const searchResult = await client.query(searchQuery, [searchValue]);
+    const searchResult = await client.query(searchQuery, [
+      searchValue,
+      offSetQuery,
+    ]);
     if (searchResult.rows.length == 0) {
       return res.status(404).json({ message: "No Pacientes Found" });
     }

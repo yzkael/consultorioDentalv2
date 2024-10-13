@@ -53,6 +53,8 @@ AND
         OR
         p.telefono ILIKE '%' || $1 || '%'
     )
+LIMIT 10
+OFFSET $2
     `;
 
 export const searchPacientesNombre = `
@@ -72,7 +74,9 @@ ON
 WHERE
     pac.is_active
 AND
-    p.nombre ILIKE '%' || $1 || '%'`;
+    p.nombre ILIKE '%' || $1 || '%'
+LIMIT 10
+OFFSET $2`;
 
 export const searchPacientesApPaterno = `
     SELECT
@@ -91,7 +95,9 @@ export const searchPacientesApPaterno = `
     WHERE
         pac.is_active
     AND
-        p.ap_paterno ILIKE '%' || $1 || '%'`;
+        p.ap_paterno ILIKE '%' || $1 || '%'
+    LIMIT 10
+    OFFSET $2`;
 
 export const searchPacientesApMaterno = `
     SELECT
@@ -110,7 +116,9 @@ export const searchPacientesApMaterno = `
     WHERE
         pac.is_active
     AND
-        p.ap_materno ILIKE '%' || $1 || '%'`;
+        p.ap_materno ILIKE '%' || $1 || '%'
+    LIMIT 10
+    OFFSET $2`;
 
 export const searchPacientesCarnet = `
         SELECT
@@ -129,7 +137,9 @@ export const searchPacientesCarnet = `
         WHERE
             pac.is_active
         AND
-            p.carnet ILIKE '%' || $1 || '%'`;
+            p.carnet ILIKE '%' || $1 || '%'
+        LIMIT 10
+        OFFSET $2    `;
 
 export const searchPacientesTelefono = `
     SELECT
@@ -148,7 +158,9 @@ export const searchPacientesTelefono = `
     WHERE
         pac.is_active
     AND
-        p.telefono ILIKE '%' || $1 || '%'`;
+        p.telefono ILIKE '%' || $1 || '%'
+    LIMIT 10
+    OFFSET $2`;
 
 export const getSinglePacienteQuery = `
 SELECT 
@@ -181,3 +193,11 @@ SET
     telefono = $6
 WHERE 
     id_persona = $7 RETURNING *`;
+
+export const numeroTotalPacientesQuery = `
+SELECT
+    COUNT(*) AS cantidad
+FROM
+    Pacientes
+WHERE
+    is_active = true`;
