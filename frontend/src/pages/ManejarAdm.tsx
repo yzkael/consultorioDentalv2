@@ -60,6 +60,7 @@ const ManejarAdm = () => {
     }
     const handleSearch = (data: ManejarSearch) => {
         setSearchValues(data);
+
     }
 
     return (

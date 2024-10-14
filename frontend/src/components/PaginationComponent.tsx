@@ -13,23 +13,19 @@ type PaginationComponentType = {
 
 const PaginationComponent = ({ numeroDatos, selected, setSelected, limite }: PaginationComponentType) => {
 
-    //Esta parte tendria que venir separada... Creo que hare que devuelva un Count(*) del length del 
-    // Search para hacerlo mas facil
-
-
-    //Hay que crear un array para poder usar el .map en el return
     const totalNumber = Number(numeroDatos);
     const pageNumber: any[] = [];
     let primerPagina = 1;
+
     for (let index = 0; index < totalNumber; index += limite) {
         pageNumber.push(primerPagina);
         primerPagina++;
     }
-    console.log(selected)
     const handleClick = (value: number) => {
-        console.log(value);
         setSelected(value);
     }
+
+    const limiteParaMostrar = 3;
 
     const estiloNormal = "p-3 bg-blue-400 cursor-pointer hover:bg-blue-200"
     const estiloSeleccionado = "p-3 bg-blue-900 cursor-pointer hover:bg-blue-200"
@@ -37,11 +33,18 @@ const PaginationComponent = ({ numeroDatos, selected, setSelected, limite }: Pag
         <div className='w-full flex gap-1 justify-center'>
             {
                 pageNumber.map((num) => (
-                    <button onClick={() => handleClick(num as number)} className={num === selected ? estiloNormal : estiloSeleccionado}>            {num}
-                    </button>
+                    num <= limiteParaMostrar ? (
+                        <button
+                            key={num}
+                            onClick={() => handleClick(num)}
+                            className={num === selected ? estiloSeleccionado : estiloNormal}
+                        >
+                            {num}
+                        </button>
+                    ) : null
                 ))
             }
-        </div >
+        </div>
     )
 }
 

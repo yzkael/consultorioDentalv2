@@ -128,7 +128,6 @@ export const searchPacientes = async (req: Request, res: Response) => {
   const client = await pool.connect(); //Conecta a la DB
 
   const paginaActual = req.query.page ? Number(req.query.page) : 1;
-  console.log(req.query.page);
   const maximoDatos = 10; //Valor Hardcoded que delimita el numero de datos devueltos
   const rangoMinDatos = (paginaActual - 1) * maximoDatos;
   const rangoMaxDatos = paginaActual * maximoDatos;
@@ -140,6 +139,7 @@ export const searchPacientes = async (req: Request, res: Response) => {
     if (searchResult.rows.length == 0) {
       return res.status(404).json({ message: "No Pacientes Found" });
     }
+    console.log(searchResult.rows);
     await client.query("COMMIT");
     res.status(200).json({
       data: searchResult.rows.slice(rangoMinDatos, rangoMaxDatos),

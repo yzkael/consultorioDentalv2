@@ -29,7 +29,6 @@ const ManejarPacientes = () => {
     const [idDelete, setIdDelete] = useState(""); //Guardan el Id para ser borrado luego
 
 
-    console.log(paginaActual); //DEBUGGER
 
 
     const { data: pacientes, isLoading } = useQuery(["searchPacientes", searchValues, paginaActual], () => apiClient.searchPacientesAPI(searchValues, paginaActual), {
@@ -39,6 +38,7 @@ const ManejarPacientes = () => {
     })
 
     const handleSearch = (data: ManejarSearch) => {
+        setPaginaActual(1); //Devuelve a la pagina 1
         setSearchValues(data);
     }
 
