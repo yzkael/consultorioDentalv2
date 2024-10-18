@@ -53,6 +53,19 @@ CREATE TABLE Dentistas(
     especialidad INTEGER REFERENCES Especialidades(id_especialidad)
 );
 
+
+-- TODO:                               IMPLEMENTACION PENDIENTE
+CREATE TABLE Horario_Atiende(
+    id_horario_atiende BIGSERIAL PRIMARY KEY,
+    dentista INTEGER REFERENCES Dentistas(id_dentista),
+    horario INTEGER REFERENCES Horarios(id_horario)
+);
+
+CREATE TABLE Horarios(
+    id_horario BIGSERIAL PRIMARY KEY,
+    horario VARCHAR(50) DEFAULT 'manhana' --Dependera si es manhana, noche, media tarde, todos estos valores se lidiaran en la capa negocios
+)
+
 CREATE TABLE Especialidades(
     id_especialidad BIGSERIAL PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL
