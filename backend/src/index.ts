@@ -6,6 +6,7 @@ import dentistaRoutes from "./routes/dentistaRoutes";
 import authRoutes from "./routes/authRoutes";
 import administrativoRoutes from "./routes/administrativoRoutes";
 import pacienteRoutes from "./routes/pacientesRoutes";
+import consultaRoutes from "./routes/consultaRoutes";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -27,6 +28,7 @@ app.use("/api/dentistas", dentistaRoutes);
 app.use("/api/administrativo", administrativoRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/pacientes", pacienteRoutes);
+app.use("/api/consultas", consultaRoutes);
 
 //Connection
 

@@ -139,7 +139,6 @@ export const searchPacientes = async (req: Request, res: Response) => {
     if (searchResult.rows.length == 0) {
       return res.status(404).json({ message: "No Pacientes Found" });
     }
-    console.log(searchResult.rows);
     await client.query("COMMIT");
     res.status(200).json({
       data: searchResult.rows.slice(rangoMinDatos, rangoMaxDatos),

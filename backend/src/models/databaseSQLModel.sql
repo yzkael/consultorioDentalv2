@@ -73,11 +73,14 @@ CREATE TABLE Pacientes(
     is_active BOOLEAN DEFAULT true
 );
 
-CREATE TABLE Consultas_Medicos(
-    id_consultas_medico BIGSERIAL PRIMARY KEY,
-    destista INTEGER REFERENCES Dentistas(id_dentista),
-    consulta INTEGER REFERENCES Consultas(id_consulta)
-);
+
+--Puedo eliminar esta tabla y anhadir la columna ayudante en la tabla consulta para asi 
+--poner a un medico principal y varios ayudantes
+-- CREATE TABLE Consultas_Medicos(
+--     id_consultas_medico BIGSERIAL PRIMARY KEY,
+--     destista INTEGER REFERENCES Dentistas(id_dentista),
+--     consulta INTEGER REFERENCES Consultas(id_consulta)
+-- );
 
 CREATE TABLE Consultas(
     id_consulta BIGSERIAL PRIMARY KEY,
@@ -85,34 +88,65 @@ CREATE TABLE Consultas(
     creado_por INTEGER REFERENCES Administrativo(id_administrativo),
     fecha_designada DATE NOT NULL,
     hora_designada TIME NOT NULL,
-    estado_consulta VARCHAR(10) DEFAULT "pendiente",
-    procedimientos INTEGER REFERENCES Procedimientos(id_procedimiento)    
+    consulta_completa BOOLEAN DEFAULT false,
+    dentista INTEGER REFERENCES Dentistas(id_dentista)
 );
-
-
---Tal vez sea mejor deshacerse del procedimiento y simplemente dejar un espacio libre para que el medico/dentista pueda describir libremente lo que realizo. 
-
-CREATE TABLE Procedimientos_Consultas(
-    id_procedimientos_consultas BIGSERIAL PRIMARY KEY,
-    procedimiento INTEGER REFERENCES Procedimientos(id_procedimiento),
+--Las personas que participaron de la Consulta
+--Esta tabla se generara a la par de que la consulta fuese completada
+CREATE TABLE Ayudantes_Consultas(
+    id_ayudante_consulta BIGSERIAL PRIMARY KEY,
+    ayudante INTEGER REFERENCES Dentistas(id_dentista),
+    consulta INTEGER REFERENCES Consultas(id_consulta)
+);
+--De la consulta se crea una Receta que sirve como forma de cobranza 
+CREATE TABLE Recetas(
+    id_receta BIGSERIAL PRIMARY KEY,
+    fecha_emision DATE DEFAULT CURRENT_DATE,
+    descripcion INTEGER NOT NULL,
+    precio_a_pagar INTEGER NOT NULL,
+    creado_por INTEGER REFERENCES Dentistas(id_dentista),
     consulta INTEGER REFERENCES Consultas(id_consulta)
 );
 
---Podria simplemente crear Procedimiento: Titlo, Descripcion y precio asi podriamos tambien facilitar el cobro en caja.
--- Esto debido que aunque el procedimiento sea "el mismo" por las diferentes razones que conllevan cada tratamiento y las complicaciones que se dieron en su realizacion, el cobro podria variar
+--Tabla a crear por si la API es creada
+-- CREATE TABLE Prescripcion_Medicamentos()
 
-CREATE TABLE Procedimientos(
-    id_procedimiento BIGSERIAL PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL,
-    descripcion TEXT NOT NULL
+--Tenia planeado tener el monto total en la tabla para siempre tener la referencia de cuatno hay que pagar
+-- Pero lidiare con el saldo en la capa de negocios
+--Cuando se genere una receta debera notificar al UI de que se debe cobrar una Receta Generada
+-- Podria poner alguna senhalizacion en la Tarjeta de Manejar Cobros
+CREATE TABLE Pagos (
+    id_pago BIGSERIAL PRIMARY KEY,
+    observaciones TEXT NULL,
+    monto_pagado INTEGER NOT NULL, -- El monto pagado por el paciente
+    fecha_pago DATE DEFAULT CURRENT_DATE,
+    metodo_pago VARCHAR(50) NOT NULL, -- Efectivo, tarjeta, transferencia, etc.
+    facturado BOOLEAN DEFAULT FALSE, -- Indica si se emitió factura
+    id_factura INTEGER REFERENCES Facturas(id_factura) NULL, -- Relación opcional con la tabla Facturas
+    id_receta INTEGER NOT NULL REFERENCES Recetas(id_receta),
+    -- monto_total INTEGER REFERENCES Recetas(precio_a_pagar) 
 );
 
---Anhadir la columna: Dosis para identificar cada cuantas horas sera requerido su consumo
-CREATE TABLE Procedimientos_Medicamentos(
-    id_procedimiento_medicamento BIGSERIAL PRIMARY KEY,
-    medicamento INTEGER REFERENCES Medicamentos(id_medicamento),
-    procedimiento INTEGER REFERENCES Procedimientos(id_procedimiento)
+--Todos los % y los calculos seran lidiados en la capa de Negocios
+
+CREATE TABLE Facturas (
+    id_factura BIGSERIAL PRIMARY KEY,
+    id_pago INTEGER NOT NULL REFERENCES Pagos(id_pago),
+    numero_factura VARCHAR(20) NOT NULL,
+    fecha_emision DATE DEFAULT CURRENT_DATE,
+    nit_cliente VARCHAR(15),
+    nombre_cliente VARCHAR(255) DEFAULT "PACIENTE",
+    codigo_control VARCHAR(50),
+    importe_base DECIMAL(10, 2) NOT NULL,
+    debito_fiscal DECIMAL(10, 2) NOT NULL,
+    estado VARCHAR(20) DEFAULT 'Emitida' -- Estado de la factura (Emitida, Anulada, Pagada, etc.)
 );
+
+
+
+
+--OPCIONAL: Si en caso no puedo utilizar la API para los medicamentos tendria que crear la tabla
+
 
 --Me gustaria intentar utilizar una API para reunir los medicamentos
 CREATE TABLE Medicamentos(

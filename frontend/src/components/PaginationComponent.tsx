@@ -16,6 +16,7 @@ const PaginationComponent = ({ numeroDatos, selected, setSelected, limite }: Pag
     const totalNumber = Number(numeroDatos);
     const pageNumber: any[] = [];
     let primerPagina = 1;
+    const NUMEROPAGINASMOSTRAR = 5; //Cantidad Hardcoded que limita el numero de paginas visibles para el usuario
 
     for (let index = 0; index < totalNumber; index += limite) {
         pageNumber.push(primerPagina);
@@ -25,15 +26,31 @@ const PaginationComponent = ({ numeroDatos, selected, setSelected, limite }: Pag
         setSelected(value);
     }
 
-    const limiteParaMostrar = 3;
 
     const estiloNormal = "p-3 bg-blue-400 cursor-pointer hover:bg-blue-200"
     const estiloSeleccionado = "p-3 bg-blue-900 cursor-pointer hover:bg-blue-200"
     return (
         <div className='w-full flex gap-1 justify-center'>
+            {/* Logica para mostrar los botones Primer Pagina */}
             {
+                selected == 1 &&
                 pageNumber.map((num) => (
-                    num <= limiteParaMostrar ? (
+                    num <= NUMEROPAGINASMOSTRAR ? (
+                        <button
+                            key={num}
+                            onClick={() => handleClick(num)}
+                            className={num === selected ? estiloSeleccionado : estiloNormal}
+                        >
+                            {num}
+                        </button>
+                    ) : null
+                ))
+            }
+            {/* Logica para mostrar Botones Resto de paginas */}
+            {
+                selected != 1 &&
+                pageNumber.map((num) => (
+                    num <= NUMEROPAGINASMOSTRAR ? (
                         <button
                             key={num}
                             onClick={() => handleClick(num)}
