@@ -54,18 +54,6 @@ CREATE TABLE Dentistas(
 );
 
 
--- TODO:                               IMPLEMENTACION PENDIENTE
-CREATE TABLE Horario_Atiende(
-    id_horario_atiende BIGSERIAL PRIMARY KEY,
-    dentista INTEGER REFERENCES Dentistas(id_dentista),
-    horario INTEGER REFERENCES Horarios(id_horario)
-);
-
-CREATE TABLE Horarios(
-    id_horario BIGSERIAL PRIMARY KEY,
-    horario VARCHAR(50) DEFAULT 'manhana' --Dependera si es manhana, noche, media tarde, todos estos valores se lidiaran en la capa negocios
-)
-
 CREATE TABLE Especialidades(
     id_especialidad BIGSERIAL PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL
@@ -87,23 +75,47 @@ CREATE TABLE Pacientes(
 );
 
 
---Puedo eliminar esta tabla y anhadir la columna ayudante en la tabla consulta para asi 
---poner a un medico principal y varios ayudantes
--- CREATE TABLE Consultas_Medicos(
---     id_consultas_medico BIGSERIAL PRIMARY KEY,
---     destista INTEGER REFERENCES Dentistas(id_dentista),
---     consulta INTEGER REFERENCES Consultas(id_consulta)
--- );
-
 CREATE TABLE Consultas(
     id_consulta BIGSERIAL PRIMARY KEY,
     paciente INTEGER REFERENCES Pacientes(id_paciente),
     creado_por INTEGER REFERENCES Administrativo(id_administrativo),
     fecha_designada DATE NOT NULL,
-    hora_designada TIME NOT NULL,
     consulta_completa BOOLEAN DEFAULT false,
+    hora_designada INTEGER REFERENCES Horarios(id_horario),
     dentista INTEGER REFERENCES Dentistas(id_dentista)
 );
+CREATE TABLE Horarios(
+    id_horario BIGSERIAL PRIMARY KEY,
+    hora TIME UNIQUE NOT NULL
+);
+--HORARIO TENDRA VALORES HARDCODED DE CADA 30 MIN
+--Valores Hard Coded para horarios
+INSERT INTO Horarios (hora) VALUES ('07:00:00');
+INSERT INTO Horarios (hora) VALUES ('07:30:00');
+INSERT INTO Horarios (hora) VALUES ('08:00:00');
+INSERT INTO Horarios (hora) VALUES ('08:30:00');
+INSERT INTO Horarios (hora) VALUES ('09:00:00');
+INSERT INTO Horarios (hora) VALUES ('09:30:00');
+INSERT INTO Horarios (hora) VALUES ('10:00:00');
+INSERT INTO Horarios (hora) VALUES ('10:30:00');
+INSERT INTO Horarios (hora) VALUES ('11:00:00');
+INSERT INTO Horarios (hora) VALUES ('11:30:00');
+INSERT INTO Horarios (hora) VALUES ('12:00:00');
+INSERT INTO Horarios (hora) VALUES ('12:30:00');
+INSERT INTO Horarios (hora) VALUES ('13:00:00');
+INSERT INTO Horarios (hora) VALUES ('13:30:00');
+INSERT INTO Horarios (hora) VALUES ('14:00:00');
+INSERT INTO Horarios (hora) VALUES ('14:30:00');
+INSERT INTO Horarios (hora) VALUES ('15:00:00');
+INSERT INTO Horarios (hora) VALUES ('15:30:00');
+INSERT INTO Horarios (hora) VALUES ('16:00:00');
+INSERT INTO Horarios (hora) VALUES ('16:30:00');
+INSERT INTO Horarios (hora) VALUES ('17:00:00');
+INSERT INTO Horarios (hora) VALUES ('17:30:00');
+INSERT INTO Horarios (hora) VALUES ('18:00:00');
+INSERT INTO Horarios (hora) VALUES ('18:30:00');
+
+
 --Las personas que participaron de la Consulta
 --Esta tabla se generara a la par de que la consulta fuese completada
 CREATE TABLE Ayudantes_Consultas(
@@ -111,6 +123,7 @@ CREATE TABLE Ayudantes_Consultas(
     ayudante INTEGER REFERENCES Dentistas(id_dentista),
     consulta INTEGER REFERENCES Consultas(id_consulta)
 );
+
 --De la consulta se crea una Receta que sirve como forma de cobranza 
 CREATE TABLE Recetas(
     id_receta BIGSERIAL PRIMARY KEY,

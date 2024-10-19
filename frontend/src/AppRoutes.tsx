@@ -16,6 +16,7 @@ import CrearPaciente from "./pages/CrearPaciente";
 import AdministrativoRoutes from "./utils/AdministrativoRoutes";
 import ManejarPacientes from "./pages/ManejarPacientes";
 import EditarPacientes from "./pages/EditarPacientes";
+import CrearConsulta from "./pages/CrearConsulta";
 const AppRoutes = () => {
   const { isLoggedIn } = useAuth();
   return (
@@ -46,6 +47,7 @@ const AppRoutes = () => {
             </MainLayout>
           }
         />
+        {/* Rutas Dentistas */}
         <Route
           path="/empleados/crear/dentistas"
           element={
@@ -72,6 +74,7 @@ const AppRoutes = () => {
             </MainLayout>
           } />
 
+        {/* Rutas Empleados ADM */}
         <Route path="/empleados/administrar/administrativos" element={<ManejarAdm />} />
 
         <Route path="/empleados/administrar/administrativos/editar-administrativo/:idAdm" element={<EditarAdm />} />
@@ -79,6 +82,8 @@ const AppRoutes = () => {
 
         <Route path="/empleados/crear/administrativos"
           element={<CrearAdm />} />
+
+        {/* Rutas Paciente */}
 
         <Route path="/pacientes/crear" element={
           <AdministrativoRoutes>
@@ -94,6 +99,13 @@ const AppRoutes = () => {
         <Route path="/pacientes/administrar/editar-pacientes/:id" element={
           <EditarPacientes />
         } />
+        {/* Rutas Consulta */}
+        <Route path="/consultas/crear" element={
+          <MainLayout>
+            <CrearConsulta />
+          </MainLayout>
+        } />
+        {/* RUTA DEFAULT */}
         <Route path="*" element={<Navigate to={'/'} />} />
 
       </>)}

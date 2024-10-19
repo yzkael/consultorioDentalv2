@@ -121,7 +121,17 @@ export const getTotalPacienteNumber = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal Server Error 500" });
   }
 };
+//BUSQUEDA SIMPLONA
+export const SearchPacientesNoPagination = async (
+  req: Request,
+  res: Response
+) => {
+  const { searchValue, searchParams } = req.body;
+  const searchQuery = identifySearchQuery(searchParams);
+  const client = await pool.connect(); //Conecta a la DB
+};
 
+//BUSQUEDA CON PAGINACION
 export const searchPacientes = async (req: Request, res: Response) => {
   const { searchValue, searchParams } = req.body;
   const searchQuery = identifySearchQuery(searchParams);

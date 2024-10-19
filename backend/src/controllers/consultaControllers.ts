@@ -4,13 +4,13 @@ import { crearConsultaQuery } from "../models/consultaQueries";
 
 export const createConsulta = async (req: Request, res: Response) => {
   const idAdm = req.userInfo.userId;
-  const { idPaciente, fechaDesignada, horaDesignada, idDentista } = req.body;
+  const { idPaciente, fechaDesignada, idHora, idDentista } = req.body;
   try {
     const nuevaConsulta = await pool.query(crearConsultaQuery, [
       idPaciente,
       idAdm,
       fechaDesignada,
-      horaDesignada,
+      idHora,
       idDentista,
     ]);
     if (nuevaConsulta.rows.length == 0) {
