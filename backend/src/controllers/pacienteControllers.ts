@@ -128,7 +128,16 @@ export const SearchPacientesNoPagination = async (
 ) => {
   const { searchValue, searchParams } = req.body;
   const searchQuery = identifySearchQuery(searchParams);
-  const client = await pool.connect(); //Conecta a la DB
+  try {
+    const searchResult = await pool.query(searchQuery, [searchValue]);
+    if (searchResult.rows.length == 0) {
+      return res.status(404).json({ message: "No existen pacientes" });
+    }
+    res.status(200).json(searchResult.rows);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error 500" });
+  }
 };
 
 //BUSQUEDA CON PAGINACION

@@ -5,6 +5,7 @@ import {
   getAllPacientes,
   getTotalPacienteNumber,
   searchPacientes,
+  SearchPacientesNoPagination,
   softDeletePaciente,
   updatePaciente,
 } from "../controllers/pacienteControllers";
@@ -24,6 +25,8 @@ router.post("/update/:id", updatePaciente);
 router.post("/", revisarAdm, revisarJWT, crearPaciente);
 
 router.post("/search", searchPacientes);
+
+router.post("/simple-search", SearchPacientesNoPagination);
 
 router.delete("/:id", softDeletePaciente);
 
