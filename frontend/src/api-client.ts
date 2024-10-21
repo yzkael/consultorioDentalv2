@@ -320,18 +320,27 @@ export const getAllPacientes = async (): Promise<ManejarPacienteType[]> => {
 
 export const searchPacientesAPI = async (
   data: ManejarSearch,
-  id: any
+  id?: any
 ): Promise<ResultadoSearchPaciente> => {
-  const response = await fetch(
-    `${BASE_API_URL}/api/pacientes/search?page=${id}`,
-    {
+  let response;
+  if (id) {
+    response = await fetch(`${BASE_API_URL}/api/pacientes/search?page=${id}`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
         "Content-type": "application/json",
       },
-    }
-  );
+    });
+  } else {
+    response = await fetch(`${BASE_API_URL}/api/pacientes/simple-search`, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+  }
+
   if (!response.ok) {
     throw new Error("Something went wrong");
   }

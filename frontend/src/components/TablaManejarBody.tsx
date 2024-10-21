@@ -7,20 +7,25 @@ type TablaManejarBodyProps = {
     data: any;
     differentAttribute: string;
     paciente?: boolean;
-    handleClick: (link: string) => void;
-    dataName: string;
+    handleClick?: (link: string) => void;
+    dataName?: string;
+    //Para manejar el ver 
+    handleSelect?: (idPersona: number) => void;
+    selected?: number;
 }
 
-const TablaManejarBody = ({ data, differentAttribute, paciente, handleClick, dataName }: TablaManejarBodyProps) => {
+const TablaManejarBody = ({ data, differentAttribute, paciente, handleClick, dataName, handleSelect, selected }: TablaManejarBodyProps) => {
     const { role } = useAuth();
 
     return (
         <tbody className="bg-white">
             {paciente ? <>
+                {/*         PARA LOS PACIENTES */}
                 {data.map((singleData: any) => (
                     <tr
+                        onClick={() => { handleSelect ? handleSelect(singleData.id_persona) : null }}
                         key={singleData.id_persona}
-                        className="border-b hover:bg-slate-100 transition-colors duration-200"
+                        className={singleData.id_persona == selected ? "border-b cursor-pointer  bg-slate-400 transition-colors duration-200" : "border-b cursor-pointer  hover:bg-slate-300 transition-colors duration-200"}
                     >
                         <td className="px-4 py-2 whitespace-nowrap">{singleData.nombre}</td>
                         <td className="px-4 py-2 whitespace-nowrap">{singleData.appaterno}</td>
@@ -38,7 +43,7 @@ const TablaManejarBody = ({ data, differentAttribute, paciente, handleClick, dat
                                     </Link>
                                 </td>
                                 <td className="px-4 py-2 whitespace-nowrap">
-                                    <button onClick={() => handleClick(singleData.id_persona)}>
+                                    <button onClick={() => handleClick ? handleClick(singleData.id_persona) : null}>
                                         <MdDeleteForever
                                             className="text-slate-600 hover:text-slate-800 transition-colors hover:scale-110 duration-200"
                                             size={20}
@@ -54,17 +59,19 @@ const TablaManejarBody = ({ data, differentAttribute, paciente, handleClick, dat
                     </tr>
                 ))}</> :
                 <>
-
+                    {/* PARA LOS TRABAJADORES */}
                     {data.map((singleData: any) => (
                         <tr
+
+                            onClick={() => { handleSelect ? handleSelect(singleData.id_persona) : null }}
                             key={singleData.id_persona}
-                            className="border-b hover:bg-slate-100 transition-colors duration-200"
+                            className={singleData.id_persona == selected ? "border-b cursor-pointer  bg-slate-400 transition-colors duration-200" : "border-b cursor-pointer  hover:bg-slate-300 transition-colors duration-200"}
                         >
                             <td className="px-4 py-2 whitespace-nowrap">{singleData.nombre}</td>
                             <td className="px-4 py-2 whitespace-nowrap">{singleData.appaterno}</td>
                             <td className="px-4 py-2 whitespace-nowrap">{singleData.apmaterno}</td>
                             <td className="px-4 py-2 whitespace-nowrap">{singleData.username}</td>
-                            <td className="px-4 py-2 whitespace-nowrap">{singleData[differentAttribute]}</td>
+                            <td className="px-4 py-2  whitespace-nowrap">{singleData[differentAttribute]}</td>
                             {Number(role) === 4 ? (
                                 <>
                                     <td className="px-4 py-2 whitespace-nowrap">
@@ -76,7 +83,7 @@ const TablaManejarBody = ({ data, differentAttribute, paciente, handleClick, dat
                                         </Link>
                                     </td>
                                     <td className="px-4 py-2 whitespace-nowrap">
-                                        <button onClick={() => handleClick(singleData.id_persona)}>
+                                        <button onClick={() => handleClick ? handleClick(singleData.id_persona) : null}>
                                             <MdDeleteForever
                                                 className="text-slate-600 hover:text-slate-800 transition-colors hover:scale-110 duration-200"
                                                 size={20}

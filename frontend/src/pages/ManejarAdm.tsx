@@ -73,7 +73,6 @@ const ManejarAdm = () => {
                     <div className="overflow-x-auto">
                         <div className="inline-block min-w-full align-middle">
                             {isLoading ? <LoadingSpinner /> : <TablaManejar data={administrativos} handleClick={handleClick} differentAttribute="cargo" dataName="administrativo" />}
-
                         </div>
 
                     </div>

@@ -3,13 +3,16 @@ import TablaManejarBody from "./TablaManejarBody";
 
 type TablaManejarProps = {
     data: any; //Valores que seran expuestos en la tabla
-    handleClick: (link: string) => void; //Funcion para mostrar el prop de estas seguro Delete
+    handleClick?: (link: string) => void; //Funcion para mostrar el prop de estas seguro Delete
     differentAttribute: string; //Diferente Atributo en la tabla EJ: Cargo o especialidad en medicos y Adm
-    dataName: string; //Simple string para los link
+    dataName?: string; //Simple string para los link
     paciente?: boolean; //Cambia la tabla en caso de que sea Un paciente
+    //Para el ver
+    handleSelect?: (idPersona: number) => void;
+    selected?: number;
 }
 
-const TablaManejar = ({ data, differentAttribute, handleClick, dataName, paciente }: TablaManejarProps) => {
+const TablaManejar = ({ data, differentAttribute, handleClick, dataName, paciente, handleSelect, selected }: TablaManejarProps) => {
     const { role } = useAuth();
 
     return (
@@ -40,7 +43,7 @@ const TablaManejar = ({ data, differentAttribute, handleClick, dataName, pacient
             </thead>
             {data && (
                 //Terrible Prop Drilling pero me cago en todo
-                <TablaManejarBody data={data} differentAttribute={differentAttribute} paciente={paciente} handleClick={handleClick} dataName={dataName} />
+                <TablaManejarBody data={data} differentAttribute={differentAttribute} paciente={paciente} handleClick={handleClick} dataName={dataName} handleSelect={handleSelect} selected={selected} />
             )}
         </table>
     );

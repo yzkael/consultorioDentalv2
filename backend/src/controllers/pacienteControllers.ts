@@ -133,7 +133,8 @@ export const SearchPacientesNoPagination = async (
     if (searchResult.rows.length == 0) {
       return res.status(404).json({ message: "No existen pacientes" });
     }
-    res.status(200).json(searchResult.rows);
+    // Wrappeado en un objeto data: para poder ser manejado por el frontend
+    res.status(200).json({ data: searchResult.rows });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error 500" });

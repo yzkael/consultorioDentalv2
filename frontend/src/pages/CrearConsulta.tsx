@@ -1,15 +1,9 @@
-import BuscarPacientes from "../components/crearConsultaComponents/buscarPacientes"
+import BuscarPacientes from "../components/crearConsultaComponents/BuscarPacientes"
 import TitleMenus from "../components/TitleMenus"
-
 const CrearConsulta = () => {
-    /*
-        Primero debo escoger el paciente
-        Luego el medico.. Este deberia ser buscado por  
-        Especialidad
-        Y deberia escogerse aqui mismo tambien..
-        El Horario
-                                            
-    */
+
+
+
     return (
         <div className="flex flex-col h-screen bg-slate-400">
             <TitleMenus title="Crear Consulta" />
