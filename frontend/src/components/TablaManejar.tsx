@@ -8,11 +8,12 @@ type TablaManejarProps = {
     dataName?: string; //Simple string para los link
     paciente?: boolean; //Cambia la tabla en caso de que sea Un paciente
     //Para el ver
+    esSoloVista?: boolean;
     handleSelect?: (idPersona: number) => void;
     selected?: number;
 }
 
-const TablaManejar = ({ data, differentAttribute, handleClick, dataName, paciente, handleSelect, selected }: TablaManejarProps) => {
+const TablaManejar = ({ data, differentAttribute, handleClick, dataName, paciente, handleSelect, selected, esSoloVista }: TablaManejarProps) => {
     const { role } = useAuth();
 
     return (
@@ -31,19 +32,19 @@ const TablaManejar = ({ data, differentAttribute, handleClick, dataName, pacient
                                 {differentAttribute.charAt(0).toUpperCase() + differentAttribute.slice(1)}
                             </th></>}
 
-                    {Number(role) === 4 ? (
+                    {Number(role) === 4 && !esSoloVista ? (
                         <>
                             <th className="px-4 py-2 whitespace-nowrap">Editar</th>
                             <th className="px-4 py-2 whitespace-nowrap">Eliminar</th>
                         </>
                     ) : (
-                        <th className="px-4 py-2 whitespace-nowrap">Ver</th>
+                        null
                     )}
                 </tr>
             </thead>
             {data && (
                 //Terrible Prop Drilling pero me cago en todo
-                <TablaManejarBody data={data} differentAttribute={differentAttribute} paciente={paciente} handleClick={handleClick} dataName={dataName} handleSelect={handleSelect} selected={selected} />
+                <TablaManejarBody data={data} differentAttribute={differentAttribute} paciente={paciente} handleClick={handleClick} dataName={dataName} handleSelect={handleSelect} selected={selected} esSoloVista={esSoloVista} />
             )}
         </table>
     );

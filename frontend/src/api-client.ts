@@ -13,6 +13,9 @@ import {
   ManejarPacienteType,
   ManejarEditarPacienteType,
   ResultadoSearchPaciente,
+  BuscarHorarioType,
+  Horarios,
+  CrearConsultaType,
 } from "./types/app-types";
 
 const BASE_API_URL = import.meta.env.VITE_BASE_URL as string;
@@ -401,6 +404,40 @@ export const deletePaciente = async (idPaciente: string) => {
 export const getTotalNumberPacientes = async () => {
   const response = await fetch(`${BASE_API_URL}/api/pacientes/total`, {
     method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong...");
+  }
+  const returnData = await response.json();
+  return returnData;
+};
+
+export const getHorariosDisponibles = async ({
+  fecha,
+  medico,
+}: BuscarHorarioType): Promise<Horarios[]> => {
+  const response = await fetch(`${BASE_API_URL}/api/consultas/horarios`, {
+    method: "POST",
+    body: JSON.stringify({ fecha, medico }),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong..");
+  }
+  const returnData = await response.json();
+  return returnData;
+};
+
+export const crearConsultaAPI = async (data: CrearConsultaType) => {
+  const response = await fetch(`${BASE_API_URL}/api/consultas`, {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify(data),
     headers: {
       "Content-type": "application/json",
     },

@@ -25,7 +25,7 @@
 }
 
 .btn {
-  @apply py-2 px-4 bg-slate-700 rounded-lg w-[5rem] flex justify-center items-center hover:bg-slate-600 text-white font-semibold cursor-pointer;
+  @apply py-2 px-4 bg-slate-700 rounded-lg w-[5rem] flex justify-center items-center hover:bg-slate-600 text-white font-semibold cursor-pointer disabled:hidden;
 }
 
 .page-wrapper {

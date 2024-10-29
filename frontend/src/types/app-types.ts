@@ -118,3 +118,20 @@ export type ResultadoSearchPaciente = {
   total: number;
   limite: number;
 };
+
+export type BuscarHorarioType = {
+  fecha: Date | string;
+  medico: number;
+};
+
+export type Horarios = {
+  id_horario: number;
+  hora: string;
+};
+
+export type CrearConsultaType = {
+  idPaciente: number;
+  fechaDesignada: Date | string;
+  idHora: number;
+  idDentista: number;
+};

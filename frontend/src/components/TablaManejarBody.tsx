@@ -10,11 +10,12 @@ type TablaManejarBodyProps = {
     handleClick?: (link: string) => void;
     dataName?: string;
     //Para manejar el ver 
+    esSoloVista?: boolean;
     handleSelect?: (idPersona: number) => void;
     selected?: number;
 }
 
-const TablaManejarBody = ({ data, differentAttribute, paciente, handleClick, dataName, handleSelect, selected }: TablaManejarBodyProps) => {
+const TablaManejarBody = ({ data, differentAttribute, paciente, handleClick, dataName, handleSelect, selected, esSoloVista }: TablaManejarBodyProps) => {
     const { role } = useAuth();
 
     return (
@@ -32,7 +33,7 @@ const TablaManejarBody = ({ data, differentAttribute, paciente, handleClick, dat
                         <td className="px-4 py-2 whitespace-nowrap">{singleData.apmaterno}</td>
                         <td className="px-4 py-2 whitespace-nowrap">{singleData.carnet}</td>
                         <td className="px-4 py-2 whitespace-nowrap">{singleData.telefono}</td>
-                        {Number(role) === 4 ? (
+                        {Number(role) === 4 && !esSoloVista ? (
                             <>
                                 <td className="px-4 py-2 whitespace-nowrap">
                                     <Link to={`editar-${dataName}/${singleData.id_persona}`}>
@@ -53,8 +54,7 @@ const TablaManejarBody = ({ data, differentAttribute, paciente, handleClick, dat
                             </>
                         ) : (
                             //Aqui vendra la opcion Para ver a los que no son SUDO USERS
-
-                            <td className="px-4 py-2 whitespace-nowrap">hi</td>
+                            null
                         )}
                     </tr>
                 ))}</> :
@@ -72,7 +72,7 @@ const TablaManejarBody = ({ data, differentAttribute, paciente, handleClick, dat
                             <td className="px-4 py-2 whitespace-nowrap">{singleData.apmaterno}</td>
                             <td className="px-4 py-2 whitespace-nowrap">{singleData.username}</td>
                             <td className="px-4 py-2  whitespace-nowrap">{singleData[differentAttribute]}</td>
-                            {Number(role) === 4 ? (
+                            {Number(role) === 4 && !esSoloVista ? (
                                 <>
                                     <td className="px-4 py-2 whitespace-nowrap">
                                         <Link to={`editar-${dataName}/${singleData.id_persona}`}>
@@ -93,7 +93,7 @@ const TablaManejarBody = ({ data, differentAttribute, paciente, handleClick, dat
                                 </>
                             ) : (
                                 //Aqui vendra la opcion Para ver a los que no son SUDO USERS
-                                <td className="px-4 py-2 whitespace-nowrap">hi</td>
+                                null
                             )}
                         </tr>
                     ))}
